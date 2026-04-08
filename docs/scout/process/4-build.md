@@ -65,7 +65,7 @@ Follow the conventions in [file-structure.md](../conventions/file-structure.md):
 ```
 repo/
 ├── README.md              # Generated output (do not edit directly)
-├── CLAUDE.md              # Process state tracker
+├── CLAUDE.md              # Process state and operational context
 ├── data/
 │   └── entries.yaml       # Canonical structured data
 ├── docs/

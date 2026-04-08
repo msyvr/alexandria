@@ -46,7 +46,7 @@ alexandria is designed so this learning happens as a side effect of building som
 
 A library contains books of different types. Each type has its own creation process and its own skill.
 
-### Tracker (available)
+### Scout (available)
 A curated, structured knowledge base on a domain. Researched, organized, systematically critiqued, and kept current with automated discovery. Built through a seven-phase process that catches the errors a single-pass AI generation misses.
 
 ### Import (planned)
@@ -68,7 +68,7 @@ alexandria is a first step toward a larger goal: **infrastructure for people to 
 
 ### Near-term
 - The /library skill creates and organizes libraries
-- The /build-tracker skill produces tracker books via a seven-phase process
+- The /new-scout skill creates scouts via a seven-phase process
 - Claude Code skills as the primary delivery mechanism
 
 ### Medium-term

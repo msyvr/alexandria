@@ -1,10 +1,10 @@
-# Example: Building an AI Safety Research Tracker
+# Example: Building an AI Safety Research Scout
 
-A hypothetical walkthrough showing how the tracker process adapts for research-domain tracking (as opposed to tool/product landscapes).
+A hypothetical walkthrough showing how the scout process adapts for research-domain monitoring (as opposed to tool/product landscapes).
 
 ## How This Differs from a Tool Landscape
 
-| Aspect | Tool landscape | Research tracker |
+| Aspect | Tool landscape | Research scout |
 |--------|---------------|-----------------|
 | Entity type | Tools, products, services | Papers, methods, areas, orgs |
 | Primary source | GitHub, product pages | arXiv, Semantic Scholar, conferences |

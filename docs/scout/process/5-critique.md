@@ -5,7 +5,7 @@
 
 ## Why This Phase Exists
 
-This phase is the core differentiator of the tracker build process. A single-pass generation misses problems that only surface through systematic review. The awesome-agent-sandboxes repo had three critique cycles that each materially improved the output:
+This phase is the core differentiator of the scout build process. A single-pass generation misses problems that only surface through systematic review. The awesome-agent-sandboxes repo had three critique cycles that each materially improved the output:
 
 1. **First critique**: Caught Docker Sandboxes category misassignment, brand-recognition bias in ordering, missing risk callouts
 2. **Second critique**: Found bundled entries (Wasmtime/WasmEdge/wasmCloud) that should be split, general-purpose tools mixed with purpose-built ones

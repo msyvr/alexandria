@@ -1,7 +1,7 @@
 # TODO
 
 ## Library skill
-- [ ] Test /library end-to-end: create library, add tracker book, browse, verify index
+- [ ] Test /library end-to-end: create library, add scout, browse, verify index
 - [ ] Reorganization logic: detect when sections need subdivision, propose axes
 - [ ] Index regeneration: scan directory for git repos when index is missing/stale
 
@@ -14,7 +14,7 @@
 - [ ] GitHub basics: creating a repo, pushing, what GitHub Actions does for you
 - [ ] Graduated complexity: order guides so each builds on the last
 
-## Tracker book type
+## Scout book type
 - [ ] Personalization: "my context" mechanism for relating entries to user's specific situation
 - [ ] Schema pattern for personalized fields (relevance scores, personal notes, applicability tags)
 - [ ] Process phase for defining personal context (integrate into Scope or add between Scope and Research)

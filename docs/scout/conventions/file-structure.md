@@ -1,13 +1,13 @@
 # File Structure Convention
 
-Standard layout for repos built with the tracker build process.
+Standard layout for repos built with the scout build process.
 
 ## Structure
 
 ```
 repo-name/
 ├── README.md                 # Generated output — do not edit directly
-├── CLAUDE.md                 # Process state tracker (from alexandria)
+├── CLAUDE.md                 # Process state and operational context
 ├── data/
 │   └── entries.yaml          # Canonical structured data
 ├── docs/

@@ -1,7 +1,7 @@
-# /build-tracker
+# /new-scout
 
-Build a curated, structured knowledge base on any topic — guided by a seven-phase process
-that produces a resource you own, understand, and can maintain.
+Create a scout — a curated, living knowledge base that monitors a topic for you. Built
+through a seven-phase process that produces a resource you own, understand, and can maintain.
 
 ## Adapting to the user
 
@@ -10,7 +10,7 @@ Gauge the user's technical comfort early. Use plain language by default — "cat
 vocabulary." Introduce technical terms naturally when the user is ready, not upfront.
 
 Ask about direction, not implementation:
-- "What should this tracker cover? What's out of scope?"
+- "What should this scout cover? What's out of scope?"
 - "Who is this for? What questions will they bring?"
 - "How would you want to compare entries — by cost, by evidence quality, by ease of access?"
 
@@ -28,7 +28,7 @@ Don't ask about YAML field names, Python code structure, or API configuration.
 ## The seven phases
 
 ### Phase 1: Scope (user-driven)
-Define what the tracker covers, who it's for, and what questions readers bring.
+Define what the scout covers, who it's for, and what questions readers bring.
 
 Ask the user:
 1. **Topic**: What's the landscape? What's in, what's out?
@@ -108,9 +108,9 @@ hand-written, not generated from data. Every recommended option must include a r
 callout: what it's good for and what it doesn't cover.
 
 **Generate a CLAUDE.md** in the built repo with operational context for future sessions:
-the tracker's topic, schema summary, file locations, and how to update (edit entries.yaml,
+the scout's topic, schema summary, file locations, and how to update (edit entries.yaml,
 run generate_readme.py). No build process instructions — just what Claude Code needs to
-help the user maintain the tracker on return visits.
+help the user maintain the scout on return visits.
 
 **Generate index.html** alongside README.md. The HTML is self-contained: wrap the README
 content in the alexandria HTML template (inline CSS, no JavaScript, no external files).
@@ -157,7 +157,7 @@ Iterate until a clean pass (typically 2-3 passes).
 - [ ] Every recommended entry has notes explaining tradeoffs
 
 ### Phase 6: Automate (Claude Code-driven)
-Set up discovery so the tracker stays current.
+Set up discovery so the scout stays current.
 
 Build `scripts/discover.py` to search configured sources for new candidates. It surfaces
 candidates for human review — never auto-adds. Optionally add a GitHub Actions workflow
@@ -167,7 +167,7 @@ Add staleness checking for existing entries (last commit date, archive status, U
 Add a quarterly review nudge (are categories still right? have lenses collapsed?).
 
 ### Phase 7: Maintain (user-driven, automation-assisted)
-Keep the tracker useful over time.
+Keep the scout useful over time.
 
 - Review discovery candidates (weekly or when convenient)
 - Handle staleness flags
@@ -177,9 +177,9 @@ Keep the tracker useful over time.
 
 ## Library integration
 
-If this tracker is being built within a library (detected by `.library-index.yaml` in a
+If this scout is being created within a library (detected by `.library-index.yaml` in a
 parent directory), update the library index after Phase 4 (Build) completes:
-- Add the book entry with name, path, type ("tracker"), creation date, and a one-line
+- Add the book entry with name, path, type ("scout"), creation date, and a one-line
   description derived from the scope document.
 
-If invoked standalone (no library context), skip this step — the tracker works independently.
+If invoked standalone (no library context), skip this step — the scout works independently.

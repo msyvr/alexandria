@@ -5,8 +5,8 @@ building and organizing personal curated libraries.
 
 ## Repo structure
 - `skills/library/SKILL.md` — the /library skill (primary entry point for users)
-- `skills/build-tracker/SKILL.md` — the /build-tracker skill (tracker book type)
-- `docs/tracker/` — reference material for the tracker book type
+- `skills/new-scout/SKILL.md` — the /new-scout skill (scout book type)
+- `docs/scout/` — reference material for the scout book type
   - `process/` — seven-phase process docs
   - `prompts/` — prompt templates (critique checklist, research gathering, etc.)
   - `conventions/` — file structure and schema patterns
@@ -16,7 +16,7 @@ building and organizing personal curated libraries.
 
 ## Development notes
 - Skill files must be self-contained — they're the only files the user has when building
-- Reference docs in docs/tracker/ informed the build-tracker skill; they're not loaded
+- Reference docs in docs/scout/ informed the /new-scout skill; they're not loaded
   during a build session
-- Changes to the tracker process should be reflected in both the skill and the reference docs
+- Changes to the scout process should be reflected in both the skill and the reference docs
 - Future book types will add: a skill in skills/ and reference docs in docs/[type]/

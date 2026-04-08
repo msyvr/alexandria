@@ -19,7 +19,7 @@ Ask about direction, not details. The user shouldn't need to think about YAML fi
 
 2. **Audiences**: Who will use this repo? Different audiences need different content.
    - awesome-agent-sandboxes had two: beginners (need a getting-started guide) and technical users (need comparison data)
-   - A research tracker might serve practitioners, policymakers, and journalists differently
+   - A research scout might serve practitioners, policymakers, and journalists differently
 
 3. **Perspectives**: What questions does a reader bring?
    - Not "what are the YAML fields" but "what does someone want to triage by?"

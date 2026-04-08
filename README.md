@@ -4,7 +4,7 @@ Build and organize a personal curated library — a collection of living resourc
 
 alexandria is a set of Claude Code skills for creating, organizing, and maintaining a personal library of structured "books." Each book is a self-contained project you own and understand. The library provides a lightweight organizational layer so you can find things as the collection grows.
 
-See [ASPIRATIONS.md](ASPIRATIONS.md) for where this project is headed.
+See [ASPIRATIONS.md](ASPIRATIONS.md) for where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page.
 
 ## Who is this for?
 
@@ -115,3 +115,113 @@ Detailed process docs, prompt templates, conventions, and examples that informed
 ### Project direction
 - [ASPIRATIONS.md](ASPIRATIONS.md) — project vision, the technical minimalism goal, planned book types
 - [TODO.md](TODO.md) — planned additions and improvements
+
+---
+
+## Detailed setup walkthrough
+
+Step-by-step instructions for getting started, assuming no prior terminal experience. Every command is shown exactly as you'll type it.
+
+### 1. Open a terminal
+
+- **macOS**: Press `Cmd + Space`, type `Terminal`, press Enter. A window with a text prompt appears — this is your terminal.
+- **Windows**: You'll need WSL (Windows Subsystem for Linux). Search for "WSL" in the Microsoft Store, install Ubuntu, then open it from the Start menu.
+- **Linux**: Open your system's terminal application (usually called Terminal or Konsole).
+
+### 2. Check that Python is installed
+
+Type this in your terminal and press Enter:
+```
+python3 --version
+```
+
+You should see something like `Python 3.13.2`. If you see "command not found," install Python from [python.org/downloads](https://python.org/downloads) — download the installer, run it, then try the command again.
+
+### 3. Check that Git is installed
+
+Type this and press Enter:
+```
+git --version
+```
+
+You should see something like `git version 2.43.0`. If you see "command not found":
+- **macOS**: Type `xcode-select --install` and follow the prompts
+- **Windows (WSL)**: Type `sudo apt install git`
+- **Linux**: Type `sudo apt install git` (Ubuntu/Debian) or `sudo dnf install git` (Fedora)
+
+### 4. Install Claude Code
+
+Go to [claude.ai/claude-code](https://claude.ai/claude-code) and follow the installation instructions. You'll need to create an Anthropic account if you don't have one.
+
+Once installed, verify it works by typing:
+```
+claude --version
+```
+
+### 5. Download alexandria
+
+Type these two commands, pressing Enter after each:
+```
+cd ~
+```
+```
+git clone https://github.com/msyvr/alexandria.git
+```
+
+The first command takes you to your home directory. The second downloads the alexandria project. You'll see progress messages — wait until you're back at the prompt.
+
+### 6. Install the skills
+
+Type this command:
+```
+cp -r ~/alexandria/skills/* ~/.claude/skills/
+```
+
+This copies the skill files to where Claude Code can find them. You won't see any output — that's normal. It means it worked.
+
+### 7. Create your library
+
+Start Claude Code:
+```
+claude
+```
+
+You'll see a prompt where you can type messages to Claude Code. Type:
+```
+/library
+```
+
+Claude Code will ask you what to name your library (you can just press Enter to accept "alexandria") and where to put it. Then tell it what you want to build:
+
+- "I need to understand treatment options for [condition]"
+- "I want to track developments in [field]"
+- "I need to monitor [topic] and stay current on new developments"
+
+Claude Code will guide you through the rest — asking questions about what to cover, who it's for, and how you'd want to compare entries. Your job is to answer those questions. It handles the building.
+
+### 8. Browse your library
+
+Once you've built your first book, you can browse your library anytime:
+
+1. Start Claude Code: `claude`
+2. Type `/library`
+3. Choose "browse"
+
+To view your library in a browser, open this file (replace `alexandria` with your library name if you chose a different one):
+- **macOS**: `open ~/alexandria/index.html`
+- **Windows (WSL)**: `explorer.exe $(wslpath -w ~/alexandria/index.html)`
+- **Linux**: `xdg-open ~/alexandria/index.html`
+
+### 9. Add more books
+
+Start Claude Code, type `/library`, and choose "add a book." Same process as step 7 — describe what you need, and it guides you through building it.
+
+### Troubleshooting
+
+**"command not found" for any command**: The tool isn't installed. Go back to the relevant installation step.
+
+**"permission denied"**: On macOS/Linux, try adding `sudo` before the command (e.g., `sudo cp -r ...`). You'll be asked for your computer's password.
+
+**Claude Code doesn't recognize `/library`**: The skills weren't copied correctly. Re-run step 6. Make sure the `~/.claude/skills/` directory exists — if not, create it first with `mkdir -p ~/.claude/skills/`.
+
+**Something else went wrong**: Start Claude Code (`claude`) and describe the problem. It can often diagnose and fix issues directly.

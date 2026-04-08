@@ -58,7 +58,7 @@ Your own creative and professional output — notes, projects, task lists. Struc
 ## What you need
 
 ### Required
-- **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that reads the alexandria skills and does the research, organization, critique, and script generation work. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Claude Code runs in your terminal or [in a browser](https://claude.ai/code) — see below for options. See "What uses Claude Code and what doesn't" for details on data and privacy.
+- **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that powers the book-building process. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Claude Code runs in your terminal or [in a browser](https://claude.ai/code) — see below for options. See "What uses Claude Code and what doesn't" for details on data and privacy.
 - **Python 3.10+** — for the scripts within built tracker books. Check with `python3 --version`.
 
 ### How to run Claude Code
@@ -81,9 +81,8 @@ If you're new to working in a terminal, that's fine. The skills you pick up here
 ### What uses Claude Code and what doesn't
 
 **Requires Claude Code** (internet connection + Anthropic account):
-- Building a new book (research, schema design, editorial writing, script generation)
-- Running the critique checklist on a built book
-- Reorganizing your library (proposing new groupings)
+- Building a tracker book — the seven-phase process includes research, schema design, editorial writing, systematic critique, and script generation. These are the heavy tasks that depend on Claude's capabilities.
+- Creating a library and adding a book to it — Claude Code understands your intent ("I need to track treatments for X") and handles the conversational setup. This is lightweight compared to the build itself.
 
 During these tasks, your prompts and the AI's responses pass through Anthropic's servers. Your data files — the YAML, markdown, and scripts that make up your books — stay on your machine and are not uploaded.
 
@@ -96,7 +95,7 @@ During these tasks, your prompts and the AI's responses pass through Anthropic's
 
 Once your library is built, you can cancel your subscription and keep using it indefinitely. The files are yours. AI is needed only when you want to build new books or run the critique process.
 
-**No local model alternative currently exists for the build process.** The quality of research, critique, and editorial writing depends on Claude's capabilities. The skills are written as markdown instructions that any sufficiently capable AI agent could follow — if a local-model agent runner with comparable quality emerges, the skills will work with it without changes. Discovery scripts will support configurable model endpoints in the future for tasks like relevance scoring.
+**No local model alternative currently exists for building tracker books.** The tracker's seven-phase process — particularly research (gathering and synthesizing landscape data), critique (systematic error detection across categories, bias, and risk callouts), and editorial writing (getting-started guides, decision trees) — depends on Claude's capabilities. The skills are written as markdown instructions that any sufficiently capable AI agent could follow; if a local-model agent runner with comparable quality emerges, the skills will work with it without changes. Discovery scripts will support configurable model endpoints in the future for tasks like relevance scoring.
 
 ## How to use it
 

@@ -112,6 +112,13 @@ the tracker's topic, schema summary, file locations, and how to update (edit ent
 run generate_readme.py). No build process instructions — just what Claude Code needs to
 help the user maintain the tracker on return visits.
 
+**Generate index.html** alongside README.md. The HTML is self-contained: wrap the README
+content in the alexandria HTML template (inline CSS, no JavaScript, no external files).
+Use Python's `markdown` library to convert the generated README.md content to HTML. The
+HTML uses the same inline stylesheet as the library-level pages so all pages in the
+library have a consistent reading experience. Links within the HTML point to other `.html`
+files (not `.md`) so browser navigation works over `file://`.
+
 ### Phase 5: Critique (the core differentiator)
 Systematically find and fix problems before declaring done.
 

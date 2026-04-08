@@ -58,9 +58,16 @@ Your own creative and professional output — notes, projects, task lists. Struc
 ## What you need
 
 ### Required
-- **[Claude Code](https://claude.ai/claude-code)** — an AI assistant that runs in your terminal. It reads the alexandria skills and does the research, building, and organization work. You'll need an Anthropic account.
-- **A terminal** — Claude Code runs here. On macOS, open Terminal. On Windows, use WSL.
+- **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that reads the alexandria skills and does the research, organization, critique, and script generation work. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Claude Code runs in your terminal or [in a browser](https://claude.ai/code) — see below for options. See "What uses Claude Code and what doesn't" for details on data and privacy.
 - **Python 3.10+** — for the scripts within built tracker books. Check with `python3 --version`.
+
+### How to run Claude Code
+
+**Option A: Terminal (recommended).** Claude Code runs in your terminal. On macOS, open Terminal. On Windows, use WSL. This is the most capable option — full access to your local filesystem, no GitHub required.
+
+**Option B: Browser.** Claude Code runs at [claude.ai/code](https://claude.ai/code) — no terminal needed. Connect your GitHub account to give it access to your repos. Your library must be in a GitHub repo for this option. Good if you prefer not to install anything locally.
+
+**Option C: Phone.** The Claude app ([iOS](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), [Android](https://play.google.com/store/apps/details?id=com.anthropic-claude)) can start builds and monitor progress on a GitHub-hosted library. Useful for kicking off a new book or checking discovery results on the go — detailed work is better on a desktop or in the browser.
 
 ### Optional
 - **A GitHub account** — for automated discovery in tracker books. Not required; everything works offline.
@@ -70,6 +77,26 @@ Your own creative and professional output — notes, projects, task lists. Struc
 You don't need to know how to code. Claude Code generates everything. You guide the process by answering questions about what you care about. You will use the terminal to run a few commands — the process walks you through exactly what to type.
 
 If you're new to working in a terminal, that's fine. The skills you pick up here — running commands, reading structured data, using version control — are useful far beyond this tool. See [ASPIRATIONS.md](ASPIRATIONS.md) for more on this.
+
+### What uses Claude Code and what doesn't
+
+**Requires Claude Code** (internet connection + Anthropic account):
+- Building a new book (research, schema design, editorial writing, script generation)
+- Running the critique checklist on a built book
+- Reorganizing your library (proposing new groupings)
+
+During these tasks, your prompts and the AI's responses pass through Anthropic's servers. Your data files — the YAML, markdown, and scripts that make up your books — stay on your machine and are not uploaded.
+
+**Works fully offline, no AI, no subscription needed:**
+- Reading and browsing your library (open `index.html` in any browser, or read the markdown files directly)
+- Navigating between books and sections via HTML links
+- Regenerating a book's README (`python scripts/generate_readme.py`)
+- Manually editing entries in `data/entries.yaml`
+- Running discovery scripts (`python scripts/discover.py` — calls public APIs, not AI)
+
+Once your library is built, you can cancel your subscription and keep using it indefinitely. The files are yours. AI is needed only when you want to build new books or run the critique process.
+
+**No local model alternative currently exists for the build process.** The quality of research, critique, and editorial writing depends on Claude's capabilities. The skills are written as markdown instructions that any sufficiently capable AI agent could follow — if a local-model agent runner with comparable quality emerges, the skills will work with it without changes. Discovery scripts will support configurable model endpoints in the future for tasks like relevance scoring.
 
 ## How to use it
 

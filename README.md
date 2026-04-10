@@ -1,10 +1,12 @@
 # alexandria
 
-A self-contained personal library for any digital content you want to organize and maintain.
+Lightweight library infrastructure for the digital content you want to own, keep, and reference.
 
-Alexandria helps you build a library of "books" — distinct units of content that live as self-contained projects on your machine. A book might be a knowledge base an AI builds for you on a topic you need to understand, content you've collected from elsewhere, or your own notes and projects. The library has a lightweight organizational layer (sections, an index, a table of contents) and remembers context across sessions in plain files you can read. You can browse it in a browser, in a markdown viewer, or through Claude Code.
+Alexandria borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by walking the stacks. The library is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent shape. Most books are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves. The library's job is to hold them, organize them, and make them browseable — with or without a librarian's help.
 
-See [ASPIRATIONS.md](ASPIRATIONS.md) for where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page.
+**Why not just a plain folder?** A folder is fine at ten items. At a hundred, you can't find anything you didn't name carefully, you can't remember why half of it is there, and nothing ties related items together. Alexandria adds the minimum structure that makes a collection browseable at scale: a catalog, consistent book shape, classification conventions, and generated views. The structure is lightweight enough that you can browse it without invoking any AI at all.
+
+See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, library invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page.
 
 ## Who is this for?
 
@@ -18,19 +20,20 @@ If that's not your goal, fine — alexandria still works the same way. You get a
 
 ## Book types
 
-### Scout (available now)
-A curated, living knowledge base that monitors a domain. Created through a seven-phase process with built-in self-critique that catches categorization errors, brand-recognition bias, and missing risk callouts. Once built, automated discovery keeps it current with new developments.
+All book types share a universal outer shape: a README (the spine), metadata (the catalog entry), and content. Each type has its own creation process within that shape.
 
-Scouts are most useful when a topic is complex enough to warrant careful organization, personal enough that no generic tool quite fits, and evolving fast enough that a static resource goes stale. For example:
-- Navigating a complex medical situation: treatment options, evolving evidence, specialist landscape
-- Entering or monitoring a professional field: a biologist tracking sequencing methods, an economist monitoring causal inference techniques
-- Following fast-moving developments: an emerging infectious disease, rapidly evolving regulation across jurisdictions
-
-### Import (coming soon)
-A curated collection of content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. Organized, annotated, and cross-referenced for when you have material accumulated and need to make sense of it.
+### Import (coming soon, top priority)
+Content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later. Most books in most libraries will be imports. This is the book type the library metaphor most depends on.
 
 ### Author (coming soon)
-A book for content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough to accommodate freeform writing.
+Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
+
+### Scout (available now — the exception, not the rule)
+A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, systematically critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+
+A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). You decide when to settle a scout — to freeze it as a static book in your library.
+
+Scout is useful when a topic is complex enough to warrant careful organization, personal enough that no generic tool quite fits, and evolving fast enough that a static resource goes stale. For example: navigating a complex medical situation, monitoring a professional field, or tracking fast-moving developments.
 
 ## Getting started
 
@@ -76,7 +79,9 @@ Claude Code determines the appropriate book type (currently: scout), creates the
 
 **Works fully offline, no AI or subscription needed:** Reading and browsing your library, navigating via HTML links, regenerating READMEs, editing entries, running discovery scripts. Once built, the files are entirely yours and work independently of any service.
 
-**No local model alternative currently exists for creating scouts.** The seven-phase process — particularly research, critique, and editorial writing — depends on Claude's capabilities. The skills are plain markdown instructions; if a local-model agent runner with comparable quality becomes available, they will work without modification.
+**No local model alternative currently exists for creating scouts.** The scout's seven-phase process — particularly research, critique, and editorial writing — depends on Claude's capabilities. The skills are plain markdown instructions; if a local-model agent runner with comparable quality becomes available, they will work without modification.
+
+**Long-term direction**: the default librarian will be a local, open-source model. Library-level tasks (browsing, cataloging, search, cross-book questions) don't require Claude's capabilities and shouldn't depend on a subscription. Claude will remain the default only for scout creation and maintenance, where the quality gap meaningfully matters. Users who never build scouts will eventually be able to use alexandria with only a local model.
 
 ## What's in this repo
 

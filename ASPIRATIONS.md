@@ -2,101 +2,92 @@
 
 ## The core idea
 
-alexandria is a self-contained personal library — a place to organize, reference, and maintain any digital content that matters to you. Notes you write. Papers and articles you collect. Knowledge bases an AI builds for you on demand. Projects you're working on. Reference material you don't want to lose. The library is yours: files on your machine, organized however suits you, browseable in any markdown viewer or browser.
+Alexandria is lightweight library infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
 
-The library is the foundation. "Books" are the things that go in it — distinct units of content, each a self-contained directory. Different book types serve different purposes, but they share a common shape: each one is a project the user owns and can inspect in its entirety.
+The library is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent outer shape. Some books are content you've collected from elsewhere. Some are your own writing. A few may be dynamic — living resources that update themselves. The library's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
 
-The tool is AI-assisted. Claude Code helps create and maintain books, organizes the library, and remembers context across sessions through user-visible files. The user drives direction; the AI handles the implementation work that would otherwise require programming skill.
+Alexandria is AI-assisted, but not AI-dependent. A librarian (Claude Code today, a local open-source model eventually) helps with cataloging, search, and cross-book questions — but every feature of the library works without one. You can browse the catalog, walk the sections, and read any book without invoking any AI at all.
 
-## The gap this fills
+## Why not just a plain folder?
 
-There's a growing spectrum of AI-assisted tools, but a meaningful gap in the middle:
+A folder with subfolders is fine at ten items. By the time you have a hundred, you can't find anything you didn't name carefully, you can't remember why half of it is there, and nothing ties related items together.
 
-| Approach | What you get | What's missing |
-|----------|-------------|----------------|
-| Download an app | Convenience | No control, no understanding, no ownership of your data |
-| "Vibe code" with AI | A working artifact | You can't evaluate, maintain, or trust what was built |
-| Learn to program | Full control | Unrealistic time investment for most professionals |
+Alexandria adds the minimum structure that makes a collection browseable at scale:
 
-The gap is between "AI builds it for me" (where you have an artifact you don't understand) and "I build it myself" (where the barrier is years of skill acquisition). alexandria occupies the middle: **AI does the technical implementation, but the process is designed so the user understands every part of the result.**
+| Concern | Plain folder | Alexandria |
+|---|---|---|
+| Finding an item without opening it | Filename only | Catalog with metadata |
+| Consistent item shape | Whatever was dropped | Every book has known structure |
+| Classification conventions | Arbitrary subdirectories | Sections with documented patterns |
+| Browseable view | `ls` or Finder | Generated catalog, multiple axes |
+| Context about why items are there | None | Per-book metadata and history |
+| Works without AI assistance | No, at scale | Yes — that's the point |
 
-The user doesn't need to learn how to build the tool. They need to learn how to evaluate and direct — enough technical literacy to know what matters (security, data ownership, correctness) without needing to know how to implement it. That's a much smaller surface area than "learn to code" and a much more valuable one for a busy professional.
+The structure is deliberately lightweight. It's not a database. It's not an app. It's files on disk, organized in a way that scales past a few hundred items without requiring an AI to navigate.
 
 ## Who this is for
 
-Anyone who would benefit from an organized, personal collection of structured digital content — and wants to own the result rather than depend on someone else's platform. The target user is thorough, motivated, and has a real need. Some are software engineers who don't want to build the scaffolding from scratch. Some have never opened a terminal. Both want the same thing: a structured, living resource they own and understand.
+Anyone who would benefit from an organized, personal collection of digital content they want to own rather than depend on someone else's platform. No technical background is required. Some users will be software engineers who don't want to build the scaffolding from scratch. Some will have never opened a terminal. Both want the same thing: a library they own, understand, and can use.
 
-The tool needs to meet people where they are technically. For users new to working in a terminal, the process builds practical skills as a side effect. For technical users, it skips the hand-holding and gets to the result.
+The tool meets people where they are technically. For users new to working in a terminal, the process builds practical skills as a side effect. For technical users, it skips the hand-holding and gets to the result.
 
 ## Technical minimalism as a skill
 
-The core upskilling goal isn't "learn to program." It's **learn to be technically minimalist**: know what's absolutely necessary for security and essential capabilities, and know what isn't. This is the expertise that lets a busy professional create a technically robust tool without getting into the technical weeds that would normally support such a tool.
+For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: **technical minimalism**. Know what's absolutely necessary for security and essential capabilities, and know what isn't. Direct AI assistants effectively. Read structured data. Understand what "you own this data" means in practice.
 
-This is a disproportionately valuable skill set. Someone who can:
-- Open a terminal and direct an AI assistant
-- Read structured data and verify it makes sense
-- Understand what "you own this data" means technically (local files vs. cloud services)
-- Evaluate whether a tool does what they think it does
+This is a much smaller surface area than "learn to code" and a much more valuable one for a busy professional. Someone who can open a terminal, direct an AI assistant, and verify that the result does what it should can accomplish things that previously required hiring a developer — not because they learned to program, but because they learned what to ask for and what to check.
 
-...can accomplish things that previously required hiring a developer. Not because they learned to code, but because they learned what to ask for, what to check, and what matters. AI assistants handle the implementation; the user handles the judgment.
+Alexandria is designed so this learning happens as a side effect of building something you actually need. If that's not your goal, fine — the library still works the same way. The upskilling is opt-in.
 
-alexandria is designed so this learning happens as a side effect of building something you actually need. Real motivation, immediate feedback, a useful result — the ideal context for acquiring skills that transfer far beyond this tool.
+## Library invariants
 
-## Library architecture
+These derive from the real-world library metaphor and are the acceptance criteria for alexandria's design. Every invariant must hold for the library to earn its place over a plain folder.
 
-The library is a directory containing books, organized into sections. Each book is a self-contained project (its own git repo). The library has lightweight infrastructure that applies regardless of book type:
-
-- **An index** (`.library-index.yaml`) — maps the library's structure
-- **An organizational layer** — sections, subdivision when sections grow, cross-book queries
-- **Persistent context** — every book has user-visible files (`CLAUDE.md`, `context.md`) that capture decisions, user preferences, and interaction history. These survive across sessions and tool changes.
-- **Browseable views** — interlinked README.md files and pre-rendered HTML, viewable in any markdown viewer or browser without a server
-
-This infrastructure is shared. New book types plug into it without redesigning the foundation.
+1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type. You can find a book without opening it.
+2. **Every book has a consistent outer shape.** Regardless of book type: a README (the spine), metadata (the catalog entry), and content files.
+3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by source. Views are generated from the catalog.
+4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
+5. **Acquisition is a first-class process.** Adding a book requires determining type, populating the catalog, recording provenance.
+6. **Weeding is a first-class process.** Books can be archived or deleted through a defined process that logs what was removed and why.
+7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static book at any time.
+8. **The librarian is optional — and eventually local.** Every library feature is usable without AI. Claude accelerates it; a local open-source model will eventually be the default librarian.
 
 ## Book types
 
-A book type defines how content of a particular kind gets created, organized, and maintained within a library. Each type has its own creation skill and its own conventions, but all book types share the library's infrastructure (index, persistent context, browseable views).
+A book type defines how content of a particular kind gets created, organized, and maintained. All book types share the universal outer shape (README, metadata, classification, catalog entry) and the library's infrastructure. Beyond that, each type has its own creation process and conventions.
 
-### Scout (available)
-A curated, structured knowledge base that monitors a domain. Created by AI through a seven-phase process with built-in self-critique. Once built, automated discovery keeps it current. Useful when the user needs to understand and stay current on a topic that's complex, personal, and evolving.
-
-### Import (planned)
-A curated collection of content the user has gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. Organized, annotated, and cross-referenced. For when the user has accumulated material and needs to make sense of it, not just store it.
+### Import (planned, top priority)
+Content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later. Most books in most libraries will be imports.
 
 ### Author (planned)
-A book for content the user produces themselves — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable and maintainable, flexible enough to accommodate freeform writing. For turning scattered personal work into an organized body of work.
+Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
+
+### Scout (available, but not the focus)
+A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+
+A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static book in the library.
+
+Because scout creation depends on capabilities that currently only the best models have (research, critique, editorial writing), scouts remain Claude-assisted even as the library librarian shifts to local models. This asymmetry is intentional: the library foundation should be maximally portable; the ambitious book-building work can reasonably require better models.
 
 ### Future types
-The architecture is designed to accommodate book types we haven't thought of yet. The constraint is the shared infrastructure: a book type must produce a self-contained directory with user-visible files, fit into the library's organizational layer, and use the persistent context mechanism. Beyond that, book types are free to define their own creation processes and structures.
-
-## The broader vision
-
-alexandria is a first step toward a larger goal: **infrastructure for people to build high-quality, personalized resources using AI agents — regardless of technical background.** Starting with personal libraries, the aim is to establish patterns that generalize:
-
-- A guided process that produces understanding alongside the artifact
-- User ownership of the resource and its data
-- Technical onboarding woven into real work, not separated into tutorials
-- Quality from encoded process knowledge (critique cycles, bias checks), not from programming ability
-- Persistence and continuity through user-visible files, not opaque tool state
+The architecture accommodates book types not yet designed. The constraint is the shared infrastructure: a book type must produce a self-contained directory with the universal outer shape, fit into the library's classification, and integrate with the catalog. Beyond that, book types are free.
 
 ## Where this is headed
 
 ### Near-term
-- The /library skill creates and organizes libraries
-- The /new-scout skill provides the first book type
-- Persistent context (CLAUDE.md, context.md, take-notes skill) is in place
-- Claude Code skills as the primary delivery mechanism
+- Define and enforce the universal book shape across all book types
+- Design import — the most important book type for the library metaphor to deliver on its promise
+- Add multi-axis catalog views (by date, type, source) alongside the section view
+- Design weeding and scout settling as first-class library actions
+- Rebalance the repo — library-level reference docs to match the depth of scout-level docs
 
 ### Medium-term
-- Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed, not upfront
-- Import book type: bringing in external content with provenance and annotation
-- Author book type: structuring user-produced content
-- Personalization support: relating book content to the user's specific context
+- Implement import and author book types
+- Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed
 - Plugin packaging for streamlined installation
 
 ### Long-term
-- Additional book types as needs emerge
+- Default librarian is a local, open-source model; Claude remains the default only for scout creation/maintenance
 - Q&A as a first-class interaction with books and the library as a whole
-- Compounding exploration: questions and answers feed back into the library
-- A community of people sharing and building on each other's curated libraries
-- The technical minimalism path proven out: people building and maintaining sophisticated personal tools regardless of starting technical level, and applying those skills to new problems
+- Compounding exploration: questions and answers can be filed back into the library
+- The technical minimalism path proven out: people building and maintaining sophisticated personal libraries regardless of starting technical level

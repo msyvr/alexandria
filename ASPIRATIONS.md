@@ -48,7 +48,7 @@ These derive from the real-world library metaphor and are the acceptance criteri
 3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by source. Views are generated from the catalog.
 4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
 5. **Acquisition is a first-class process.** Adding a book requires determining type, populating the catalog, recording provenance.
-6. **Weeding is a first-class process.** Books can be archived or deleted through a defined process that logs what was removed and why.
+6. **Weeding is a first-class process.** Books can be removed through a defined process. Default behavior keeps the catalog entry and marks the resource as removed (preserving the record that the book was once in the library); full deletion is available as an opt-in. Both log to `library-context.md`.
 7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static book at any time.
 8. **The librarian is optional — and eventually local.** Every library feature is usable without AI. Claude accelerates it; a local open-source model will eventually be the default librarian.
 
@@ -94,18 +94,21 @@ The architecture accommodates book types not yet designed. The constraint is the
 
 ### Near-term
 - Define and enforce the universal book shape across all book types
-- Design import — the most important book type for the library metaphor to deliver on its promise
-- Add multi-axis catalog views (by date, type, source) alongside the section view
+- Design import — a critical book type for the library metaphor to deliver on its promise
+- Add multi-axis catalog views (by date, type, medium) alongside the section view
 - Design weeding and scout settling as first-class library actions
+- Build the **wiki view** — a browseable static-HTML interface generated from the library catalog, working offline over `file://`. This becomes the primary browsing interface for non-CLI users and makes the library genuinely usable without invoking Claude. Catalog layer first (mechanical generation); narrative layer (LLM-assisted topics and cross-references) scaffolded now, built later.
 - Rebalance the repo — library-level reference docs to match the depth of scout-level docs
 
 ### Medium-term
-- Implement import and author book types
+- Implement import and physical book types
+- Implement author book type
+- Narrative layer for the wiki view (topics, cross-references, related-books). Default to Claude; local model support when there's a clear path and non-technical setup instructions.
 - Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed
 - Plugin packaging for streamlined installation
 
 ### Long-term
-- Default librarian is a local, open-source model; Claude remains the default only for scout creation/maintenance
+- Default librarian is a local, open-source model; Claude remains the default only for the most demanding tasks (scout creation, vision-based physical book cataloging, narrative layer wiki generation)
 - Q&A as a first-class interaction with books and the library as a whole
 - Compounding exploration: questions and answers can be filed back into the library
 - The technical minimalism path proven out: people building and maintaining sophisticated personal libraries regardless of starting technical level

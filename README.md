@@ -73,10 +73,11 @@ Claude Code determines the appropriate book type (currently: scout), creates the
 
 ### Day-to-day use
 
-- **Browse**: `/library` → browse (or open `~/alexandria/index.html` in a browser)
+- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface that works fully offline. No terminal needed for daily browsing. (Planned; until it's built, `/library` → browse and the minimal HTML views serve the same purpose.)
 - **Add more books**: `/library` → add a book
 - **Update a book**: `cd` into it and work with Claude Code directly
 - **Reorganize**: `/library` → reorganize when the structure needs adjusting
+- **Remove a book**: `/library` → remove-book (keeps the catalog entry marked as removed) or `delete-book` (removes the entry entirely)
 
 ## What uses Claude Code and what doesn't
 

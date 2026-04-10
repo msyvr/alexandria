@@ -87,6 +87,38 @@ When sections grow or the user's needs shift, propose reorganization:
 Reorganization means moving directories and updating the index. Always confirm before
 moving anything.
 
+### Remove a book (weeding)
+
+Two removal modes. Default keeps a historical record; full deletion is opt-in.
+
+**Default: `remove-book`** — the book's catalog entry stays in `.library-index.yaml`
+but is marked as removed:
+
+```yaml
+- name: "Example Book"
+  status: removed
+  removed_at: "2026-04-10"
+  removed_reason: "No longer relevant to current interests"
+  # ... rest of entry preserved
+```
+
+The book's directory may be archived (moved to an `_archived/` subsection) or deleted.
+The catalog entry persists as a historical record: "I once had this book in my library."
+This prevents accidentally re-adding the same content later and preserves the record of
+past interests. Log the removal in `library-context.md`.
+
+**Opt-in: `delete-book`** — fully remove the entry from `.library-index.yaml` AND delete
+the book's directory. No trace remains in the library. Log the full deletion event with
+reason in `library-context.md`. Use this for privacy concerns or when the user genuinely
+wants no record.
+
+Always confirm before removing or deleting. Ask the user for a reason (optional but
+encouraged — it helps future browsing make sense of the historical record).
+
+Rationale: a real library's card catalog keeps records of withdrawn items. Knowing
+"this was here once" is valuable. Full deletion is available when the user chooses it,
+not as the default.
+
 ## Organizational principles
 
 - **Directory structure IS the organization.** Sections are directories. The index is

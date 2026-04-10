@@ -10,8 +10,44 @@ These items earn alexandria's place over a plain folder. See ASPIRATIONS.md for 
 - [ ] **Library-level reference docs** (`docs/library/`): catalog format specification, classification conventions, acquisition and weeding patterns. Rebalance the repo so library docs match the depth of scout docs.
 - [ ] **Universal acquisition process**: `/library` → add a book must work for any book type, ending with a catalog entry. Currently only scout has a creation flow.
 - [ ] **Deduplication and linking**: during acquisition, detect likely duplicates (same title/author) and offer to link physical and digital copies as a single catalog entry with both media flagged.
-- [ ] **Weeding**: design and implement archive and delete actions. Archiving moves a book to an archived section and keeps the catalog entry. Deleting removes both. Both log to `library-context.md`.
+- [ ] **Weeding**: design and implement removal actions. Default (`remove-book`): mark the entry as `status: removed` in the catalog with `removed_at` and optional `removed_reason`, keep the catalog entry as a historical record. Opt-in full deletion (`delete-book`): remove the entry from `.library-index.yaml` and the book's directory entirely. Both log to `library-context.md`. Rationale: a real library's card catalog keeps records of withdrawn items; knowing "I once had this" prevents re-adding the same content and preserves past interests.
 - [ ] **Classification guidance**: suggest a starting taxonomy (personal, professional, reference, projects, dynamic) when creating a library. Document the user's classification in the library's root README.
+
+## Wiki view (Pass 1 after library foundation + universal book shape)
+
+A browseable wiki-style interface generated from the library's catalog. Multi-axis index pages, individual book pages, works offline over `file://`. Gives non-CLI users a familiar interface for daily browsing. See plan file for full design.
+
+**Prerequisite**: universal book shape must be defined first so the generator reads a consistent `metadata.yaml` from each book.
+
+### Pass 1: Catalog-layer wiki (concrete)
+
+- [ ] **Add `tools/generate_wiki.py`** in the alexandria repo (not per-library — lives at alexandria level so improvements reach all libraries)
+- [ ] **Add `tools/_wiki_templates.py`** with HTML templates (pure Python string templating)
+- [ ] **Add `tools/_wiki_style.css`** — shared stylesheet (~100 lines, readable serif, responsive, dark mode via `prefers-color-scheme`, no JavaScript)
+- [ ] **Generator output structure**: `wiki/` in each library with homepage, by-section, by-date, by-type, by-medium index pages, and per-book pages under `books/`. Dropped from Pass 1: `by-author/` (author semantics vary across book types)
+- [ ] **Scout handling**: wiki book page for scouts is a thin catalog entry linking out to the scout's own README/HTML. Other book types (physical, import, author) render inline up to a 2000-word threshold with "continued" link for longer content
+- [ ] **Removed books**: wiki shows removed-status books on index pages with a "resource removed" marker; book's own wiki page shows removal metadata but no content
+- [ ] **Update `/library` skill**: add `regenerate-wiki` action; invoke wiki regeneration automatically after add, remove, delete, reorganize
+- [ ] **Update ASPIRATIONS.md**: viewing layers become four (Claude Code, interlinked markdown, minimal HTML views, wiki view); wiki is the primary interface for non-CLI users
+- [ ] **Update README.md**: mention wiki view in "What you get" and day-to-day use
+- [ ] **Update `tests/validate_repo.py`**: syntactic check for new Python files in `tools/`
+
+### Pass 2: Narrative-layer wiki (absolutely minimal foundation now, full build later)
+
+Scaffolding only. Do NOT build the narrative layer itself.
+
+- [ ] **Scaffold item 1**: placeholder `wiki/by-topic/index.html` with message explaining narrative layer is not yet enabled. Linked from homepage so it doesn't 404.
+- [ ] **Scaffold item 2**: `narrative_enrich(book_data)` stub function in `tools/generate_wiki.py` that returns `{"topics": [], "related_books": []}`. Pass 1 calls it for each book and ignores the empty result.
+
+Nothing else in Pass 2 scaffolding. Hash storage, model config, CLI flags — all deferred until Pass 2 is actually built.
+
+### Pass 2 full implementation (deferred)
+
+- [ ] LLM-assisted topic extraction (3-5 topics/tags per book)
+- [ ] Topic pages generated when a topic appears in 2+ books
+- [ ] "Related books" sections on each book page (shared topics, cross-references)
+- [ ] Incremental regeneration via content hashing (only re-process changed books)
+- [ ] Default to Claude; local model support when local path is clear + non-technical setup instructions ready
 
 ## Physical book type (top priority after library foundation)
 

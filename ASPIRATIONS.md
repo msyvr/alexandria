@@ -43,7 +43,7 @@ Alexandria is designed so this learning happens as a side effect of building som
 
 These derive from the real-world library metaphor and are the acceptance criteria for alexandria's design. Every invariant must hold for the library to earn its place over a plain folder.
 
-1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type. You can find a book without opening it.
+1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type, medium (digital, physical, or both). You can find a book without opening it.
 2. **Every book has a consistent outer shape.** Regardless of book type: a README (the spine), metadata (the catalog entry), and content files.
 3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by source. Views are generated from the catalog.
 4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
@@ -52,12 +52,21 @@ These derive from the real-world library metaphor and are the acceptance criteri
 7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static book at any time.
 8. **The librarian is optional — and eventually local.** Every library feature is usable without AI. Claude accelerates it; a local open-source model will eventually be the default librarian.
 
+9. **Books record their medium and link duplicates.** Every catalog entry includes a `medium` field: digital, physical, or both. When a user has both a digital and physical copy of the same book, the catalog links them as a single entry with both media flagged. The library detects likely duplicates during acquisition and asks the user to confirm the link.
+
 ## Book types
 
 A book type defines how content of a particular kind gets created, organized, and maintained. All book types share the universal outer shape (README, metadata, classification, catalog entry) and the library's infrastructure. Beyond that, each type has its own creation process and conventions.
 
 ### Import (planned, top priority)
-Content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later. Most books in most libraries will be imports.
+Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
+
+### Physical (planned, high priority)
+A record of a physical book (or other physical item) you own. Unlike import, no content is copied — the book itself lives on your shelf. The catalog entry is the library's representation of the book. Creation is primarily photo-based: photograph a single book or a whole shelf, and the librarian extracts title, author, and other metadata from the image. Manual entry is supported as well, with or without a photo. An optional visual record (the photograph itself) is preserved.
+
+For users who permit it, the librarian can also fetch publicly available metadata and summaries (from open book databases) to enrich the record — the book's content never leaves your shelf, but its title and author are public information. This is opt-in for privacy-first users who prefer fully offline operation.
+
+This book type may be the primary use for users with substantial physical libraries who primarily want a searchable catalog of what they already own. Best-quality AI is the default for metadata extraction (photo parsing benefits from stronger vision models), with a local-model option for privacy-first users.
 
 ### Author (planned)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.

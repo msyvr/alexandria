@@ -23,7 +23,10 @@ If that's not your goal, fine — alexandria still works the same way. You get a
 All book types share a universal outer shape: a README (the spine), metadata (the catalog entry), and content. Each type has its own creation process within that shape.
 
 ### Import (coming soon, top priority)
-Content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later. Most books in most libraries will be imports. This is the book type the library metaphor most depends on.
+Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
+
+### Physical (coming soon, high priority)
+A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. This book type may be the primary use for users with substantial physical libraries who mainly want a searchable catalog of what they already own.
 
 ### Author (coming soon)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.

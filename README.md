@@ -1,16 +1,20 @@
 # alexandria
 
-A personal curated library — organized, browsable, and entirely yours.
+A self-contained personal library for any digital content you want to organize and maintain.
 
-Alexandria helps you create and manage a library of "books" on topics that matter to you. The library is a directory on your machine with a lightweight organizational layer: sections, an index, and a table of contents. Each book is a self-contained project inside it. You can browse the library in a browser, in a markdown viewer, or through Claude Code.
-
-Books come in different types. The first available type is the **scout** — a living knowledge base that monitors a domain for new developments. Other types (importing external content, organizing your own writing) are planned.
+Alexandria helps you build a library of "books" — distinct units of content that live as self-contained projects on your machine. A book might be a knowledge base an AI builds for you on a topic you need to understand, content you've collected from elsewhere, or your own notes and projects. The library has a lightweight organizational layer (sections, an index, a table of contents) and remembers context across sessions in plain files you can read. You can browse it in a browser, in a markdown viewer, or through Claude Code.
 
 See [ASPIRATIONS.md](ASPIRATIONS.md) for where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page.
 
 ## Who is this for?
 
-Anyone who would benefit from an organized, personal collection of structured resources — and wants to own the result rather than depend on someone else's platform. No technical background required, though technical users are equally welcome.
+Anyone who would benefit from an organized, personal collection of structured digital content — and wants to own the result rather than depend on someone else's platform. No technical background required, though technical users are equally welcome.
+
+### An optional side benefit: technical upskilling
+
+For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: knowing how to direct AI tools effectively without needing to become a programmer. Building real things you actually need — opening a terminal, reading structured data, running scripts, understanding what "you own this data" means technically — teaches you what matters and what doesn't. The skills transfer well beyond this tool. See [ASPIRATIONS.md](ASPIRATIONS.md) for more on the technical minimalism philosophy.
+
+If that's not your goal, fine — alexandria still works the same way. You get a library; the upskilling is opt-in.
 
 ## Book types
 
@@ -23,10 +27,10 @@ Scouts are most useful when a topic is complex enough to warrant careful organiz
 - Following fast-moving developments: an emerging infectious disease, rapidly evolving regulation across jurisdictions
 
 ### Import (coming soon)
-A curated collection of external content — papers, articles, books. Organized, annotated, and cross-referenced.
+A curated collection of content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. Organized, annotated, and cross-referenced for when you have material accumulated and need to make sense of it.
 
 ### Author (coming soon)
-Your own creative and professional output — notes, projects, task lists. Structured, searchable, and maintained.
+A book for content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough to accommodate freeform writing.
 
 ## Getting started
 
@@ -84,7 +88,7 @@ Claude Code determines the appropriate book type (currently: scout), creates the
 - [docs/scout/](docs/scout/) — process phases, critique checklist, schema patterns, walkthroughs
 
 ### Project direction
-- [ASPIRATIONS.md](ASPIRATIONS.md) — project vision, technical minimalism, planned book types
+- [ASPIRATIONS.md](ASPIRATIONS.md) — project vision, library architecture, technical minimalism, planned book types
 - [TODO.md](TODO.md) — planned additions and improvements
 
 ---

@@ -63,9 +63,16 @@ A record of a physical book (or other physical item) you own. Unlike import, no 
 
 For users who permit it, the librarian can also fetch publicly available metadata and summaries (from open book databases) to enrich the record — the book's content never leaves your shelf, but its title and author are public information. This is opt-in for privacy-first users who prefer fully offline operation.
 
-**Physical is the top-priority book type.** Users with substantial physical libraries are poorly served by existing tools — the cataloging space is dominated by digital-first solutions. Users with mostly digital content have many options (Zotero, Readwise, various reference managers). Leading with physical signals what alexandria values: the considered, ownership-oriented approach to personal knowledge, where a book on your shelf is as first-class as a PDF on your drive.
+**Physical is the top-priority book type.** The cataloging space has solid tools for standard use cases — LibraryThing, Libib, and CLZ Books handle barcode scanning, metadata retrieval, and cloud sync well. Where alexandria differentiates:
 
-Best-quality AI is the default for metadata extraction (photo parsing benefits from stronger vision models), with a local-model option for privacy-first users.
+- **Shelf photo workflow with strong accuracy**: Photograph a whole shelf and get a draft catalog of every book visible. The one existing tool attempting this (Shelf Scan, launched 2024) has reportedly poor accuracy because it uses weaker vision models. Alexandria can meaningfully beat this by defaulting to best-available vision models.
+- **Local-first, files you own**: Most existing tools are cloud-first. Alexandria's files live on your machine, browseable without the app, portable forever.
+- **No subscription lock-in**: Free and unlimited.
+- **Integration with other book types**: Alexandria holds physical books alongside digital imports, user-authored content, and scouts in a single library. No existing cataloging tool spans all these.
+
+Leading with physical also signals what alexandria values: the considered, ownership-oriented approach to personal knowledge, where a book on your shelf is as first-class as a PDF on your drive.
+
+Best-quality AI is the default for photo extraction (vision models benefit from stronger models), with a local-model option for privacy-first users.
 
 ### Import (planned, high priority)
 Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.

@@ -25,7 +25,7 @@ All book types share a universal outer shape: a README (the spine), metadata (th
 ### Physical (coming soon, top priority)
 A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them.
 
-Physical leads because users with substantial physical libraries are underserved by existing tools — the cataloging space is dominated by digital-first solutions. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
+Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanning and standard metadata well. Alexandria differentiates on shelf photo accuracy (using stronger vision models than existing apps), local-first ownership (files on your machine, not in someone's cloud), no subscription, and integration with other book types in a single library. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
 
 ### Import (coming soon, high priority)
 Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.

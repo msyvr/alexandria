@@ -107,10 +107,47 @@ editorial + generated content into README.md.
 hand-written, not generated from data. Every recommended option must include a risk/tradeoff
 callout: what it's good for and what it doesn't cover.
 
-**Generate a CLAUDE.md** in the built repo with operational context for future sessions:
-the scout's topic, schema summary, file locations, and how to update (edit entries.yaml,
-run generate_readme.py). No build process instructions — just what Claude Code needs to
-help the user maintain the scout on return visits.
+**Generate CLAUDE.md and context.md** in the built scout for persistent context:
+
+**CLAUDE.md** uses this template (operational facts only, lean enough not to waste session
+context). Auto-loaded by Claude Code on return visits:
+
+```markdown
+# {scout-name}
+
+A scout monitoring {topic in one sentence}.
+
+## Scope
+{2-3 sentences: what's in, what's out}
+
+## Schema
+- Categories: {list}
+- Lenses: {list with one-line descriptions}
+- Required fields: {list}
+
+## Files
+- `data/entries.yaml` — all structured entries
+- `docs/getting-started.md` — orientation guide
+- `scripts/generate_readme.py` — regenerate README from data
+- `scripts/discover.py` — find new candidates
+- `context.md` — full interaction history and decisions
+
+## Updating
+- Add entries: edit `data/entries.yaml`, then `python scripts/generate_readme.py`
+- Find new entries: `python scripts/discover.py`
+- Re-run critique: ask Claude Code to "run the critique checklist on this scout"
+
+## Recent context
+
+(updated automatically by /take-notes after each significant work session)
+
+For full decision history and user preferences, see `context.md`.
+```
+
+**context.md** is initialized empty (the /take-notes skill creates the initial file
+structure on its first invocation). After generating it, immediately invoke /take-notes
+to log the build's decisions: scope, schema choices, lens definitions, category rationale,
+and any notable user preferences observed during the build dialog.
 
 **Generate index.html** alongside README.md. The HTML is self-contained: wrap the README
 content in the alexandria HTML template (inline CSS, no JavaScript, no external files).
@@ -156,6 +193,8 @@ Iterate until a clean pass (typically 2-3 passes).
 - [ ] Clear signposting between beginner and technical content
 - [ ] Every recommended entry has notes explaining tradeoffs
 
+After critique completes, invoke /take-notes to log the critique findings and resolutions.
+
 ### Phase 6: Automate (Claude Code-driven)
 Set up discovery so the scout stays current.
 
@@ -174,6 +213,9 @@ Keep the scout useful over time.
 - Re-run critique after significant changes (10+ entries added)
 - Update editorial when recommended entries change
 - Add specialized docs as audience needs emerge
+
+After significant maintenance work (10+ entries added, schema migration, re-categorization,
+re-running critique), invoke /take-notes to log what was done and any decisions made.
 
 ## Library integration
 

@@ -98,6 +98,40 @@ moving anything.
 - **User decides.** Propose groupings, don't impose them. Offer a reasonable default
   (by broad domain) but accept any structure the user prefers.
 
+## Library-level context
+
+Maintain an optional `library-context.md` at the library root with user-level patterns
+that apply across books:
+- Organizational preferences (how the user likes sections grouped)
+- Technical comfort level (so vocabulary can be calibrated)
+- Cross-book patterns observed
+
+Generated lazily — created on the first significant `/library` interaction (not at library
+creation), via the /take-notes skill. Read at the start of each `/library` invocation to
+inform the agent's vocabulary and approach.
+
+## Cross-book queries
+
+When the user asks questions that span books ("what do my health books say about X?",
+"which scouts mention treatment Y?"), read the relevant books' files directly. The
+`.library-index.yaml` provides each book's path. Read each book's `context.md` for
+decisions and history; read its `data/entries.yaml` or generated `README.md` for content.
+
+No subagents or special access needed — Claude Code can read any file on the user's
+machine. The `.library-index.yaml` is the routing table.
+
+## Take-notes invocations
+
+After meaningful `/library` actions, invoke /take-notes to log what was done:
+- After adding a book (book-type skills handle their own logging; the library logs the
+  organizational decision: which section, why)
+- After reorganizing (which axes were chosen, what moved)
+- After cross-book queries that revealed useful patterns (record the observed pattern as
+  a user preference if the user confirms it)
+
+The /take-notes skill detects the library context automatically and writes to
+`library-context.md` at the library root.
+
 ## Viewing the library
 
 The library is viewable at three layers. Markdown files are the truth; everything else

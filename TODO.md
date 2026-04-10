@@ -13,18 +13,9 @@ These items earn alexandria's place over a plain folder. See ASPIRATIONS.md for 
 - [ ] **Weeding**: design and implement archive and delete actions. Archiving moves a book to an archived section and keeps the catalog entry. Deleting removes both. Both log to `library-context.md`.
 - [ ] **Classification guidance**: suggest a starting taxonomy (personal, professional, reference, projects, dynamic) when creating a library. Document the user's classification in the library's root README.
 
-## Import book type (top priority after library foundation)
+## Physical book type (top priority after library foundation)
 
-Import is the most important book type for the library metaphor. Design pass needed:
-
-- [ ] **Define import concretely**: copy vs reference (recommend copy), raw vs processed (recommend both), unit of import (flexible: single document or collection), provenance metadata (mandatory: source, date, user's reason)
-- [ ] **Design the import schema**: what metadata fields are required, what are optional
-- [ ] **Build the /new-import skill** (following the /new-scout pattern, adapted to the library metaphor — less AI-heavy creation process)
-- [ ] **Support common source types**: PDFs, web pages (with archival snapshot), downloaded files, plain notes
-
-## Physical book type (high priority — may be primary use for some users)
-
-A record of a physical book you own. No content is copied; the catalog entry is the library's representation.
+A record of a physical book you own. No content is copied; the catalog entry is the library's representation. Physical leads the book-type priority because users with substantial physical libraries are poorly served by existing tools, while digital-first users have many alternatives (Zotero, Readwise, various reference managers). Leading with physical signals what alexandria values.
 
 - [ ] **Design the physical book metadata schema**: title, author, medium (set to physical), optional photo, optional online summary, provenance (when/where acquired), classification, shelf location
 - [ ] **Build the /new-physical skill**: photo-based creation as primary workflow (single book or shelf of books), with manual entry as fallback or supplement
@@ -34,6 +25,15 @@ A record of a physical book you own. No content is copied; the catalog entry is 
 - [ ] **Visual record**: preserve the photograph as part of the book's content for users who want it (useful for reference and for offline users to see their own shelves)
 - [ ] **Manual entry support**: users who can't or don't want to photograph should be able to populate records by hand
 - [ ] **Shelf-of-books workflow**: from a single shelf photo, create multiple book entries (one per book visible), each with its own catalog entry
+
+## Import book type (high priority)
+
+Digital content the user has gathered from elsewhere. Design pass needed:
+
+- [ ] **Define import concretely**: copy vs reference (recommend copy), raw vs processed (recommend both), unit of import (flexible: single document or collection), provenance metadata (mandatory: source, date, user's reason)
+- [ ] **Design the import schema**: what metadata fields are required, what are optional
+- [ ] **Build the /new-import skill** (following the /new-scout pattern, adapted to the library metaphor — less AI-heavy creation process)
+- [ ] **Support common source types**: PDFs, web pages (with archival snapshot), downloaded files, plain notes
 
 ## Author book type
 

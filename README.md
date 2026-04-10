@@ -1,6 +1,6 @@
 # alexandria
 
-Lightweight library infrastructure for the digital content you want to own, keep, and reference.
+Lightweight library infrastructure for the books and content you want to own, keep, and reference — physical and digital alike.
 
 Alexandria borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by walking the stacks. The library is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent shape. Most books are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves. The library's job is to hold them, organize them, and make them browseable — with or without a librarian's help.
 
@@ -22,11 +22,13 @@ If that's not your goal, fine — alexandria still works the same way. You get a
 
 All book types share a universal outer shape: a README (the spine), metadata (the catalog entry), and content. Each type has its own creation process within that shape.
 
-### Import (coming soon, top priority)
-Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
+### Physical (coming soon, top priority)
+A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them.
 
-### Physical (coming soon, high priority)
-A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. This book type may be the primary use for users with substantial physical libraries who mainly want a searchable catalog of what they already own.
+Physical leads because users with substantial physical libraries are underserved by existing tools — the cataloging space is dominated by digital-first solutions. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
+
+### Import (coming soon, high priority)
+Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
 
 ### Author (coming soon)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.

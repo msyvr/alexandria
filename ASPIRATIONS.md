@@ -58,15 +58,17 @@ These derive from the real-world library metaphor and are the acceptance criteri
 
 A book type defines how content of a particular kind gets created, organized, and maintained. All book types share the universal outer shape (README, metadata, classification, catalog entry) and the library's infrastructure. Beyond that, each type has its own creation process and conventions.
 
-### Import (planned, top priority)
-Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
-
-### Physical (planned, high priority)
+### Physical (planned, top priority)
 A record of a physical book (or other physical item) you own. Unlike import, no content is copied — the book itself lives on your shelf. The catalog entry is the library's representation of the book. Creation is primarily photo-based: photograph a single book or a whole shelf, and the librarian extracts title, author, and other metadata from the image. Manual entry is supported as well, with or without a photo. An optional visual record (the photograph itself) is preserved.
 
 For users who permit it, the librarian can also fetch publicly available metadata and summaries (from open book databases) to enrich the record — the book's content never leaves your shelf, but its title and author are public information. This is opt-in for privacy-first users who prefer fully offline operation.
 
-This book type may be the primary use for users with substantial physical libraries who primarily want a searchable catalog of what they already own. Best-quality AI is the default for metadata extraction (photo parsing benefits from stronger vision models), with a local-model option for privacy-first users.
+**Physical is the top-priority book type.** Users with substantial physical libraries are poorly served by existing tools — the cataloging space is dominated by digital-first solutions. Users with mostly digital content have many options (Zotero, Readwise, various reference managers). Leading with physical signals what alexandria values: the considered, ownership-oriented approach to personal knowledge, where a book on your shelf is as first-class as a PDF on your drive.
+
+Best-quality AI is the default for metadata extraction (photo parsing benefits from stronger vision models), with a local-model option for privacy-first users.
+
+### Import (planned, high priority)
+Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
 
 ### Author (planned)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.

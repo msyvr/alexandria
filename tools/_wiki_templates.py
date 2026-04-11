@@ -342,6 +342,7 @@ def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
     section = escape(book.get("section", ""))
     date_added = escape(book.get("date_added", ""))
     status = book.get("status", "active")
+    settled = bool(book.get("settled", False))
     slug = escape(book.get("slug", ""))
     path = book.get("path", "")
 
@@ -356,6 +357,15 @@ def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
     metadata_rows.append(f"<dt>Date added</dt><dd>{date_added}</dd>")
     if author:
         metadata_rows.insert(0, f"<dt>Author</dt><dd>{escape(author)}</dd>")
+
+    if book.get("book_type") == "scout":
+        if settled:
+            settled_at = escape(book.get("settled_at", ""))
+            metadata_rows.append(f"<dt>Scout status</dt><dd>Settled (static reference)</dd>")
+            if settled_at:
+                metadata_rows.append(f"<dt>Settled at</dt><dd>{settled_at}</dd>")
+        else:
+            metadata_rows.append(f"<dt>Scout status</dt><dd>Live (updates via discovery)</dd>")
 
     if status == "removed":
         removed_at = escape(book.get("removed_at", ""))
@@ -376,8 +386,8 @@ def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
 <strong>Resource removed.</strong> This book is kept in the catalog as a historical
 record. The original content is no longer in the library.
 </div>"""
-    elif book_type == "scout":
-        # Thin catalog entry linking to the scout's own presentation
+    elif book.get("book_type") == "scout" and not settled:
+        # Live scout: thin catalog entry linking to the scout's own presentation
         content_block = f"""<div class="book-content">
 <p><a href="../../{path}/README.md">Open the scout's full content</a> in a markdown viewer,
 or <a href="../../{path}/">browse the scout directory</a>.</p>

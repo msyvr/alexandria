@@ -133,33 +133,106 @@ moving anything.
 
 Two removal modes. Default keeps a historical record; full deletion is opt-in.
 
-**Default: `remove-book`** — the book's catalog entry stays in `.library-index.yaml`
-but is marked as removed:
-
-```yaml
-- name: "Example Book"
-  status: removed
-  removed_at: "2026-04-10"
-  removed_reason: "No longer relevant to current interests"
-  # ... rest of entry preserved
-```
-
-The book's directory may be archived (moved to an `_archived/` subsection) or deleted.
-The catalog entry persists as a historical record: "I once had this book in my library."
-This prevents accidentally re-adding the same content later and preserves the record of
-past interests. Log the removal in `library-context.md`.
-
-**Opt-in: `delete-book`** — fully remove the entry from `.library-index.yaml` AND delete
-the book's directory. No trace remains in the library. Log the full deletion event with
-reason in `library-context.md`. Use this for privacy concerns or when the user genuinely
-wants no record.
-
-Always confirm before removing or deleting. Ask the user for a reason (optional but
-encouraged — it helps future browsing make sense of the historical record).
-
 Rationale: a real library's card catalog keeps records of withdrawn items. Knowing
-"this was here once" is valuable. Full deletion is available when the user chooses it,
-not as the default.
+"this was here once" is valuable — it prevents accidentally re-adding the same
+content and preserves the record of past interests. Full deletion is available for
+privacy concerns or when the user genuinely wants no record.
+
+#### `remove-book` (default)
+
+Marks a book as removed but keeps the catalog entry and the book's directory intact.
+
+Steps:
+
+1. Identify the book to remove (ask the user by title or slug; confirm the match
+   before proceeding).
+2. Ask the user for a removal reason (optional but encouraged — record empty string
+   if the user declines).
+3. Confirm the action clearly before making any changes.
+4. Update the book's `metadata.yaml`:
+
+   ```yaml
+   status: removed
+   removed_at: "YYYY-MM-DD"     # today's date
+   removed_reason: "..."        # user's reason, or omit if empty
+   ```
+
+5. Update `.library-index.yaml` to reflect the same `status: removed`, `removed_at`,
+   and `removed_reason` fields on the book's entry.
+6. Leave the book's directory in place. The content files are preserved; only the
+   catalog status changes. If the user explicitly wants the directory removed, use
+   `delete-book` instead.
+7. Invoke `/take-notes` to log the removal in `library-context.md` with details:
+   which book, when, and the reason (if given).
+8. Regenerate the wiki so removed books show with the "removed" marker on index
+   pages and the removal notice on their individual pages.
+
+Confirm before committing the changes. This is not a destructive action (the
+directory stays), but the catalog state change should be deliberate.
+
+#### `delete-book` (opt-in, destructive)
+
+Fully removes the book's entry from `.library-index.yaml` and deletes the book's
+directory from disk. No trace remains in the library except for the log entry in
+`library-context.md`.
+
+Steps:
+
+1. Identify the book to delete. Confirm the match.
+2. Warn the user clearly that this is destructive: the book's directory and all its
+   files will be removed, and the catalog entry will be removed. The only record
+   that will remain is the log entry in `library-context.md`.
+3. Ask for a deletion reason (encouraged).
+4. Require explicit confirmation ("yes, delete" — not a generic "ok").
+5. Remove the book's entry from `.library-index.yaml`.
+6. Delete the book's directory with `rm -rf` (or equivalent).
+7. Invoke `/take-notes` to log the deletion in `library-context.md` with full details:
+   book title, slug, path (for the record), date, and reason. This log entry is the
+   only trace.
+8. Regenerate the wiki so the book no longer appears anywhere in the views.
+
+Use `delete-book` when the user has a real reason to eliminate the record (privacy,
+cleanup of mistaken additions, or explicit intent to forget). Default to `remove-book`
+otherwise.
+
+### Settle a scout
+
+Scouts are living books by default — discovery runs periodically, new entries get
+added, the scout evolves. At some point the user may decide the scout has served its
+purpose and should become a static reference. "Settling" a scout freezes it as a
+static book in the library.
+
+Steps:
+
+1. Identify the scout to settle. Confirm the user means this scout and confirm that
+   its `book_type` is indeed `scout`.
+2. Ask the user for an optional note about why they're settling the scout (for the
+   record).
+3. Update the scout's `metadata.yaml`:
+
+   ```yaml
+   settled: true
+   settled_at: "YYYY-MM-DD"     # today's date
+   ```
+
+4. Stop any discovery automation associated with the scout. If the scout has a
+   scheduled discovery workflow (e.g., a GitHub Actions cron job running
+   `scripts/discover.py`), disable or remove it. Claude Code should describe to the
+   user what was running and what it's disabling so they have a clear picture.
+5. The scout's content (data/entries.yaml, scripts/, docs/, README.md) is preserved
+   as-is. Settling is a state change, not a content change.
+6. Invoke `/take-notes` to log the settling in the scout's own `context.md` and in
+   `library-context.md`. Record the settling rationale.
+7. Regenerate the wiki. Settled scouts render differently from live scouts: the
+   wiki page for a settled scout shows its README content inline (like other static
+   book types — physical, digital, author) rather than linking out. This visibly
+   marks the state change and makes the settled scout browseable like other static
+   content. Live scouts continue to link out to their own presentation.
+
+Settling is a one-way action in v1. If the user wants to "unsettle" a scout (resume
+discovery, rebuild), they can edit `metadata.yaml` to set `settled: false` and
+re-enable any discovery workflow. We don't expose this as an explicit action because
+it's uncommon.
 
 ## Library index cache format
 

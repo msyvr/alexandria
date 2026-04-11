@@ -252,6 +252,27 @@ Keep the scout useful over time.
 After significant maintenance work (10+ entries added, schema migration, re-categorization,
 re-running critique), invoke /take-notes to log what was done and any decisions made.
 
+### Settling a scout
+
+At some point the user may decide the scout has served its purpose and should become
+a static reference — a frozen snapshot that no longer updates. This is called
+**settling** the scout, and it's a first-class action in the /library skill.
+
+When a scout is settled:
+- `metadata.yaml` gains `settled: true` and `settled_at: YYYY-MM-DD`
+- Any discovery automation is disabled or removed
+- The scout's content (data, README, scripts) is preserved as-is
+- The wiki renders the scout inline like other static book types instead of linking
+  out, visibly marking the state change
+
+Users invoke settling via `/library` → settle-scout. See the /library skill for the
+full workflow.
+
+A settled scout is just a static book in the library from that point forward. If
+circumstances change and the user wants to resume updating, they can edit
+`metadata.yaml` to set `settled: false` and re-enable discovery. This is uncommon
+and not exposed as a first-class action.
+
 ## Library integration
 
 If this scout is being created within a library (detected by `.library-index.yaml` in a

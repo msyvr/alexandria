@@ -193,11 +193,18 @@ def generate_wiki(library_path: Path) -> None:
     )
     for section, books in books_by_section.items():
         section_slug = slugify_section(section)
-        active_books = [b for b in books if b.get("status", "active") != "removed"]
-        # Sort section pages by title
-        active_books.sort(key=lambda b: b.get("title", "").lower())
+        # Include removed books on section pages (rendered with "removed" marker);
+        # they're part of the historical record the library keeps. Sort active books
+        # first, then removed books, both alphabetically within their group.
+        sorted_books = sorted(
+            books,
+            key=lambda b: (
+                b.get("status", "active") == "removed",
+                b.get("title", "").lower(),
+            ),
+        )
         (wiki_dir / "by-section" / f"{section_slug}.html").write_text(
-            templates.section_page(section, active_books)
+            templates.section_page(section, sorted_books)
         )
 
     # --- By date ---
@@ -231,12 +238,16 @@ def generate_wiki(library_path: Path) -> None:
         book_path = book.get("path", "")
         status = book.get("status", "active")
         book_type = book.get("book_type", "unknown")
+        settled = bool(book.get("settled", False))
 
         readme_html = ""
         readme_truncated = False
 
-        # Scouts link out; other book types render README inline if present
-        if status != "removed" and book_type != "scout":
+        # Live scouts link out to their own presentation; settled scouts and other
+        # book types render their README inline. Removed books show the removal
+        # notice instead of content.
+        is_live_scout = book_type == "scout" and not settled
+        if status != "removed" and not is_live_scout:
             readme_md = load_book_readme(library_path, book_path)
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)

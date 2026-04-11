@@ -74,7 +74,10 @@ Book types define their own fields at the top level of the same file, after the 
 ```yaml
 # ... universal fields above ...
 settled: false                        # true if the scout has been frozen as static
+settled_at: "2026-05-15"              # ISO date; only present if settled == true
 ```
+
+For scouts, the `settled` field captures whether the scout is live (updating via discovery) or frozen as a static reference. Settling is a first-class action in the /library skill — see `skills/library/SKILL.md`. The wiki renders settled scouts inline like other static book types, while live scouts link out to their own presentation.
 
 ## Field semantics
 

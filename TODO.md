@@ -96,7 +96,7 @@ Remaining for later passes:
 
 ## Scout book type
 
-- [ ] **Scout settling**: first-class action to freeze a scout into a static book (set `settled: true` in metadata.yaml, stop discovery automation, treat as a static import from that point). Support the short-lived use case explicitly.
+- [x] **Scout settling**: first-class /library action (`settle-scout`) freezes a live scout into a static book. Sets `settled: true` and `settled_at` in metadata.yaml, stops discovery automation, and the wiki generator renders settled scouts inline like other static book types (live scouts still link out). One-way action in v1; users can manually edit metadata to unsettle if needed.
 - [x] **Make scout conform to universal book shape**: new-scout's Phase 4 now generates metadata.yaml with universal fields and `settled: false`.
 - [ ] Personalization: "my context" mechanism for relating entries to user's specific situation
 - [ ] Schema pattern for personalized fields
@@ -105,6 +105,7 @@ Remaining for later passes:
 
 ## Library-level operations
 
+- [x] **Weeding**: `remove-book` (default) marks a book as removed in metadata.yaml and .library-index.yaml with `status`, `removed_at`, and `removed_reason` fields; the book's directory stays in place as a historical record. `delete-book` (opt-in, destructive) removes both the catalog entry and the book's directory entirely. Both log to `library-context.md` via /take-notes and trigger wiki regeneration. Section pages include removed books with a removed marker; individual book pages show the removal notice.
 - [ ] Test /library end-to-end: create library, add a book, browse, verify index
 - [ ] Reorganization logic: detect when sections need subdivision, propose axes
 - [ ] Index regeneration: scan library tree for metadata.yaml files and rebuild .library-index.yaml when missing or stale

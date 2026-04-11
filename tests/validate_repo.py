@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Validate alexandria repo content: YAML syntax, internal links, stale references."""
+"""Validate alexandria repo content: YAML syntax, internal links, stale references, Python syntax."""
 
-import os
+import ast
 import re
 import sys
 from pathlib import Path
@@ -103,16 +103,34 @@ def check_internal_links(file: Path):
                 fail(file, f"broken link [{match.group(1)}]({target}) at line {i}")
 
 
+def check_python_syntax(file: Path):
+    """Parse a Python file with ast to catch syntax errors."""
+    try:
+        source = file.read_text()
+        ast.parse(source, filename=str(file))
+    except SyntaxError as e:
+        fail(file, f"syntax error at line {e.lineno}: {e.msg}")
+
+
 def main():
     md_files = sorted(REPO_ROOT.rglob("*.md"))
     md_files = [f for f in md_files if ".git" not in f.parts]
 
-    print(f"Validating {len(md_files)} markdown files...\n")
+    py_files = sorted(REPO_ROOT.rglob("*.py"))
+    py_files = [
+        f for f in py_files
+        if ".git" not in f.parts and ".venv" not in f.parts and "__pycache__" not in f.parts
+    ]
+
+    print(f"Validating {len(md_files)} markdown files and {len(py_files)} Python files...\n")
 
     for f in md_files:
         check_stale_references(f)
         check_internal_links(f)
         check_yaml_blocks(f)
+
+    for f in py_files:
+        check_python_syntax(f)
 
     if FAILURES:
         print(f"FAILED — {len(FAILURES)} issue(s):\n")

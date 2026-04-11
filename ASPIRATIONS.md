@@ -45,7 +45,7 @@ These derive from the real-world library metaphor and are the acceptance criteri
 
 1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type, form (digital or physical), media_type (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). You can find a book without opening it.
 2. **Every book has a consistent outer shape.** Regardless of book type: a README (the spine), metadata (the catalog entry), and content files.
-3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by source. Views are generated from the catalog.
+3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by form, by media_type. Views are generated from the catalog and rendered as static HTML in the wiki.
 4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
 5. **Acquisition is a first-class process.** Adding a book requires determining type, populating the catalog, recording provenance.
 6. **Weeding is a first-class process.** Books can be removed through a defined process. Default behavior keeps the catalog entry and marks the resource as removed (preserving the record that the book was once in the library); full deletion is available as an opt-in. Both log to `library-context.md`.
@@ -97,7 +97,7 @@ The architecture accommodates book types not yet designed. The constraint is the
 - Design the digital book type — a critical book type for the library metaphor to deliver on its promise
 - Add multi-axis catalog views (by date, type, form, media_type) alongside the section view
 - Design weeding and scout settling as first-class library actions
-- Build the **wiki view** — a browseable static-HTML interface generated from the library catalog, working offline over `file://`. This becomes the primary browsing interface for non-CLI users and makes the library genuinely usable without invoking Claude. Catalog layer first (mechanical generation); narrative layer (LLM-assisted topics and cross-references) scaffolded now, built later.
+- ✅ **Wiki view** (catalog layer) — browseable static HTML generated from the library catalog, working offline over `file://`. Homepage with summary and recent additions; multi-axis index pages (by section, date, type, form, media type); individual book pages with README content rendered inline for static book types and link-out for living scouts. This is the primary browsing interface for non-CLI users and makes the library genuinely usable without invoking Claude. The narrative layer (LLM-assisted topics and cross-references) is scaffolded but not yet built.
 - Rebalance the repo — library-level reference docs to match the depth of scout-level docs
 
 ### Medium-term

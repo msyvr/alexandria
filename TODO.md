@@ -19,27 +19,21 @@ A browseable wiki-style interface generated from the library's catalog. Multi-ax
 
 **Prerequisite**: universal book shape must be defined first so the generator reads a consistent `metadata.yaml` from each book.
 
-### Pass 1: Catalog-layer wiki (concrete)
+### Pass 1: Catalog-layer wiki (complete)
 
-- [ ] **Add `tools/generate_wiki.py`** in the alexandria repo (not per-library — lives at alexandria level so improvements reach all libraries)
-- [ ] **Add `tools/_wiki_templates.py`** with HTML templates (pure Python string templating)
-- [ ] **Add `tools/_wiki_style.css`** — shared stylesheet (~100 lines, readable serif, responsive, dark mode via `prefers-color-scheme`, no JavaScript)
-- [ ] **Generator output structure**: `wiki/` in each library with homepage, by-section, by-date, by-type, by-form (binary), by-media-type (hierarchical, groupable by content type via the `:` split) index pages, and per-book pages under `books/`. Dropped from Pass 1: `by-author/` (author semantics vary across book types)
-- [ ] **Scout handling**: wiki book page for scouts is a thin catalog entry linking out to the scout's own README/HTML. Other book types (physical, import, author) render inline up to a 2000-word threshold with "continued" link for longer content
-- [ ] **Removed books**: wiki shows removed-status books on index pages with a "resource removed" marker; book's own wiki page shows removal metadata but no content
-- [ ] **Update `/library` skill**: add `regenerate-wiki` action; invoke wiki regeneration automatically after add, remove, delete, reorganize
-- [ ] **Update ASPIRATIONS.md**: viewing layers become four (Claude Code, interlinked markdown, minimal HTML views, wiki view); wiki is the primary interface for non-CLI users
-- [ ] **Update README.md**: mention wiki view in "What you get" and day-to-day use
-- [ ] **Update `tests/validate_repo.py`**: syntactic check for new Python files in `tools/`
+- [x] **Add `tools/generate_wiki.py`** — alexandria-level generator, invoked by /library
+- [x] **Add `tools/_wiki_templates.py`** — HTML templates in pure Python
+- [x] **Add `tools/_wiki_style.css`** — shared stylesheet with responsive layout and dark mode
+- [x] **Generator output structure**: `wiki/` with homepage, by-section, by-date, by-type, by-form, by-media-type index pages, per-book pages under `books/`, and Pass 2 placeholder at by-topic. Dropped by-author (author semantics vary across book types).
+- [x] **Scout handling**: wiki book page for scouts is a thin catalog entry linking to the scout's own README. Other book types render README content inline, truncated to ~2000 words with a "continued" link for longer content.
+- [x] **Removed books**: index pages show removed books with a "removed" tag and dimmed styling; individual page shows removal metadata and "resource removed" notice in place of content.
+- [x] **Update `/library` skill**: add `regenerate-wiki` action; documented automatic invocation after add, remove, delete, reorganize.
+- [x] **Update `tests/validate_repo.py`**: Python syntax check via `ast.parse` for all .py files in the repo.
 
-### Pass 2: Narrative-layer wiki (absolutely minimal foundation now, full build later)
+### Pass 2: Narrative-layer wiki scaffolding (complete)
 
-Scaffolding only. Do NOT build the narrative layer itself.
-
-- [ ] **Scaffold item 1**: placeholder `wiki/by-topic/index.html` with message explaining narrative layer is not yet enabled. Linked from homepage so it doesn't 404.
-- [ ] **Scaffold item 2**: `narrative_enrich(book_data)` stub function in `tools/generate_wiki.py` that returns `{"topics": [], "related_books": []}`. Pass 1 calls it for each book and ignores the empty result.
-
-Nothing else in Pass 2 scaffolding. Hash storage, model config, CLI flags — all deferred until Pass 2 is actually built.
+- [x] **Scaffold item 1**: placeholder `wiki/by-topic/index.html` with a message explaining the narrative layer is not yet enabled. Linked from the homepage via the axes nav so it doesn't 404.
+- [x] **Scaffold item 2**: `narrative_enrich(book_data)` stub function in `tools/generate_wiki.py` that returns `{"topics": [], "related_books": []}`. Pass 1 calls it for each book and ignores the empty result. Pass 2 replaces the body, not the call sites.
 
 ### Pass 2 full implementation (deferred)
 

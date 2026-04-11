@@ -75,11 +75,12 @@ Claude Code determines the appropriate book type and guides you through building
 
 ### Day-to-day use
 
-- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface that works fully offline. No terminal needed for daily browsing. (Planned; until it's built, `/library` → browse and the minimal HTML views serve the same purpose.)
-- **Add more books**: `/library` → add a book
+- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with multi-axis indexes (by section, date, type, form, media type). Works fully offline. No terminal needed for daily browsing.
+- **Add more books**: `/library` → add a book (the wiki regenerates automatically after each addition)
 - **Update a book**: `cd` into it and work with Claude Code directly
 - **Reorganize**: `/library` → reorganize when the structure needs adjusting
 - **Remove a book**: `/library` → remove-book (keeps the catalog entry marked as removed) or `delete-book` (removes the entry entirely)
+- **Regenerate the wiki manually**: `/library` → regenerate-wiki (or run the generator directly via `uv run python ~/alexandria/tools/generate_wiki.py ~/my-library`)
 
 ## What uses Claude Code and what doesn't
 

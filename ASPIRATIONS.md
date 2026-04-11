@@ -77,8 +77,8 @@ Best-quality AI is the default for photo extraction (vision models benefit from 
 ### Digital (available now)
 Digital content the user wants to bring into their library — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. Content is copied into the library, preserved exactly in its original format, and cataloged with extracted metadata (titles, authors, source URLs, timestamps). Runs through `/new-digital` or `/library` → add a book → digital.
 
-### Author (planned)
-Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
+### Author (available now)
+A container for content the user writes themselves — notes, research, drafts, project plans, journal entries, essays. The /new-author skill creates an empty book structure (universal files plus a starter README suited to the user's stated purpose) and hands off to the user for writing. Five supported purposes: project, collection, journal, notes, freeform. Structured enough to be searchable; flexible enough for any shape of personal writing.
 
 ### Scout (available, but not the focus)
 A living knowledge base that monitors a domain. Unlike digital and author, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.

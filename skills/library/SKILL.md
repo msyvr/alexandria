@@ -60,9 +60,11 @@ Ask what the user needs. Based on their answer, determine the book type:
   critiqued, and kept current with automated discovery. Available now — runs the
   /new-scout process.
 
-- **"I want to organize my own writing, notes, or projects"** → Author (coming soon)
-  The user's own creative and professional output. Structured, searchable, maintained.
-  Not yet available — let the user know this is planned.
+- **"I want to organize my own writing, notes, or projects"** → Author
+  A container for content the user writes themselves. The skill creates the book's
+  structure (universal files + a starter README suited to the purpose) and hands off
+  to the user for writing. Supports projects, collections, journals, topical notes,
+  and fully freeform writing. Available now — runs the /new-author process.
 
 For a **physical book**:
 Invoke /new-physical. That skill handles the full workflow: photo or manual input,
@@ -73,6 +75,12 @@ For a **digital book**:
 Invoke /new-digital. That skill handles local files, URLs, and pasted text, with
 metadata extraction, confirmation, optional enrichment, and the same classification
 and index-update steps as /new-physical. See `skills/new-digital/SKILL.md`.
+
+For an **author book**:
+Invoke /new-author. That skill creates an empty book structure (universal files plus
+a starter README based on the user's stated purpose — project, collection, journal,
+notes, or freeform) and hands off to the user for writing. See
+`skills/new-author/SKILL.md`.
 
 For a **scout**:
 1. Ask for a short name for the book (used to generate the slug — see slug generation in `docs/library/book-shape.md`)

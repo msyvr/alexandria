@@ -30,8 +30,8 @@ Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanni
 ### Digital (available now)
 Digital content you want to bring into the library — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. The library copies the content, preserves the original exactly, and extracts metadata so you can find it later. Run `/new-digital` or `/library` → add a book → digital.
 
-### Author (coming soon)
-Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
+### Author (available now)
+A container for content you write yourself — notes, research, drafts, project plans, journal entries, essays. The skill creates the book's structure (metadata, starter README, operational context) and hands off to you for writing. Pick a purpose (project, collection, journal, notes, or freeform) and get a starter README suited to that shape. Run `/new-author` or `/library` → add a book → author.
 
 ### Scout (available now — the exception, not the rule)
 A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, systematically critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
@@ -68,6 +68,7 @@ From `/library`, choose "add a book" and describe what you need:
 - "I have a physical book I want to catalog" — runs /new-physical
 - "I want to photograph my bookshelf and catalog the books" — runs /new-physical with the shelf workflow
 - "I want to add these PDFs (or URLs, or notes) to my library" — runs /new-digital
+- "I want to start a new writing project / journal / notes collection" — runs /new-author
 - "I need to understand treatment options for [condition]" — runs /new-scout
 - "I want to track developments in [field]" — runs /new-scout
 
@@ -100,6 +101,7 @@ Claude Code determines the appropriate book type and guides you through building
 - [/new-hardcover](skills/new-hardcover/SKILL.md) — shortcut for a hardcover (calls /new-physical with media_type pre-set)
 - [/new-paperback](skills/new-paperback/SKILL.md) — shortcut for a paperback
 - [/new-digital](skills/new-digital/SKILL.md) — bring digital content (files, URLs, text) into the library
+- [/new-author](skills/new-author/SKILL.md) — create a container for your own writing (notes, drafts, projects, journals)
 - [/new-scout](skills/new-scout/SKILL.md) — create a scout for any topic
 - [/take-notes](skills/take-notes/SKILL.md) — maintain persistent context in a book or library
 
@@ -199,6 +201,7 @@ From the `/library` prompt, choose "add a book" and describe what you need. A fe
 
 - **Physical book**: "I have a physical book I want to catalog" — you'll be asked for a photo (single book or shelf) or to enter the metadata by hand
 - **Digital content**: "I want to add these files" or "save this URL" — files are copied, URLs are fetched and archived, metadata is extracted
+- **Author book**: "I want to start a new project / journal / notes collection" — the skill creates the structure; you start writing
 - **Scout**: "I need to understand treatment options for [condition]" or "I want to track developments in [field]" — Claude Code builds a structured knowledge base through a seven-phase process
 
 Claude Code guides you from there, asking the questions relevant to the book type you chose. You provide the direction; it handles the construction.

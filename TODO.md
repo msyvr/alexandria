@@ -80,11 +80,19 @@ Remaining for later passes:
 - [ ] **Reference manager bulk import** (Zotero, Mendeley exports) — separate pass
 - [ ] **More enrichment sources** — currently Open Library and Semantic Scholar
 
-## Author book type
+## Author book type (initial implementation complete)
 
-- [ ] Define scope: notes, research, drafts, project plans, task lists, journal entries
-- [ ] Design the structure: templates for common uses vs fully freeform
-- [ ] Build the /new-author skill
+A container for content the user writes themselves.
+
+- [x] **Define scope**: notes, research, drafts, project plans, journal entries, essays — any personal writing
+- [x] **Design the structure**: five purposes (project, collection, journal, notes, freeform), each with a short starter README template. No pre-created subdirectories; user creates content files as they need them.
+- [x] **Build the /new-author skill**: three-step conversational flow (intent → classify → create and hand off); no extraction, no confirmation, no enrichment since the content is user-produced
+- [x] **/library routing**: "I want to organize my own writing" → /new-author
+
+Remaining for later passes:
+- [ ] Help-the-user commands: drafting, reviewing, organizing assistance (currently handled ad-hoc through Claude Code reading the book's files)
+- [ ] Version history integration for books with frequent edits (if git per-book proves insufficient)
+- [ ] Purpose-specific skills (e.g., /new-journal, /new-project) if the usage pattern warrants shortcut skills similar to /new-hardcover
 
 ## Scout book type
 

@@ -22,8 +22,8 @@ If that's not your goal, fine — alexandria still works the same way. You get a
 
 All book types share a universal outer shape: a README (the spine), metadata (the catalog entry), and content. Each type has its own creation process within that shape.
 
-### Physical (coming soon, top priority)
-A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them.
+### Physical (available now)
+A record of a physical book you own. No content is copied — the book lives on your shelf; the catalog entry represents it in your library. Creation is photo-based: photograph a single book or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. Run `/new-physical` or `/library` → add a book → physical.
 
 Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanning and standard metadata well. Alexandria differentiates on shelf photo accuracy (using stronger vision models than existing apps), local-first ownership (files on your machine, not in someone's cloud), no subscription, and integration with other book types in a single library. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
 
@@ -65,11 +65,12 @@ Your library is now set up — an organized directory ready to hold books.
 
 From `/library`, choose "add a book" and describe what you need:
 
-- "I need to understand treatment options for [condition]"
-- "I want to track developments in [field]"
-- "I need to monitor [topic] and stay current on new developments"
+- "I have a physical book I want to catalog" — runs /new-physical
+- "I want to photograph my bookshelf and catalog the books" — runs /new-physical with the shelf workflow
+- "I need to understand treatment options for [condition]" — runs /new-scout
+- "I want to track developments in [field]" — runs /new-scout
 
-Claude Code determines the appropriate book type (currently: scout), creates the book in your library, and guides you through building it.
+Claude Code determines the appropriate book type and guides you through building it. Physical and scout book types are available now; import and author are planned.
 
 ### Day-to-day use
 
@@ -93,7 +94,9 @@ Claude Code determines the appropriate book type (currently: scout), creates the
 
 ### Skills
 - [/library](skills/library/SKILL.md) — create and manage your library (main entry point)
-- [/new-scout](skills/new-scout/SKILL.md) — create a scout for any topic (also available directly)
+- [/new-physical](skills/new-physical/SKILL.md) — catalog a physical book from a photo or manual entry
+- [/new-scout](skills/new-scout/SKILL.md) — create a scout for any topic
+- [/take-notes](skills/take-notes/SKILL.md) — maintain persistent context in a book or library
 
 ### Reference docs
 - [docs/scout/](docs/scout/) — process phases, critique checklist, schema patterns, walkthroughs
@@ -170,13 +173,12 @@ Name your library (or press Enter for "alexandria"). Your library directory is n
 
 ### 8. Add your first book
 
-From the `/library` prompt, choose "add a book" and describe what you need:
+From the `/library` prompt, choose "add a book" and describe what you need. A few examples:
 
-- "I need to understand treatment options for [condition]"
-- "I want to track developments in [field]"
-- "I need to monitor [topic] and stay current on new developments"
+- **Physical book**: "I have a physical book I want to catalog" — you'll be asked for a photo (single book or shelf) or to enter the metadata by hand
+- **Scout**: "I need to understand treatment options for [condition]" or "I want to track developments in [field]" — Claude Code builds a structured knowledge base through a seven-phase process
 
-Claude Code guides you from there — asking about scope, audience, and how you'd want to compare entries. You provide the direction; it handles the construction.
+Claude Code guides you from there, asking the questions relevant to the book type you chose. You provide the direction; it handles the construction.
 
 ### 9. Browse your library
 

@@ -86,17 +86,20 @@ Built-in checkpoint — before leaving this phase, verify:
 - [ ] Lens value distributions checked
 
 ### Phase 4: Build (Claude Code-driven)
-Create the repo: YAML data, editorial content, generate script, README.
+Create the repo: YAML data, editorial content, generate script, README, and the files
+required by the universal book shape.
 
 File structure:
 ```
+metadata.yaml              — catalog entry (universal book shape)
+README.md                  — generated output (do not edit directly); serves as the book's spine
+CLAUDE.md                  — operational context for Claude Code on return visits
 data/entries.yaml          — all structured data (single source of truth)
 docs/getting-started.md    — hand-written editorial (Part 1 of README)
 docs/[audience].md         — audience-specific docs as needed
 scripts/generate_readme.py — schema validation + README generation
 scripts/discover.py        — automated discovery (Phase 6)
 references/                — reading lists, related resources
-README.md                  — generated output (do not edit directly)
 ```
 
 The generate script defines schema and lens definitions as Python constants (not a config
@@ -106,6 +109,37 @@ editorial + generated content into README.md.
 **Critical**: Editorial content (getting-started guide, decision trees, risk callouts) is
 hand-written, not generated from data. Every recommended option must include a risk/tradeoff
 callout: what it's good for and what it doesn't cover.
+
+**Generate metadata.yaml** with the universal book shape fields plus scout-specific fields.
+This file is required by the library infrastructure (see `docs/library/book-shape.md` in
+the alexandria repo for the full specification).
+
+Template:
+
+```yaml
+slug: "{generated-slug}"              # from title, lowercase, hyphen-separated
+title: "{scout title}"
+book_type: "scout"
+section: "{section name}"             # determined during acquisition
+description: "{one-line summary from the scope document}"
+date_added: "YYYY-MM-DD"              # today's date, ISO 8601
+medium: "digital"                     # scouts are always digital
+status: "active"
+
+# Optional (omit if not applicable)
+author: null                          # scouts are aggregated; typically omitted
+provenance:
+  source: "alexandria /new-scout process"
+  notes: "{any notable context from the build dialog}"
+
+# Scout-specific
+settled: false                        # scouts start live; user can settle later
+```
+
+**Note on computed fields**: entries count, last-updated date, categories, and lenses are
+NOT stored in metadata.yaml. They're read from the scout's own files (`data/entries.yaml`,
+generate script constants) when needed. Duplicating them in metadata creates drift risk
+and is forbidden.
 
 **Generate CLAUDE.md and context.md** in the built scout for persistent context:
 

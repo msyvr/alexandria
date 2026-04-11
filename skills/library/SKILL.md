@@ -3,8 +3,9 @@
 Create and manage a personal curated library — a collection of "books" organized by your needs.
 
 A library is a directory on your machine containing books of different types. Each book is
-a self-contained project (its own git repo). The library provides a lightweight organizational
-layer: an index, sections, and a table of contents you can browse.
+a self-contained project (its own git repo) that conforms to the universal book shape
+(see `docs/library/book-shape.md` in the alexandria repo). The library provides a
+lightweight organizational layer: an index, sections, and a table of contents you can browse.
 
 ## Getting started
 
@@ -15,13 +16,27 @@ If no library exists yet, create one:
 3. Create the directory and initialize `.library-index.yaml`:
 
 ```yaml
-name: "alexandria"
-created: YYYY-MM-DD
+library_name: "alexandria"
+created: "YYYY-MM-DD"
 sections: {}
 ```
 
 If a library already exists (detected by `.library-index.yaml` in the current directory or
 a parent), work with that library.
+
+## The universal book shape
+
+Every book in the library, regardless of type, conforms to the universal book shape defined
+in `docs/library/book-shape.md`. At minimum, every book directory contains:
+
+- `README.md` — the book's spine, readable standalone
+- `metadata.yaml` — the catalog entry with universal fields (slug, title, book_type,
+  section, description, date_added, medium, status) plus any type-specific fields
+- `CLAUDE.md` — operational context for Claude Code
+- Optional `context.md` — interaction history (written by /take-notes on first use)
+
+Book types provide their own content within this shape. When acquiring a book, ensure
+the resulting directory satisfies the shape before considering the book added.
 
 ## Actions
 
@@ -43,12 +58,13 @@ Ask what the user needs. Based on their answer, determine the book type:
   Not yet available — let the user know this is planned.
 
 For a **scout**:
-1. Ask for a short name for the book (this becomes the directory name)
+1. Ask for a short name for the book (used to generate the slug — see slug generation in `docs/library/book-shape.md`)
 2. Determine which section it belongs in (propose based on existing sections, or create new)
-3. Create the book directory within the appropriate section
-4. `cd` into it and run the new-scout process (the full seven-phase process from
-   the new-scout skill)
-5. After building, update `.library-index.yaml` with the new book
+3. Generate a slug from the title; check uniqueness against existing slugs and suffix with `-2`, `-3`, etc. if needed
+4. Create the book directory at `{section}/{slug}/` within the library
+5. `cd` into it and run the new-scout process (the full seven-phase process from the new-scout skill)
+6. After building, ensure the book's `metadata.yaml` contains all required universal fields (the new-scout skill is responsible for creating this; verify it exists and is valid)
+7. Update `.library-index.yaml` with the new book's universal fields (see cache format below)
 
 ### Browse
 
@@ -68,8 +84,9 @@ Alexandria
 **Full browse** (when the user wants to read): Regenerate the library's navigable views
 and open in the browser. See "Viewing the library" below.
 
-If the index is missing or stale, regenerate it by scanning the directory structure
-(each subdirectory with a `.git/` is a book).
+If the index is missing or stale, regenerate it by scanning the library tree for
+`metadata.yaml` files and reading universal fields from each. See "Library index
+cache format" below.
 
 ### Reorganize
 
@@ -118,6 +135,49 @@ encouraged — it helps future browsing make sense of the historical record).
 Rationale: a real library's card catalog keeps records of withdrawn items. Knowing
 "this was here once" is valuable. Full deletion is available when the user chooses it,
 not as the default.
+
+## Library index cache format
+
+The `.library-index.yaml` at the library root is a regenerable cache of universal fields
+from every book's `metadata.yaml`. Type-specific fields are not in the cache — views that
+need them read the book's own `metadata.yaml` directly.
+
+```yaml
+library_name: "alexandria"
+created: "2026-04-07"
+sections:
+  health:
+    books:
+      - slug: "condition-x-treatments"
+        title: "Condition X Treatments"
+        book_type: "scout"
+        description: "Living knowledge base tracking treatment options."
+        date_added: "2026-04-10"
+        medium: "digital"
+        status: "active"
+        author: null
+        path: "health/condition-x-treatments"
+```
+
+### Updating the index
+
+The index is updated whenever books are added, removed, weeded, or reorganized. On each
+of these actions:
+1. Update the corresponding book's `metadata.yaml` (source of truth)
+2. Update `.library-index.yaml` to reflect the change
+
+### Regenerating the index
+
+If `.library-index.yaml` is missing, corrupted, or suspected stale, rebuild it:
+
+1. Walk the library directory tree
+2. For each `metadata.yaml` found, read the universal fields
+3. Group books by their `section` field
+4. Write the result to `.library-index.yaml`
+
+The per-book `metadata.yaml` files are the source of truth. The index can always be
+reconstructed from them. This means the user can delete `.library-index.yaml` without
+losing any information.
 
 ## Organizational principles
 

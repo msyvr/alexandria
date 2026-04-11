@@ -4,7 +4,7 @@
 
 These items earn alexandria's place over a plain folder. See ASPIRATIONS.md for the library invariants that drive them.
 
-- [ ] **Universal book shape**: define what every book directory must contain (README, metadata, classification) regardless of type. Document in library-level reference docs. Update /new-scout to conform.
+- [x] **Universal book shape**: defined in `docs/library/book-shape.md`. Every book has README, metadata.yaml, CLAUDE.md; universal fields are slug, title, book_type, section, description, date_added, medium (binary), status. /new-scout updated to conform.
 - [ ] **Medium field on every book**: catalog entries include `medium` (digital, physical, both). Generated views can filter/group by medium.
 - [ ] **Multi-axis catalog views**: generate library views by section (current), by date added, by book type, by source, by medium. All generated from `.library-index.yaml`, all browseable without Claude.
 - [ ] **Library-level reference docs** (`docs/library/`): catalog format specification, classification conventions, acquisition and weeding patterns. Rebalance the repo so library docs match the depth of scout docs.
@@ -79,8 +79,8 @@ Digital content the user has gathered from elsewhere. Design pass needed:
 
 ## Scout book type
 
-- [ ] **Scout settling**: first-class action to freeze a scout into a static book (mark as settled, stop discovery automation, treat as a static import from that point). Support the short-lived use case explicitly.
-- [ ] **Make scout conform to universal book shape** (once defined)
+- [ ] **Scout settling**: first-class action to freeze a scout into a static book (set `settled: true` in metadata.yaml, stop discovery automation, treat as a static import from that point). Support the short-lived use case explicitly.
+- [x] **Make scout conform to universal book shape**: new-scout's Phase 4 now generates metadata.yaml with universal fields and `settled: false`.
 - [ ] Personalization: "my context" mechanism for relating entries to user's specific situation
 - [ ] Schema pattern for personalized fields
 - [ ] Reduce redundancy across reference docs
@@ -90,7 +90,8 @@ Digital content the user has gathered from elsewhere. Design pass needed:
 
 - [ ] Test /library end-to-end: create library, add a book, browse, verify index
 - [ ] Reorganization logic: detect when sections need subdivision, propose axes
-- [ ] Index regeneration: scan directory for git repos when index is missing/stale
+- [ ] Index regeneration: scan library tree for metadata.yaml files and rebuild .library-index.yaml when missing or stale
+- [ ] **Soft-locked section management**: sections stay stable between organizational reviews. Claude notices when a section has become a catch-all (diversity drop) or when section count has drifted (too many or too few for library size), proposes a reorganization, and the user approves per-change or accepts all ("yolo" mode). New books go into existing sections between reviews, not new ones invented ad hoc. See ASPIRATIONS.md long-term vision.
 
 ## Local librarian (long-term direction)
 

@@ -111,4 +111,5 @@ The architecture accommodates book types not yet designed. The constraint is the
 - Default librarian is a local, open-source model; Claude remains the default only for the most demanding tasks (scout creation, vision-based physical book cataloging, narrative layer wiki generation)
 - Q&A as a first-class interaction with books and the library as a whole
 - Compounding exploration: questions and answers can be filed back into the library
+- **Soft-locked section management**: sections stay stable between organizational reviews but aren't frozen forever. Claude notices when diversity drops (a section has become a catch-all) or count drifts (too many sections, or too few), proposes a reorganization, and the user approves (or accepts all in "yolo" mode). Between reviews, sections are stable — new books go into existing sections, not new ones invented ad hoc. This addresses taxonomy drift: never-updated taxonomies go stale; constantly-churning ones make nothing findable.
 - The technical minimalism path proven out: people building and maintaining sophisticated personal libraries regardless of starting technical level

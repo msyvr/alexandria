@@ -84,12 +84,13 @@ notes, or freeform) and hands off to the user for writing. See
 
 For a **scout**:
 1. Ask for a short name for the book (used to generate the slug — see slug generation in `docs/library/book-shape.md`)
-2. Determine which section it belongs in (propose based on existing sections, or create new)
+2. Determine which section it belongs in. **Place into an existing section** — sections are soft-locked (see "Soft-locked section management" below). Propose the best-fit existing section; if no existing section is a clean match, use `unsorted` (create it if needed). If the library is brand-new and has no sections yet, ask the user what section to create for this first book.
 3. Generate a slug from the title; check uniqueness against existing slugs and suffix with `-2`, `-3`, etc. if needed
 4. Create the book directory at `{section}/{slug}/` within the library
 5. `cd` into it and run the new-scout process (the full seven-phase process from the new-scout skill)
 6. After building, ensure the book's `metadata.yaml` contains all required universal fields (the new-scout skill is responsible for creating this; verify it exists and is valid)
 7. Update `.library-index.yaml` with the new book's universal fields (see cache format below)
+8. **Check for review triggers** after adding. If the addition pushed a section past a diversity or size trigger, mention this to the user and offer to run `review-sections` now or defer.
 
 ### Browse
 
@@ -113,21 +114,142 @@ If the index is missing or stale, regenerate it by scanning the library tree for
 `metadata.yaml` files and reading universal fields from each. See "Library index
 cache format" below.
 
-### Reorganize
+### Soft-locked section management
 
-When sections grow or the user's needs shift, propose reorganization:
+Sections are **soft-locked**: stable between organizational reviews, not frozen forever.
+Between reviews, new books go into existing sections — Claude does not invent new
+sections on the fly when adding a book. This keeps the library predictable: "I know
+where my books live because the sections don't churn." When the structure genuinely
+needs to change, Claude proposes a review and the user approves or defers.
 
-- **Subdivision**: When a section holds more than ~7 books, propose splitting it into
-  subsections. Ask the user what axes make sense.
-- **Regrouping**: If books have been added ad hoc and the organization no longer reflects
-  how the user thinks about them, propose a new grouping. Show the proposed structure,
-  let the user adjust.
-- **Axes**: Propose organizational groupings based on the books that exist. Default is
-  by broad domain (health, professional, personal, etc.). The user can override with
-  any grouping that makes sense to them.
+Rationale: taxonomies that are made once and never updated become stale as the library
+grows; taxonomies that churn constantly make nothing findable. The soft-lock middle
+ground keeps things stable but responsive to growth.
 
-Reorganization means moving directories and updating the index. Always confirm before
-moving anything.
+#### Principles
+
+- **New books go into existing sections.** If a user adds a book and no existing
+  section is a clean fit, place it in the nearest section rather than creating a new
+  one. If a book genuinely doesn't fit any existing section, note that during
+  acquisition and flag it for the next section review — don't silently create a new
+  section. The one exception: the first book in a brand-new library, when there are
+  no sections yet.
+- **Section reviews are occasional, not continuous.** Reviews happen when the current
+  structure clearly isn't serving the library anymore. Between reviews, the user
+  should be able to trust that the sections they see today are the sections they'll
+  see tomorrow.
+- **Reviews are proposals, not impositions.** Claude proposes; the user approves,
+  edits, or defers. The user can also explicitly ask for a review at any time.
+- **Reviews respect the user's taxonomy.** If the user's organizational logic is
+  unusual (by mood, by project, by year, by provenance), Claude proposes within that
+  logic rather than imposing a generic "by broad domain" scheme.
+
+#### When to propose a review
+
+Claude should notice these conditions during any /library action and mention them to
+the user. Proposing a review is a prompt, not an obligation — the user may say "not
+now" and Claude should drop it until the condition persists or worsens.
+
+**Size triggers:**
+
+- The library has 50+ books but only 2-3 sections (under-subdivided — hard to browse)
+- A single section contains more than ~15 books (getting catch-all-y)
+- A section contains fewer than 3 books and the library has 20+ books total (either
+  needs more books or should be merged into a neighboring section)
+- The library has more than ~12 sections at the top level (too many top-level
+  sections — consider consolidating or introducing subsections)
+
+**Diversity triggers** (judgment-based, not rule-based):
+
+- A section's books cover visibly unrelated topics — "health" has books about
+  treatments, kitchen equipment, and garden design. This is the "catch-all" failure
+  mode: a section that was coherent at 5 books becomes a bucket for anything
+  tangentially related at 15 books.
+- A clear cluster within a section suggests a sub-topic worth its own section. E.g.,
+  a "health" section that has 8 books about a specific condition alongside 4 general
+  health books — the specific condition might deserve its own section.
+- Books placed into "unsorted" (the fallback section for acquisitions that don't
+  match any existing section) have accumulated. Unsorted is a signal that the
+  current taxonomy has gaps.
+
+**Time-based nudge** (light):
+
+- No section review has happened in a long time and the library has grown meaningfully
+  since the last one. Mention the option during a routine /library action; don't
+  force it.
+
+The thresholds above are calibration points, not rules. Claude uses judgment:
+thresholds are triggers for *proposing* a review, not rules that force one.
+
+#### The review workflow: `review-sections`
+
+This action can be invoked explicitly (`/library` → review-sections) or offered
+automatically when a trigger fires. The workflow:
+
+1. **Read the current state.** Load `.library-index.yaml` and each book's
+   `metadata.yaml`. Build an understanding of what's in each section: title,
+   description, book type, and any other signals that help classify.
+2. **Identify the specific problems.** What triggered the review? Catch-all sections,
+   too many top-level sections, under-populated sections, "unsorted" accumulation?
+   Name the problem(s) concretely.
+3. **Propose a new structure.** Generate a proposed section taxonomy. This may
+   involve:
+   - **Renaming** a section ("health" → "health and wellness")
+   - **Splitting** a section (one becomes two or more)
+   - **Merging** sections (two become one)
+   - **Creating** a new section (for a cluster that didn't fit before)
+   - **Removing** an empty section (no books after other moves)
+   - **Moving** books between sections to match the new structure
+
+   Each change has a rationale tied to the triggering problem. "The 'health' section
+   had 15 books spanning treatment research, nutrition, and fitness; split into
+   'treatment research', 'nutrition', and 'fitness' so each stays focused."
+4. **Present the proposal to the user.** Show:
+   - The current sections with book counts
+   - The proposed sections with the same book counts distributed per the new plan
+   - A per-book diff: which books move from where to where, and which sections change
+     name or disappear
+   - The rationale for each non-trivial change
+5. **Let the user decide.** Offer four options:
+   - **Approve each change individually** — walk through the proposal one decision
+     at a time
+   - **Accept all** ("yolo") — apply the whole proposal without per-change confirmation
+   - **Edit the proposal** — user changes specific moves before accepting
+   - **Defer** — no changes now; the review is dropped until next time it's relevant
+6. **Execute the approved changes.** Atomically (to the extent possible):
+   - Create any new section directories
+   - Move book directories to their new sections (filesystem mv)
+   - Update each moved book's `metadata.yaml`: `section` field
+   - Update `.library-index.yaml`: reflect all moves and section structure changes
+   - Remove any emptied section directories
+7. **Log the review.** Invoke `/take-notes` to write to `library-context.md`: what
+   was reviewed, what triggered it, what changed, what the user's rationale was.
+   Future reviews can look back at this to understand how the taxonomy has evolved.
+8. **Regenerate the wiki** so the new section structure is reflected in all views.
+
+#### What review-sections does NOT do
+
+- **Does not restructure books' internal contents** — only their section placement.
+  The book directories themselves (their metadata, README, content) are unchanged by
+  a section review.
+- **Does not change book slugs or titles** — only directory location.
+- **Does not delete books** — removal is a separate action (`remove-book` or
+  `delete-book`).
+- **Does not run automatically without user approval** — reviews are always proposed,
+  never executed unilaterally. Even "yolo" mode requires the user to explicitly
+  request it.
+- **Does not impose a universal taxonomy** — each library has its own organizational
+  logic. Claude proposes within the user's existing scheme, extending or refining it
+  rather than replacing it wholesale.
+
+#### Unsorted: the fallback section
+
+When a book is added and no existing section is a clean fit, place it in a section
+called `unsorted` (creating it if needed). This is the one place where new sections
+appear outside of a review. Unsorted is a signal: if books are accumulating there,
+the current taxonomy has a gap, and the next review should address it.
+
+An "unsorted" section with 5+ books is itself a trigger to propose a review.
 
 ### Remove a book (weeding)
 

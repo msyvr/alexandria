@@ -106,10 +106,9 @@ Remaining for later passes:
 ## Library-level operations
 
 - [x] **Weeding**: `remove-book` (default) marks a book as removed in metadata.yaml and .library-index.yaml with `status`, `removed_at`, and `removed_reason` fields; the book's directory stays in place as a historical record. `delete-book` (opt-in, destructive) removes both the catalog entry and the book's directory entirely. Both log to `library-context.md` via /take-notes and trigger wiki regeneration. Section pages include removed books with a removed marker; individual book pages show the removal notice.
+- [x] **Soft-locked section management**: sections are stable between organizational reviews. New books go into existing sections; `unsorted` is the fallback when no section fits. Claude notices catch-all, over-count, under-population, and "unsorted accumulation" conditions and proposes a review. The `review-sections` action in /library walks the user through a proposal (current → proposed, per-book diff, rationale per change) and applies approved changes atomically (directory moves, metadata updates, index rebuild, wiki regen). Options: approve each individually / accept all / edit / defer. Captured in `skills/library/SKILL.md`.
 - [ ] Test /library end-to-end: create library, add a book, browse, verify index
-- [ ] Reorganization logic: detect when sections need subdivision, propose axes
 - [ ] Index regeneration: scan library tree for metadata.yaml files and rebuild .library-index.yaml when missing or stale
-- [ ] **Soft-locked section management**: sections stay stable between organizational reviews. Claude notices when a section has become a catch-all (diversity drop) or when section count has drifted (too many or too few for library size), proposes a reorganization, and the user approves per-change or accepts all ("yolo" mode). New books go into existing sections between reviews, not new ones invented ad hoc. See ASPIRATIONS.md long-term vision.
 
 ## Local librarian (long-term direction)
 

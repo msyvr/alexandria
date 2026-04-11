@@ -1,0 +1,17 @@
+[project]
+name = "alexandria"
+version = "0.1.0"
+description = "Lightweight library infrastructure for the books and content you want to own, keep, and reference"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+    "requests>=2.31",
+    "markdown-it-py>=3.0",
+    "beautifulsoup4>=4.12",
+    "html2text>=2024.2.26",
+    "pypdf>=4.0",
+]
+
+[tool.uv]
+package = false

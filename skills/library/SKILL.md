@@ -50,14 +50,15 @@ Ask what the user needs. Based on their answer, determine the book type:
   book lives on a shelf, the catalog entry represents it. Available now — runs the
   /new-physical process.
 
+- **"I want to add digital content I already have, or save a URL"** → Digital
+  Local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and
+  archive, or pasted text. Content is copied into the library and preserved in its
+  original format. Available now — runs the /new-digital process.
+
 - **"I need to understand and monitor a domain"** → Scout
   A curated, living knowledge base that monitors a topic for you. Researched, organized,
   critiqued, and kept current with automated discovery. Available now — runs the
   /new-scout process.
-
-- **"I have papers, articles, or digital content to organize"** → Import (coming soon)
-  Curated collection of digital content gathered from elsewhere. Not yet available —
-  let the user know this is planned.
 
 - **"I want to organize my own writing, notes, or projects"** → Author (coming soon)
   The user's own creative and professional output. Structured, searchable, maintained.
@@ -67,6 +68,11 @@ For a **physical book**:
 Invoke /new-physical. That skill handles the full workflow: photo or manual input,
 metadata extraction, confirmation, optional enrichment, classification, directory
 creation, and library index update. See `skills/new-physical/SKILL.md`.
+
+For a **digital book**:
+Invoke /new-digital. That skill handles local files, URLs, and pasted text, with
+metadata extraction, confirmation, optional enrichment, and the same classification
+and index-update steps as /new-physical. See `skills/new-digital/SKILL.md`.
 
 For a **scout**:
 1. Ask for a short name for the book (used to generate the slug — see slug generation in `docs/library/book-shape.md`)

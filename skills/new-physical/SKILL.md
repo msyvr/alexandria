@@ -72,9 +72,22 @@ candidate structure.
 
 ### 3. Confirm, edit, optionally enrich
 
-**Default confirmation**: for each candidate, show the draft metadata and ask the user
-to confirm, edit fields, or skip. A skipped candidate doesn't become a book. A failed
-extraction requires manual entry before it can be confirmed.
+**Media type**: each book's metadata includes a `media_type` field. Default suggestions
+are `text:hardcover` for photographed books, but common options include `text:paperback`,
+`text:magazine`, `text:journal`, `audio:vinyl`, `audio:cd`, `video:dvd`, `video:blu-ray`,
+`image:photograph`, `image:print`, or `other`.
+
+- **Single-book photo**: ask the user once for the media_type with a default suggestion
+- **Shelf photo**: ask once for a shelf-level default (applied to all candidates), with
+  per-book override available during confirmation. Shelves are typically homogeneous —
+  one question covers the batch. A mixed shelf is rare; override is there when needed.
+- **Shortcut skills** (`/new-hardcover`, `/new-paperback`): media_type is pre-set by the
+  shortcut; this question is skipped entirely.
+
+**Default confirmation**: for each candidate, show the draft metadata (including
+media_type) and ask the user to confirm, edit fields, or skip. A skipped candidate
+doesn't become a book. A failed extraction requires manual entry before it can be
+confirmed.
 
 **Yolo mode** (if opted in at step 1): clean extractions are accepted automatically.
 Partial and failed extractions still require user input.
@@ -133,7 +146,8 @@ book_type: "physical"
 section: "{selected section}"
 description: "{generated from available fields — see below}"
 date_added: "{today's date, YYYY-MM-DD}"
-medium: "physical"
+form: "physical"
+media_type: "text:hardcover"          # or text:paperback, audio:vinyl, etc.
 status: "active"
 
 # Universal optional

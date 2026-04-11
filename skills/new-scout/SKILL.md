@@ -123,7 +123,8 @@ book_type: "scout"
 section: "{section name}"             # determined during acquisition
 description: "{one-line summary from the scope document}"
 date_added: "YYYY-MM-DD"              # today's date, ISO 8601
-medium: "digital"                     # scouts are always digital
+form: "digital"                       # scouts are always digital
+media_type: "text:markdown"           # scouts are structurally markdown files
 status: "active"
 
 # Optional (omit if not applicable)

@@ -4,9 +4,9 @@
 
 These items earn alexandria's place over a plain folder. See ASPIRATIONS.md for the library invariants that drive them.
 
-- [x] **Universal book shape**: defined in `docs/library/book-shape.md`. Every book has README, metadata.yaml, CLAUDE.md; universal fields are slug, title, book_type, section, description, date_added, medium (binary), status. /new-scout updated to conform.
-- [ ] **Medium field on every book**: catalog entries include `medium` (digital, physical, both). Generated views can filter/group by medium.
-- [ ] **Multi-axis catalog views**: generate library views by section (current), by date added, by book type, by source, by medium. All generated from `.library-index.yaml`, all browseable without Claude.
+- [x] **Universal book shape**: defined in `docs/library/book-shape.md`. Every book has README, metadata.yaml, CLAUDE.md; universal fields are slug, title, book_type, section, description, date_added, form (binary), media_type (hierarchical), status. /new-scout updated to conform.
+- [x] **Form + media_type fields on every book**: schema uses `form` (binary: digital/physical) and `media_type` (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). Generated views can filter by either axis.
+- [ ] **Multi-axis catalog views**: generate library views by section (current), by date added, by book type, by form, by media_type (with content-type grouping via the `:` split). All generated from `.library-index.yaml`, all browseable without Claude.
 - [ ] **Library-level reference docs** (`docs/library/`): catalog format specification, classification conventions, acquisition and weeding patterns. Rebalance the repo so library docs match the depth of scout docs.
 - [ ] **Universal acquisition process**: `/library` → add a book must work for any book type, ending with a catalog entry. Currently only scout has a creation flow.
 - [ ] **Deduplication and linking**: during acquisition, detect likely duplicates (same title/author) and offer to link physical and digital copies as a single catalog entry with both media flagged.
@@ -24,7 +24,7 @@ A browseable wiki-style interface generated from the library's catalog. Multi-ax
 - [ ] **Add `tools/generate_wiki.py`** in the alexandria repo (not per-library — lives at alexandria level so improvements reach all libraries)
 - [ ] **Add `tools/_wiki_templates.py`** with HTML templates (pure Python string templating)
 - [ ] **Add `tools/_wiki_style.css`** — shared stylesheet (~100 lines, readable serif, responsive, dark mode via `prefers-color-scheme`, no JavaScript)
-- [ ] **Generator output structure**: `wiki/` in each library with homepage, by-section, by-date, by-type, by-medium index pages, and per-book pages under `books/`. Dropped from Pass 1: `by-author/` (author semantics vary across book types)
+- [ ] **Generator output structure**: `wiki/` in each library with homepage, by-section, by-date, by-type, by-form (binary), by-media-type (hierarchical, groupable by content type via the `:` split) index pages, and per-book pages under `books/`. Dropped from Pass 1: `by-author/` (author semantics vary across book types)
 - [ ] **Scout handling**: wiki book page for scouts is a thin catalog entry linking out to the scout's own README/HTML. Other book types (physical, import, author) render inline up to a 2000-word threshold with "continued" link for longer content
 - [ ] **Removed books**: wiki shows removed-status books on index pages with a "resource removed" marker; book's own wiki page shows removal metadata but no content
 - [ ] **Update `/library` skill**: add `regenerate-wiki` action; invoke wiki regeneration automatically after add, remove, delete, reorganize
@@ -69,14 +69,22 @@ Remaining for later passes:
 - [ ] **Enrichment sources beyond Open Library** (Google Books, WorldCat) if the single source proves inadequate
 - [ ] **End-to-end test** of the /new-physical workflow with real photos and a test library
 
-## Import book type (high priority)
+## Digital book type (initial implementation complete)
 
-Digital content the user has gathered from elsewhere. Design pass needed:
+Digital content the user wants to bring into their library — local files, URLs, pasted text. Named `/new-digital` (not `/new-import`) to parallel `/new-physical`.
 
-- [ ] **Define import concretely**: copy vs reference (recommend copy), raw vs processed (recommend both), unit of import (flexible: single document or collection), provenance metadata (mandatory: source, date, user's reason)
-- [ ] **Design the import schema**: what metadata fields are required, what are optional
-- [ ] **Build the /new-import skill** (following the /new-scout pattern, adapted to the library metaphor — less AI-heavy creation process)
-- [ ] **Support common source types**: PDFs, web pages (with archival snapshot), downloaded files, plain notes
+- [x] **Define the digital book schema**: universal fields plus provenance (source, imported_from, fetched_at, original_path, extracted_path for HTML)
+- [x] **Build the /new-digital skill**: local files, URLs, pasted text; mixed-source batching in one invocation
+- [x] **Format handling**: PDF (metadata extraction via pypdf), HTML (parsed with beautifulsoup4, rendered to content.md with html2text), markdown, plain text, images, audio, video files
+- [x] **Original preservation**: content copied exactly as `original.{ext}`; never modified
+- [x] **Enrichment batch decision**: yes-all / no / per-item from Open Library and Semantic Scholar; metadata only, never content
+- [x] **/library routing**: "I want to add digital content I already have, or save a URL" → /new-digital
+
+Remaining for later passes:
+- [ ] **Full-text PDF extraction** — deferred; revisit when wiki Pass 2 narrative layer needs searchable text
+- [ ] **OCR for scanned PDFs** — future consideration
+- [ ] **Reference manager bulk import** (Zotero, Mendeley exports) — separate pass
+- [ ] **More enrichment sources** — currently Open Library and Semantic Scholar
 
 ## Author book type
 

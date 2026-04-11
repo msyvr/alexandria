@@ -30,7 +30,7 @@ One more file is created on first use but isn't required at acquisition:
 └── context.md          # interaction history, written by /take-notes
 ```
 
-**README.md**: the book's spine. A reader should be able to open it and understand what this book is, what's in it, and how to navigate its contents, without any other context. Each book type provides its own README template; scouts generate a rich overview, physical books show metadata and (if present) a photo, imports show provenance and content, author books show the user's writing.
+**README.md**: the book's spine. A reader should be able to open it and understand what this book is, what's in it, and how to navigate its contents, without any other context. Each book type provides its own README template; scouts generate a rich overview, physical books show metadata and (if present) a photo, digital books show provenance and content, author books show the user's writing.
 
 **metadata.yaml**: the catalog entry (see schema below).
 
@@ -47,11 +47,12 @@ One more file is created on first use but isn't required at acquisition:
 ```yaml
 slug: "condition-x-treatments"        # unique within library; matches directory name
 title: "Condition X Treatments"       # display name, any characters
-book_type: "scout"                    # physical, import, author, or scout
+book_type: "scout"                    # physical, digital, author, or scout
 section: "health"                     # top-level library section
 description: "Living knowledge base tracking treatment options."  # one line
 date_added: "2026-04-10"              # ISO 8601 date
-medium: "digital"                     # digital or physical
+form: "digital"                       # digital or physical
+media_type: "text:markdown"           # hierarchical format: {content_type}:{format}
 status: "active"                      # active or removed
 ```
 
@@ -96,7 +97,7 @@ Display name. Any characters allowed. Shown in catalog views and used as the `<t
 
 One of:
 - `physical` — a record of a physical book the user owns (no content files)
-- `import` — content imported from elsewhere with provenance
+- `digital` — digital content the user has brought into the library (local files, URLs, pasted text) with provenance
 - `author` — content the user wrote themselves
 - `scout` — a living, AI-maintained knowledge base
 
@@ -118,13 +119,61 @@ One-line summary. Target ~150 characters, maximum ~300. Shown in catalog and ind
 
 The date the book was added to the library. Format: `YYYY-MM-DD`. Set automatically on acquisition; never changed by normal operations.
 
-### `medium` (required, enum)
+### `form` (required, enum)
 
 One of:
 - `digital` — content exists as files in the book directory
 - `physical` — content exists in the physical world; the catalog entry is a record
 
 Binary. There is no `both` value for v1. If a user has the same work in both forms, they create two entries with no cross-reference. Linking is a deferred feature.
+
+### `media_type` (required, hierarchical string)
+
+Describes what the object structurally IS — its format. Not its purpose or content. Format: `{content_type}:{format}`, parseable on the colon.
+
+**Content types**: `text`, `audio`, `video`, `image`.
+
+**V1 vocabulary** (illustrative, extensible):
+
+Text formats:
+- `text:hardcover` (hardbound book)
+- `text:paperback` (softcover book)
+- `text:magazine`
+- `text:journal` (academic or scientific)
+- `text:manuscript` (bound writing)
+- `text:unbound` (loose pages, folio, fragments)
+- `text:pdf`
+- `text:epub`
+- `text:html` (saved web page)
+- `text:markdown`
+- `text:plaintext`
+
+Audio formats:
+- `audio:vinyl`
+- `audio:cassette`
+- `audio:cd`
+- `audio:digital` (mp3, flac, etc.)
+
+Video formats:
+- `video:vhs`
+- `video:dvd`
+- `video:blu-ray`
+- `video:digital`
+
+Image formats:
+- `image:photograph` (physical print)
+- `image:print` (artwork, poster, physical image)
+- `image:digital`
+
+**Browsing uses**: exact match for specific filters ("my vinyl" → `audio:vinyl`); prefix match on content type for broad filters ("all my audio" → `audio:*`).
+
+**media_type is about structural format, not purpose**. A PDF encyclopedia has `media_type: text:pdf` (it's a PDF). A hardcover encyclopedia has `media_type: text:hardcover` (it's a hardcover). The "encyclopedia" nature is about content — captured in title, description, or user tags — not in the format field.
+
+**Defaults by book type**:
+- `physical`: asked during acquisition (common options: hardcover, paperback, magazine, vinyl, cd, dvd, other)
+- `digital`: inferred from file extension (`.pdf` → `text:pdf`, `.mp3` → `audio:digital`, etc.)
+- `scout`: `text:markdown` (scouts are structurally markdown files)
+- `author`: `text:markdown` default (future)
 
 ### `status` (required, enum)
 
@@ -138,7 +187,7 @@ There is no `archived` status. Archiving is accomplished by moving a book to an 
 
 Semantics vary by book type:
 - **physical**: the literal author of the physical book (e.g., "Ursula K. Le Guin")
-- **import**: the author(s) of the imported source; for papers with many authors, use "First Author et al."
+- **digital**: the author(s) of the digital source; for papers with many authors, use "First Author et al."
 - **author**: typically omitted; this is content the user wrote
 - **scout**: typically omitted; scouts are aggregated rather than authored
 
@@ -154,7 +203,7 @@ provenance:
   notes: "..."        # any additional acquisition context
 ```
 
-Book types may add their own fields below these. For example, imports might add:
+Book types may add their own fields below these. For example, digital books might add:
 
 ```yaml
 provenance:
@@ -190,7 +239,8 @@ sections:
         book_type: "scout"
         description: "Living knowledge base tracking treatment options."
         date_added: "2026-04-10"
-        medium: "digital"
+        form: "digital"
+        media_type: "text:markdown"
         status: "active"
         author: null
         path: "health/condition-x-treatments"
@@ -201,7 +251,8 @@ sections:
         book_type: "scout"
         description: "Methods for policy evaluation, with applicability notes."
         date_added: "2026-04-08"
-        medium: "digital"
+        form: "digital"
+        media_type: "text:markdown"
         status: "active"
         author: null
         path: "professional/causal-inference-methods"

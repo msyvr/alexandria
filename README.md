@@ -27,8 +27,8 @@ A record of a physical book you own. No content is copied — the book lives on 
 
 Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanning and standard metadata well. Alexandria differentiates on shelf photo accuracy (using stronger vision models than existing apps), local-first ownership (files on your machine, not in someone's cloud), no subscription, and integration with other book types in a single library. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
 
-### Import (coming soon, high priority)
-Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
+### Digital (available now)
+Digital content you want to bring into the library — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. The library copies the content, preserves the original exactly, and extracts metadata so you can find it later. Run `/new-digital` or `/library` → add a book → digital.
 
 ### Author (coming soon)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
@@ -67,6 +67,7 @@ From `/library`, choose "add a book" and describe what you need:
 
 - "I have a physical book I want to catalog" — runs /new-physical
 - "I want to photograph my bookshelf and catalog the books" — runs /new-physical with the shelf workflow
+- "I want to add these PDFs (or URLs, or notes) to my library" — runs /new-digital
 - "I need to understand treatment options for [condition]" — runs /new-scout
 - "I want to track developments in [field]" — runs /new-scout
 
@@ -95,6 +96,9 @@ Claude Code determines the appropriate book type and guides you through building
 ### Skills
 - [/library](skills/library/SKILL.md) — create and manage your library (main entry point)
 - [/new-physical](skills/new-physical/SKILL.md) — catalog a physical book from a photo or manual entry
+- [/new-hardcover](skills/new-hardcover/SKILL.md) — shortcut for a hardcover (calls /new-physical with media_type pre-set)
+- [/new-paperback](skills/new-paperback/SKILL.md) — shortcut for a paperback
+- [/new-digital](skills/new-digital/SKILL.md) — bring digital content (files, URLs, text) into the library
 - [/new-scout](skills/new-scout/SKILL.md) — create a scout for any topic
 - [/take-notes](skills/take-notes/SKILL.md) — maintain persistent context in a book or library
 
@@ -149,7 +153,24 @@ cd ~
 git clone https://github.com/msyvr/alexandria.git
 ```
 
-### 6. Install the skills
+### 6. Install uv and alexandria's Python dependencies
+
+Alexandria uses [uv](https://docs.astral.sh/uv/) to manage Python dependencies. Install uv (one-time):
+
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then install alexandria's dependencies:
+
+```
+cd ~/alexandria
+uv sync
+```
+
+This creates a virtual environment in `~/alexandria/.venv` and installs everything alexandria needs (PyYAML, requests, markdown-it-py, BeautifulSoup, html2text, pypdf).
+
+### 7. Install the skills
 
 ```
 mkdir -p ~/.claude/skills
@@ -158,7 +179,7 @@ cp -r ~/alexandria/skills/* ~/.claude/skills/
 
 No output means it worked.
 
-### 7. Create your library
+### 8. Create your library
 
 ```
 claude
@@ -171,16 +192,17 @@ At the Claude Code prompt, type:
 
 Name your library (or press Enter for "alexandria"). Your library directory is now set up.
 
-### 8. Add your first book
+### 9. Add your first book
 
 From the `/library` prompt, choose "add a book" and describe what you need. A few examples:
 
 - **Physical book**: "I have a physical book I want to catalog" — you'll be asked for a photo (single book or shelf) or to enter the metadata by hand
+- **Digital content**: "I want to add these files" or "save this URL" — files are copied, URLs are fetched and archived, metadata is extracted
 - **Scout**: "I need to understand treatment options for [condition]" or "I want to track developments in [field]" — Claude Code builds a structured knowledge base through a seven-phase process
 
 Claude Code guides you from there, asking the questions relevant to the book type you chose. You provide the direction; it handles the construction.
 
-### 9. Browse your library
+### 10. Browse your library
 
 In Claude Code: `/library` → browse
 
@@ -189,9 +211,9 @@ In a browser:
 - **Windows (WSL)**: `explorer.exe $(wslpath -w ~/alexandria/index.html)`
 - **Linux**: `xdg-open ~/alexandria/index.html`
 
-### 10. Add more books
+### 11. Add more books
 
-In Claude Code: `/library` → add a book. Same process as step 8.
+In Claude Code: `/library` → add a book. Same process as step 9.
 
 ### Troubleshooting
 
@@ -199,6 +221,6 @@ In Claude Code: `/library` → add a book. Same process as step 8.
 
 **"permission denied"**: Try `sudo` before the command (e.g., `sudo cp -r ...`).
 
-**`/library` not recognized**: Re-run step 6. Ensure `~/.claude/skills/` exists.
+**`/library` not recognized**: Re-run step 7. Ensure `~/.claude/skills/` exists.
 
 **Other issues**: Start Claude Code and describe the problem — it can often diagnose and fix things directly.

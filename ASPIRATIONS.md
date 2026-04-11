@@ -43,7 +43,7 @@ Alexandria is designed so this learning happens as a side effect of building som
 
 These derive from the real-world library metaphor and are the acceptance criteria for alexandria's design. Every invariant must hold for the library to earn its place over a plain folder.
 
-1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type, medium (digital, physical, or both). You can find a book without opening it.
+1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type, form (digital or physical), media_type (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). You can find a book without opening it.
 2. **Every book has a consistent outer shape.** Regardless of book type: a README (the spine), metadata (the catalog entry), and content files.
 3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by source. Views are generated from the catalog.
 4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
@@ -52,7 +52,7 @@ These derive from the real-world library metaphor and are the acceptance criteri
 7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static book at any time.
 8. **The librarian is optional — and eventually local.** Every library feature is usable without AI. Claude accelerates it; a local open-source model will eventually be the default librarian.
 
-9. **Books record their medium and link duplicates.** Every catalog entry includes a `medium` field: digital, physical, or both. When a user has both a digital and physical copy of the same book, the catalog links them as a single entry with both media flagged. The library detects likely duplicates during acquisition and asks the user to confirm the link.
+9. **Books record their form and media_type.** Every catalog entry includes a `form` field (binary: digital or physical — where does this live?) and a `media_type` field (hierarchical: content_type:format — what specifically is this? e.g., `text:hardcover`, `text:pdf`, `audio:vinyl`). The two axes let users browse by both dimensions: "show me my physical items" (form) or "show me my vinyl collection" (media_type). Linking duplicates across form (same work in physical and digital) is deferred — for v1, duplicates are separate entries.
 
 ## Book types
 
@@ -74,14 +74,14 @@ Leading with physical also signals what alexandria values: the considered, owner
 
 Best-quality AI is the default for photo extraction (vision models benefit from stronger models), with a local-model option for privacy-first users.
 
-### Import (planned, high priority)
-Digital content you've gathered from elsewhere — papers, articles, web pages, downloaded files, screenshots, anything with provenance. The library copies the raw content and extracts metadata so you can find it later.
+### Digital (available now)
+Digital content the user wants to bring into their library — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. Content is copied into the library, preserved exactly in its original format, and cataloged with extracted metadata (titles, authors, source URLs, timestamps). Runs through `/new-digital` or `/library` → add a book → digital.
 
 ### Author (planned)
 Content you produce yourself — notes, research, drafts, project plans, task lists, journal entries. Structured enough to be searchable, flexible enough for freeform writing.
 
 ### Scout (available, but not the focus)
-A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+A living knowledge base that monitors a domain. Unlike digital and author, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
 
 A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static book in the library.
 
@@ -94,14 +94,14 @@ The architecture accommodates book types not yet designed. The constraint is the
 
 ### Near-term
 - Define and enforce the universal book shape across all book types
-- Design import — a critical book type for the library metaphor to deliver on its promise
-- Add multi-axis catalog views (by date, type, medium) alongside the section view
+- Design the digital book type — a critical book type for the library metaphor to deliver on its promise
+- Add multi-axis catalog views (by date, type, form, media_type) alongside the section view
 - Design weeding and scout settling as first-class library actions
 - Build the **wiki view** — a browseable static-HTML interface generated from the library catalog, working offline over `file://`. This becomes the primary browsing interface for non-CLI users and makes the library genuinely usable without invoking Claude. Catalog layer first (mechanical generation); narrative layer (LLM-assisted topics and cross-references) scaffolded now, built later.
 - Rebalance the repo — library-level reference docs to match the depth of scout-level docs
 
 ### Medium-term
-- Implement import and physical book types
+- Implement additional book types as they're needed
 - Implement author book type
 - Narrative layer for the wiki view (topics, cross-references, related-books). Default to Claude; local model support when there's a clear path and non-technical setup instructions.
 - Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed

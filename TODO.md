@@ -49,18 +49,25 @@ Nothing else in Pass 2 scaffolding. Hash storage, model config, CLI flags — al
 - [ ] Incremental regeneration via content hashing (only re-process changed books)
 - [ ] Default to Claude; local model support when local path is clear + non-technical setup instructions ready
 
-## Physical book type (top priority after library foundation)
+## Physical book type (initial implementation complete)
 
 A record of a physical book you own. No content is copied; the catalog entry is the library's representation. Physical leads the book-type priority because users with substantial physical libraries are poorly served by existing tools, while digital-first users have many alternatives (Zotero, Readwise, various reference managers). Leading with physical signals what alexandria values.
 
-- [ ] **Design the physical book metadata schema**: title, author, medium (set to physical), optional photo, optional online summary, provenance (when/where acquired), classification, shelf location
-- [ ] **Build the /new-physical skill**: photo-based creation as primary workflow (single book or shelf of books), with manual entry as fallback or supplement
-- [ ] **Photo extraction**: use best-available AI (vision model) to extract title, author, and other visible metadata from the photo. Default to user confirmation per book; support a "yolo" mode that accepts extracted metadata without per-book confirmation (opt-in)
-- [ ] **Privacy-first mode**: support local vision model alternative for users who don't want photos processed remotely
-- [ ] **Optional online enrichment**: with user permission, fetch public metadata and summaries from open book databases (Open Library, Google Books, etc.). Clearly opt-in; default off for privacy-first users. Book content never leaves the user's shelf; only public bibliographic data is fetched.
-- [ ] **Visual record**: preserve the photograph as part of the book's content for users who want it (useful for reference and for offline users to see their own shelves)
-- [ ] **Manual entry support**: users who can't or don't want to photograph should be able to populate records by hand
-- [ ] **Shelf-of-books workflow**: from a single shelf photo, create multiple book entries (one per book visible), each with its own catalog entry
+- [x] **Design the physical book metadata schema**: universal fields plus photo, shelf_location, isbn, edition, publisher, publication_date (all optional)
+- [x] **Build the /new-physical skill**: photo-based creation as primary workflow (single book or shelf of books), with manual entry as fallback or supplement, mixed-mode within a single invocation
+- [x] **Photo extraction**: use best-available AI (Claude vision) to extract metadata; per-book confirmation default, "yolo" mode opt-in
+- [x] **Visual record**: photograph preserved by default in the book's directory; opt-out supported
+- [x] **Manual entry support**: available as primary path or fallback for failed extractions
+- [x] **Shelf-of-books workflow**: multi-book extraction from one photo, per-book confirmation
+- [x] **Optional online enrichment**: one batch decision (yes/no/per-book), Open Library as the source, metadata only (never content)
+- [x] **/library routing**: "I have a physical book I want to catalog" → /new-physical
+
+Remaining for later passes:
+- [ ] **Privacy-first local vision model** — deferred until there's a clear path and non-technical setup instructions; defaults to Claude for now
+- [ ] **Barcode-scan workflow** as an alternative entry point (photo extraction reads ISBNs when visible; dedicated scanning can come later)
+- [ ] **Batch import from LibraryThing/Libib/CLZ CSV exports** for users migrating from existing tools
+- [ ] **Enrichment sources beyond Open Library** (Google Books, WorldCat) if the single source proves inadequate
+- [ ] **End-to-end test** of the /new-physical workflow with real photos and a test library
 
 ## Import book type (high priority)
 

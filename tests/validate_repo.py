@@ -54,24 +54,44 @@ def check_yaml_blocks(file: Path):
 
 
 def check_stale_references(file: Path):
-    """Check for stale naming references."""
+    """Check for stale naming references. Skips fenced code blocks."""
     text = file.read_text()
-    for term in STALE_TERMS:
-        for i, line in enumerate(text.splitlines(), 1):
-            if term in line.lower():
+    in_code_block = False
+    for i, line in enumerate(text.splitlines(), 1):
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
+        lower = line.lower()
+        for term in STALE_TERMS:
+            if term in lower:
                 fail(file, f"stale reference '{term}' at line {i}")
 
 
 def check_internal_links(file: Path):
-    """Check that relative markdown links point to files that exist."""
+    """Check that relative markdown links point to files that exist.
+
+    Skips links inside fenced code blocks and links with template placeholders
+    (containing `{` or `}` in the target).
+    """
     text = file.read_text()
-    # Match [text](path) but skip http/https URLs and anchors
     link_pattern = re.compile(r"\[([^\]]*)\]\(([^)]+)\)")
+    in_code_block = False
     for i, line in enumerate(text.splitlines(), 1):
+        # Track fenced code blocks (```...```) to skip links inside them
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
         for match in link_pattern.finditer(line):
             target = match.group(2)
             # Skip URLs, anchors, and mail links
             if target.startswith(("http://", "https://", "#", "mailto:")):
+                continue
+            # Skip template placeholders
+            if "{" in target or "}" in target:
                 continue
             # Strip anchor from path
             target_path = target.split("#")[0]

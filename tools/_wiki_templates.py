@@ -336,6 +336,7 @@ def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
     title = escape(book.get("title", "Untitled"))
     description = escape(book.get("description", ""))
     author = book.get("author")
+    user_notes = book.get("user_notes")
     book_type = escape(book.get("book_type", "unknown"))
     form = escape(book.get("form", ""))
     media_type = escape(book.get("media_type", ""))
@@ -403,8 +404,11 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 </div>"""
 
     description_html = f'<p class="description">{description}</p>' if description else ""
+    notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
 
     body = f"""{description_html}
+
+{notes_html}
 
 {metadata_block}
 

@@ -214,6 +214,16 @@ th {
   border-radius: 4px;
 }
 
+blockquote.user-notes {
+  border-left: 3px solid var(--accent);
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  color: var(--text);
+  font-style: italic;
+  background: var(--card-bg);
+  border-radius: 0 4px 4px 0;
+}
+
 .removed-notice {
   background: #fef4f4;
   border-left: 4px solid var(--removed);

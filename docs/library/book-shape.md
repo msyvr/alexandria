@@ -60,6 +60,7 @@ status: "active"                      # active or removed
 
 ```yaml
 author: "Ursula Le Guin"              # semantics vary by book type (see below)
+user_notes: "Essential reference."     # freeform personal notes about this book
 provenance:
   source: "Personal collection"       # freeform string — where this came from
   notes: "Inherited from family"      # freeform string — any acquisition context
@@ -195,6 +196,18 @@ Semantics vary by book type:
 - **scout**: typically omitted; scouts are aggregated rather than authored
 
 When null or omitted, catalog views display "—" or skip the author display.
+
+### `user_notes` (optional, string)
+
+Freeform personal notes about this book — why the user has it, what it's useful for, anything the user wants to record for their own reference. Unlike `description` (which is a one-line summary for catalog views), `user_notes` can be any length and is for the user's own use.
+
+Examples:
+- "Essential reference for the first six months of treatment decisions"
+- "Borrowed from Maya — return by June"
+- "Chapters 3 and 7 are the most relevant to my project"
+- "Companion to the hardcover on the top shelf"
+
+Shown on the book's wiki page when present. Not shown in index/catalog card views (those use `description`). The user can add or edit this at any time by editing `metadata.yaml`.
 
 ### `provenance` (optional, object)
 

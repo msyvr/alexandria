@@ -4,6 +4,8 @@ Lightweight private collection infrastructure for books and other content/items 
 
 Alexandria provides minimal structure to make a collection browseable at scale: a catalog, consistent book shape, classification conventions, and generated views. The structure is lightweight enough that you can browse it without invoking any AI at all.
 
+> **Getting started?** Keep this page open as a reference while you work in the terminal. Follow the [quick start](#create-your-collection) to create your collection, or the [detailed walkthrough](#detailed-setup-walkthrough) if you're new to the terminal. When Claude Code starts, it will greet you with next steps — just type `/coll-build-new-collection` to begin.
+
 Alexandria borrows heavily from the real-world library: a curated collection where items are stored in predictable places, findable by catalog or by walking the stacks. The collection is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent shape. Most books are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves (see [scout](#scout-available-now--the-exception-not-the-rule)). The collection's job is to hold them, organize them, and make them browseable — with or without an agent-librarian's help.
 
 See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).

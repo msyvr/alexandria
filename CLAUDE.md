@@ -1,18 +1,9 @@
 # alexandria
 
-## First time here?
+## Quick start
 
-If you're a new user setting up your private collection for the first time:
-
-1. Type `/coll-build-new-collection` — this creates your collection and copies
-   the skills into it so they're available whenever you work from your collection
-   directory.
-
-2. After creation, the skill tells you what to do next: navigate to your collection
-   directory and start a new Claude Code session there.
-
-3. From your collection directory, type `/coll-menu` for a guided menu of everything
-   you can do, or type `/coll-` and press tab to see all available commands.
+- **Building a new collection from scratch?** Type `/coll-build-new-collection`
+- **Working on an existing collection?** Type `/coll-menu` for guided options, or type `/coll-` and press tab for direct access to all collection skills
 
 If you need help at any point, just describe what you're trying to do in plain
 language. See the [guides](docs/guides/) for reference on terminals, YAML,

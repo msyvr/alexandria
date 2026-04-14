@@ -9,6 +9,15 @@ If you need help at any point, just describe what you're trying to do in plain
 language. See the [guides](docs/guides/) for reference on terminals, YAML,
 book structure, scouts, and troubleshooting.
 
+## A note about permissions
+
+When working on the collection, you'll sometimes see prompts asking "Do you want
+to proceed?" before a command runs. This is a safety feature — Claude Code asks
+before making changes to your files. It's always safe to say "Yes" for the commands
+the collection skills run (creating directories, copying files, reading metadata).
+If you're ever unsure, choose "No" and ask what the command does — Claude will
+explain in plain language.
+
 ---
 
 ## For developers working on alexandria

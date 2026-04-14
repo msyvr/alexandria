@@ -68,6 +68,22 @@ You don't need these to use your collection. They're here if you're curious.
 
 Claude Code runs inside a terminal. When you type `claude` and press Enter, you start a session — a conversation with Claude that lasts until you close it (by typing `/exit` or pressing `Ctrl+C`).
 
+### Permission prompts
+
+While working, Claude Code sometimes shows a prompt like:
+
+```
+Bash command
+  mkdir -p ~/my-collection/fiction
+
+Do you want to proceed?
+> 1. Yes
+  2. Yes, allow reading from ...
+  3. No
+```
+
+This is a safety feature. Claude Code asks before running commands that create, change, or read files on your machine. For the commands the collection skills run (creating directories, copying files, reading your catalog), it's safe to say **Yes**. If you're ever unsure what a command does, choose **No** and ask Claude to explain it — it will describe what the command does in plain language before you decide.
+
 ### Where you start matters
 
 The directory you're in when you type `claude` determines:

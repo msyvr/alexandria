@@ -1,15 +1,15 @@
 # Universal book shape
 
-Every book in an alexandria library follows the same outer shape, regardless of book type. This contract makes books interchangeable at the library level: the catalog can iterate over them, views can render them, skills can operate on them, and new book types can plug into the existing infrastructure without redesigning the foundation.
+Every book in an alexandria collection follows the same outer shape, regardless of book type. This contract makes books interchangeable at the collection level: the catalog can iterate over them, views can render them, skills can operate on them, and new book types can plug into the existing infrastructure without redesigning the foundation.
 
 This document specifies the shape. Book types define their own content within it.
 
 ## Design principles
 
 - **Minimum mandatory, nothing speculative.** Every required field has a defined consumer today.
-- **metadata.yaml is the source of truth.** The library-level `.library-index.yaml` is a regenerable cache derived from every book's `metadata.yaml`.
+- **metadata.yaml is the source of truth.** The collection-level `.collection-index.yaml` is a regenerable cache derived from every book's `metadata.yaml`.
 - **Filesystem structure is not duplicated in metadata.** If the information is in the directory path, it doesn't also live in a field. (One exception: `section` is kept in metadata so the index cache doesn't require filesystem walks.)
-- **Hand-editable.** A user should be able to open `metadata.yaml` in a text editor, change a field, and have the library pick up the change.
+- **Hand-editable.** A user should be able to open `metadata.yaml` in a text editor, change a field, and have the collection pick up the change.
 
 ## Book directory shape
 
@@ -27,16 +27,16 @@ One more file is created on first use but isn't required at acquisition:
 
 ```
 {book-slug}/
-└── context.md          # interaction history, written by /take-notes
+└── context.md          # interaction history, written by /coll-notes
 ```
 
 **README.md**: the book's spine. A reader should be able to open it and understand what this book is, what's in it, and how to navigate its contents, without any other context. Each book type provides its own README template; scouts generate a rich overview, physical books show metadata and (if present) a photo, digital books show provenance and content, author books show the user's writing.
 
 **metadata.yaml**: the catalog entry (see schema below).
 
-**CLAUDE.md**: operational context for Claude Code when the user returns to the book in a future session. Book-type-specific content: scouts describe their schema and update commands, physical books describe their source and any online enrichment policy, etc. Kept lean (~40-60 lines). See `skills/new-scout/SKILL.md` for the scout template.
+**CLAUDE.md**: operational context for Claude Code when the user returns to the book in a future session. Book-type-specific content: scouts describe their schema and update commands, physical books describe their source and any online enrichment policy, etc. Kept lean (~40-60 lines). See `.claude/skills/coll-scout/SKILL.md` for the scout template.
 
-**context.md**: interaction history written by `/take-notes`. Created on first invocation. Contains decisions, user preferences, session log, open questions, and useful Q&A. Universal format across all book types.
+**context.md**: interaction history written by `/coll-notes`. Created on first invocation. Contains decisions, user preferences, session log, open questions, and useful Q&A. Universal format across all book types.
 
 **Type-specific content files**: whatever the book type needs. Scouts have `data/entries.yaml`, `scripts/`, `docs/`, and a generated `README.md`. Physical books might have a `photo.jpg`. Imports might have an `original.pdf` plus a markdown extraction. Author books might have multiple markdown files for different sections of the user's writing.
 
@@ -78,7 +78,7 @@ settled: false                        # true if the scout has been frozen as sta
 settled_at: "2026-05-15"              # ISO date; only present if settled == true
 ```
 
-For scouts, the `settled` field captures whether the scout is live (updating via discovery) or frozen as a static reference. Settling is a first-class action in the /library skill — see `skills/library/SKILL.md`. The wiki renders settled scouts inline like other static book types, while live scouts link out to their own presentation.
+For scouts, the `settled` field captures whether the scout is live (updating via discovery) or frozen as a static reference. Settling is a first-class action in the /coll skill — see `.claude/skills/coll/SKILL.md`. The wiki renders settled scouts inline like other static book types, while live scouts link out to their own presentation.
 
 ## Field semantics
 
@@ -91,7 +91,7 @@ URL-and-filename-safe identifier for the book. Generated from the title:
 - Leading/trailing hyphens removed
 - Truncated to ~50 characters if needed
 
-Must be **unique within the library**. The `/library` acquisition process checks existing slugs and appends a numeric suffix if needed (`-2`, `-3`, etc.). The book's directory name matches its slug.
+Must be **unique within the collection**. The `/coll` acquisition process checks existing slugs and appends a numeric suffix if needed (`-2`, `-3`, etc.). The book's directory name matches its slug.
 
 ### `title` (required, string)
 
@@ -101,7 +101,7 @@ Display name. Any characters allowed. Shown in catalog views and used as the `<t
 
 One of:
 - `physical` — a record of a physical book the user owns (no content files)
-- `digital` — digital content the user has brought into the library (local files, URLs, pasted text) with provenance
+- `digital` — digital content the user has brought into the collection (local files, URLs, pasted text) with provenance
 - `author` — content the user wrote themselves
 - `scout` — a living, AI-maintained knowledge base
 
@@ -109,11 +109,11 @@ This determines which creation skill was used and what type-specific fields to e
 
 ### `section` (required, string)
 
-The top-level library section where this book lives. Matches a directory at the library root (e.g., `health`, `professional`, `reference`). Required.
+The top-level library section where this book lives. Matches a directory at the collection root (e.g., `health`, `professional`, `reference`). Required.
 
 If the acquisition process can't determine a section, it defaults to `"unsorted"` and the user can move it later.
 
-Note: `section` duplicates information from the directory path. It's kept in metadata so the `.library-index.yaml` cache doesn't require walking the filesystem on every read. This is a deliberate exception to the "don't duplicate filesystem structure" principle.
+Note: `section` duplicates information from the directory path. It's kept in metadata so the `.collection-index.yaml` cache doesn't require walking the filesystem on every read. This is a deliberate exception to the "don't duplicate filesystem structure" principle.
 
 ### `description` (required, string)
 
@@ -121,7 +121,7 @@ One-line summary. Target ~150 characters, maximum ~300. Shown in catalog and ind
 
 ### `date_added` (required, ISO 8601 date)
 
-The date the book was added to the library. Format: `YYYY-MM-DD`. Set automatically on acquisition; never changed by normal operations.
+The date the book was added to the collection. Format: `YYYY-MM-DD`. Set automatically on acquisition; never changed by normal operations.
 
 ### `form` (required, enum)
 
@@ -185,7 +185,7 @@ One of:
 - `active` — the book is part of the live library (default)
 - `removed` — the resource has been weeded; the catalog entry persists as a historical record
 
-There is no `archived` status. Archiving is accomplished by moving a book to an `_archive/` section, not by changing status. Removal (via weeding) sets `status: removed` — see `/library` weeding actions.
+There is no `archived` status. Archiving is accomplished by moving a book to an `_archive/` section, not by changing status. Removal (via weeding) sets `status: removed` — see `/coll` weeding actions.
 
 ### `author` (optional, string)
 
@@ -240,12 +240,12 @@ Only present when `status == removed`. The date the book was weeded.
 
 Only present when `status == removed`. Freeform explanation of why the book was removed. Recommended but not required — helps future browsing make sense of the historical record.
 
-## .library-index.yaml cache format
+## .collection-index.yaml cache format
 
-The library-level index is a regenerable cache of universal fields from every book's `metadata.yaml`. Type-specific fields are not in the cache — views that need them read the book's own `metadata.yaml` directly.
+The collection-level index is a regenerable cache of universal fields from every book's `metadata.yaml`. Type-specific fields are not in the cache — views that need them read the book's own `metadata.yaml` directly.
 
 ```yaml
-library_name: "alexandria"
+collection_name: "alexandria"
 created: "2026-04-07"
 sections:
   health:
@@ -276,14 +276,14 @@ sections:
 
 ### Regeneration
 
-If `.library-index.yaml` is missing or stale, the `/library` skill rebuilds it by:
+If `.collection-index.yaml` is missing or stale, the `/coll` skill rebuilds it by:
 
-1. Walking the library directory tree
+1. Walking the collection directory tree
 2. For each `metadata.yaml` found, reading its universal fields
 3. Grouping books by `section`
-4. Writing the result to `.library-index.yaml`
+4. Writing the result to `.collection-index.yaml`
 
-This means the user can delete `.library-index.yaml` at any time without data loss. The source of truth is the per-book `metadata.yaml` files.
+This means the user can delete `.collection-index.yaml` at any time without data loss. The source of truth is the per-book `metadata.yaml` files.
 
 ## How book types extend the shape
 
@@ -292,7 +292,7 @@ Each book type:
 1. **Produces all required universal fields** in its acquired `metadata.yaml`
 2. **Uses optional universal fields appropriately** (`author` where it makes sense; `provenance` always recommended)
 3. **Adds type-specific fields** at the top level of the same file, after the universal fields
-4. **Documents its type-specific schema** in its skill file (`skills/{book-type}/SKILL.md`) or adjacent reference docs
+4. **Documents its type-specific schema** in its skill file (`.claude/skills/coll-{type}/SKILL.md`) or adjacent reference docs
 
 The book type is free to define its own content shape beyond metadata — README structure, additional files, subdirectories, scripts. The only constraints are:
 
@@ -316,10 +316,10 @@ Examples:
 - "LLMs: A Survey (2025)" → `llms-a-survey-2025`
 - "Condition X: Treatment Options & Evidence" → `condition-x-treatment-options-evidence`
 
-Uniqueness check: if the generated slug collides with an existing book in the library, append `-2`, `-3`, etc. until a unique slug is found.
+Uniqueness check: if the generated slug collides with an existing book in the collection, append `-2`, `-3`, etc. until a unique slug is found.
 
 ## Validation
 
-There is no automated validation tool in v1. The `/library` skill ensures valid metadata at acquisition time by construction. Users who hand-edit `metadata.yaml` are trusted to preserve the schema; the regeneration process tolerates missing optional fields but will fail loudly on missing required fields.
+There is no automated validation tool in v1. The `/coll` skill ensures valid metadata at acquisition time by construction. Users who hand-edit `metadata.yaml` are trusted to preserve the schema; the regeneration process tolerates missing optional fields but will fail loudly on missing required fields.
 
 Validation tooling may be added later if drift becomes a problem in practice.

@@ -90,7 +90,7 @@ def _axes_nav(current: str | None = None) -> str:
 
 def homepage(library: dict, all_books: list[dict]) -> str:
     """Render the wiki homepage."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     total = len([b for b in all_books if b.get("status", "active") != "removed"])
 
     section_counts: dict[str, int] = {}
@@ -119,10 +119,10 @@ def homepage(library: dict, all_books: list[dict]) -> str:
 </div>"""
     else:
         recent_section = """<h2>Recent additions</h2>
-<p>No books yet. Use <code>/library</code> or <code>/new-physical</code>, <code>/new-digital</code>, or <code>/new-scout</code> to add your first book.</p>"""
+<p>No books yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first book.</p>"""
 
     body = f"""<p class="library-intro">
-Welcome to <strong>{escape(library_name)}</strong> — your personal curated library.
+Welcome to <strong>{escape(collection_name)}</strong> — your personal curated collection.
 </p>
 
 <div class="summary">
@@ -137,12 +137,12 @@ Welcome to <strong>{escape(library_name)}</strong> — your personal curated lib
 
 {recent_section}
 """
-    return _page(library_name, '<a href="index.html">Home</a>', body, STYLESHEET_REL)
+    return _page(collection_name, '<a href="index.html">Home</a>', body, STYLESHEET_REL)
 
 
 def by_section_index(library: dict, books_by_section: dict[str, list[dict]]) -> str:
     """Render the by-section index: list of sections with counts."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     rows = []
     for section in sorted(books_by_section.keys()):
         books = [b for b in books_by_section[section] if b.get("status", "active") != "removed"]
@@ -163,7 +163,7 @@ def by_section_index(library: dict, books_by_section: dict[str, list[dict]]) -> 
 {table}
 """
     breadcrumb = '<a href="../index.html">Home</a> / By section'
-    return _page(f"{library_name} — by section", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by section", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def section_page(section: str, books: list[dict]) -> str:
@@ -184,7 +184,7 @@ def section_page(section: str, books: list[dict]) -> str:
 
 def by_date_index(library: dict, all_books: list[dict]) -> str:
     """Render the by-date index: books newest first, grouped by year-month."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     # Group by YYYY-MM
     groups: dict[str, list[dict]] = {}
     for book in all_books:
@@ -209,12 +209,12 @@ def by_date_index(library: dict, all_books: list[dict]) -> str:
 {''.join(sections) if sections else '<p>No books to display.</p>'}
 """
     breadcrumb = '<a href="../index.html">Home</a> / By date'
-    return _page(f"{library_name} — by date", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by date", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def by_type_index(library: dict, all_books: list[dict]) -> str:
     """Render the by-type index: books grouped by book_type."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     groups: dict[str, list[dict]] = {}
     for book in all_books:
         groups.setdefault(book.get("book_type", "unknown"), []).append(book)
@@ -234,12 +234,12 @@ def by_type_index(library: dict, all_books: list[dict]) -> str:
 {''.join(sections) if sections else '<p>No books to display.</p>'}
 """
     breadcrumb = '<a href="../index.html">Home</a> / By type'
-    return _page(f"{library_name} — by type", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by type", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def by_form_index(library: dict, all_books: list[dict]) -> str:
     """Render the by-form index: physical vs digital."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     groups: dict[str, list[dict]] = {"physical": [], "digital": []}
     for book in all_books:
         form = book.get("form", "digital")
@@ -262,12 +262,12 @@ def by_form_index(library: dict, all_books: list[dict]) -> str:
 {''.join(sections) if sections else '<p>No books to display.</p>'}
 """
     breadcrumb = '<a href="../index.html">Home</a> / By form'
-    return _page(f"{library_name} — by form", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by form", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def by_media_type_index(library: dict, all_books: list[dict]) -> str:
     """Render the by-media-type index: grouped by content_type then format."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     # Two-level grouping: content_type -> format -> [books]
     content_groups: dict[str, dict[str, list[dict]]] = {}
     for book in all_books:
@@ -309,12 +309,12 @@ def by_media_type_index(library: dict, all_books: list[dict]) -> str:
 {''.join(sections) if sections else '<p>No books to display.</p>'}
 """
     breadcrumb = '<a href="../index.html">Home</a> / By media type'
-    return _page(f"{library_name} — by media type", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by media type", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def topic_placeholder(library: dict) -> str:
     """Pass 2 scaffolding: placeholder for the topic index page."""
-    library_name = library.get("library_name", "alexandria")
+    collection_name = library.get("collection_name", "alexandria")
     body = """<p>Topic pages will appear here once narrative layer generation is enabled.</p>
 
 <p>The narrative layer uses an LLM to extract topics from your books and generate
@@ -324,7 +324,7 @@ without it.</p>
 <p><a href="../index.html">← Back to home</a></p>
 """
     breadcrumb = '<a href="../index.html">Home</a> / By topic'
-    return _page(f"{library_name} — by topic", breadcrumb, body, "../" + STYLESHEET_REL)
+    return _page(f"{collection_name} — by topic", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
@@ -385,7 +385,7 @@ def book_page(book: dict, readme_html: str, readme_truncated: bool) -> str:
     if status == "removed":
         content_block = """<div class="removed-notice">
 <strong>Resource removed.</strong> This book is kept in the catalog as a historical
-record. The original content is no longer in the library.
+record. The original content is no longer in the collection.
 </div>"""
     elif book.get("book_type") == "scout" and not settled:
         # Live scout: thin catalog entry linking to the scout's own presentation

@@ -1,21 +1,21 @@
-# /new-digital
+# /coll-digital
 
-Bring digital content into the library — files you already have on your machine, URLs
-you want to save, or text you want to paste in. The library copies the content, extracts
+Bring digital content into the collection — files you already have on your machine, URLs
+you want to save, or text you want to paste in. The collection copies the content, extracts
 readable metadata, and creates a catalog entry conforming to the universal book shape
-(see `docs/library/book-shape.md`).
+(see `docs/coll/book-shape.md`).
 
-"Digital" here means the same thing it does for `/new-physical`: the form of the
+"Digital" here means the same thing it does for `/coll-physical`: the form of the
 catalog entry. A physical book record catalogs something that lives on a shelf; a
-digital book record catalogs content that lives as files in the library. The name
-is symmetric with `/new-physical` and deliberately doesn't use "import" — which could
+digital book record catalogs content that lives as files in the collection. The name
+is symmetric with `/coll-physical` and deliberately doesn't use "import" — which could
 mislead users into thinking the skill only fetches from elsewhere.
 
 ## Before starting
 
-Detect the library context by walking up from the current directory looking for
-`.library-index.yaml`. If not found, explain that /new-digital must run inside an
-alexandria library and offer to help create one with /library.
+Detect the collection context by walking up from the current directory looking for
+`.collection-index.yaml`. If not found, explain that /coll-digital must run inside an
+alexandria collection and offer to help create one with /coll.
 
 ## The workflow
 
@@ -34,7 +34,7 @@ plus this snippet I want to keep." All get processed as one batch.
 
 Input types:
 - **Local files**: individual paths or a directory
-- **URLs**: one or more web addresses the library will fetch and archive
+- **URLs**: one or more web addresses the collection will fetch and archive
 - **Pasted text**: user provides a title and the text
 
 If the user wants to skip per-item confirmation for clean extractions, they can opt
@@ -132,7 +132,7 @@ a book or paper) doesn't get enrichment; the source URL is its provenance.
   all" options — same pattern as enrichment.
 - **Single item**: propose based on content and recent placements.
 
-**Generate a slug** from the title per `docs/library/book-shape.md` rules. Check
+**Generate a slug** from the title per `docs/coll/book-shape.md` rules. Check
 uniqueness; suffix with `-2`, `-3` if needed.
 
 **Create the book directory** at `{library}/{section}/{slug}/`.
@@ -160,11 +160,11 @@ and tells the user to open it in their PDF viewer. Full-text extraction is inten
 not done in this skill — it's lossy, dependency-heavy, and users open PDFs in PDF
 viewers anyway.
 
-**Update `.library-index.yaml`** with each new book's universal fields. For multi-item
+**Update `.collection-index.yaml`** with each new book's universal fields. For multi-item
 batches, update once at the end rather than per item.
 
-**Invoke /take-notes** once at the end of the invocation to log the import batch to
-`library-context.md`: how many books were added, what sources, any notable preferences
+**Invoke /coll-notes** once at the end of the invocation to log the import batch to
+`collection-context.md`: how many books were added, what sources, any notable preferences
 observed (e.g., "user declined online enrichment").
 
 ## metadata.yaml template
@@ -246,7 +246,7 @@ See `metadata.yaml` for the full catalog entry.
 ```markdown
 # {title}
 
-A digital content entry — {media_type} from {source}. The library holds a preserved
+A digital content entry — {media_type} from {source}. The collection holds a preserved
 copy of the original.
 
 ## Details
@@ -262,23 +262,23 @@ copy of the original.
 - `README.md` — the book's spine
 - `original.{ext}` — the preserved original
 - `content.md` — markdown extraction (HTML sources only; one-time, hand-edits preserved)
-- `context.md` — interaction history (written by /take-notes)
+- `context.md` — interaction history (written by /coll-notes)
 
 ## Updating
 
 - Edit `metadata.yaml` for metadata changes
 - `original.{ext}` is preserved verbatim — re-import to replace
 - `content.md` is a one-time extraction; your edits persist across re-runs
-- Use `/library` to move or re-classify
+- Use `/coll` to move or re-classify
 
 ## Recent context
 
-(updated automatically by /take-notes after significant work sessions)
+(updated automatically by /coll-notes after significant work sessions)
 ```
 
 ## Dependencies
 
-/new-digital relies on these Python libraries (installed via `uv sync` from the
+/coll-digital relies on these Python libraries (installed via `uv sync` from the
 alexandria `pyproject.toml`):
 
 - `pypdf` — PDF metadata extraction (title, author, creation date). Not used for
@@ -286,7 +286,7 @@ alexandria `pyproject.toml`):
 - `beautifulsoup4` — HTML parsing for local and URL-fetched HTML
 - `html2text` — HTML-to-markdown conversion for the content.md extraction
 - `requests` — URL fetching
-- `pyyaml` — YAML read/write for metadata.yaml and .library-index.yaml
+- `pyyaml` — YAML read/write for metadata.yaml and .collection-index.yaml
 
 If any dependency is missing, report clearly and suggest `uv sync` in the alexandria
 repo directory.
@@ -316,7 +316,7 @@ the explicit URL fetches they provided and the optional enrichment lookups.
 - **Originals are preserved exactly** in the book's directory. Alexandria does not
   convert or modify them.
 
-## What /new-digital does not do
+## What /coll-digital does not do
 
 - Does not extract full text from PDFs (only metadata)
 - Does not convert files between formats

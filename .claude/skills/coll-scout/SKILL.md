@@ -1,4 +1,4 @@
-# /new-scout
+# /coll-scout
 
 Create a scout — a curated, living knowledge base that monitors a topic for you. Built
 through a seven-phase process that produces a resource you own, understand, and can maintain.
@@ -111,7 +111,7 @@ hand-written, not generated from data. Every recommended option must include a r
 callout: what it's good for and what it doesn't cover.
 
 **Generate metadata.yaml** with the universal book shape fields plus scout-specific fields.
-This file is required by the library infrastructure (see `docs/library/book-shape.md` in
+This file is required by the collection infrastructure (see `docs/coll/book-shape.md` in
 the alexandria repo for the full specification).
 
 Template:
@@ -130,7 +130,7 @@ status: "active"
 # Optional (omit if not applicable)
 author: null                          # scouts are aggregated; typically omitted
 provenance:
-  source: "alexandria /new-scout process"
+  source: "alexandria /coll-scout process"
   notes: "{any notable context from the build dialog}"
 
 # Scout-specific
@@ -174,20 +174,20 @@ A scout monitoring {topic in one sentence}.
 
 ## Recent context
 
-(updated automatically by /take-notes after each significant work session)
+(updated automatically by /coll-notes after each significant work session)
 
 For full decision history and user preferences, see `context.md`.
 ```
 
-**context.md** is initialized empty (the /take-notes skill creates the initial file
-structure on its first invocation). After generating it, immediately invoke /take-notes
+**context.md** is initialized empty (the /coll-notes skill creates the initial file
+structure on its first invocation). After generating it, immediately invoke /coll-notes
 to log the build's decisions: scope, schema choices, lens definitions, category rationale,
 and any notable user preferences observed during the build dialog.
 
 **Generate index.html** alongside README.md. The HTML is self-contained: wrap the README
 content in the alexandria HTML template (inline CSS, no JavaScript, no external files).
 Use Python's `markdown` library to convert the generated README.md content to HTML. The
-HTML uses the same inline stylesheet as the library-level pages so all pages in the
+HTML uses the same inline stylesheet as the collection-level pages so all pages in the
 library have a consistent reading experience. Links within the HTML point to other `.html`
 files (not `.md`) so browser navigation works over `file://`.
 
@@ -228,7 +228,7 @@ Iterate until a clean pass (typically 2-3 passes).
 - [ ] Clear signposting between beginner and technical content
 - [ ] Every recommended entry has notes explaining tradeoffs
 
-After critique completes, invoke /take-notes to log the critique findings and resolutions.
+After critique completes, invoke /coll-notes to log the critique findings and resolutions.
 
 ### Phase 6: Automate (Claude Code-driven)
 Set up discovery so the scout stays current.
@@ -250,13 +250,13 @@ Keep the scout useful over time.
 - Add specialized docs as audience needs emerge
 
 After significant maintenance work (10+ entries added, schema migration, re-categorization,
-re-running critique), invoke /take-notes to log what was done and any decisions made.
+re-running critique), invoke /coll-notes to log what was done and any decisions made.
 
 ### Settling a scout
 
 At some point the user may decide the scout has served its purpose and should become
 a static reference — a frozen snapshot that no longer updates. This is called
-**settling** the scout, and it's a first-class action in the /library skill.
+**settling** the scout, and it's a first-class action in the /coll skill.
 
 When a scout is settled:
 - `metadata.yaml` gains `settled: true` and `settled_at: YYYY-MM-DD`
@@ -265,18 +265,18 @@ When a scout is settled:
 - The wiki renders the scout inline like other static book types instead of linking
   out, visibly marking the state change
 
-Users invoke settling via `/library` → settle-scout. See the /library skill for the
+Users invoke settling via `/coll` → settle-scout. See the /coll skill for the
 full workflow.
 
-A settled scout is just a static book in the library from that point forward. If
+A settled scout is just a static book in the collection from that point forward. If
 circumstances change and the user wants to resume updating, they can edit
 `metadata.yaml` to set `settled: false` and re-enable discovery. This is uncommon
 and not exposed as a first-class action.
 
-## Library integration
+## Collection integration
 
-If this scout is being created within a library (detected by `.library-index.yaml` in a
-parent directory), update the library index after Phase 4 (Build) completes:
+If this scout is being created within a collection (detected by `.collection-index.yaml` in a
+parent directory), update the collection index after Phase 4 (Build) completes:
 - Add the book entry with name, path, type ("scout"), creation date, and a one-line
   description derived from the scope document.
 

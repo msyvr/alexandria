@@ -1,14 +1,14 @@
-# /new-author
+# /coll-author
 
 Create an author book — a container for content you write yourself. Notes, research,
 drafts, project plans, task lists, journal entries, essays, or any other form of
-personal writing you want to organize and keep in your library.
+personal writing you want to organize and keep in your collection.
 
 Unlike other book types:
-- **/new-physical** catalogs a book you own in physical form (no content copied)
-- **/new-digital** brings in digital content from elsewhere (files, URLs, pasted text)
-- **/new-scout** has AI build a knowledge base for you through a seven-phase process
-- **/new-author** creates an empty structure you fill in yourself
+- **/coll-physical** catalogs a book you own in physical form (no content copied)
+- **/coll-digital** brings in digital content from elsewhere (files, URLs, pasted text)
+- **/coll-scout** has AI build a knowledge base for you through a seven-phase process
+- **/coll-author** creates an empty structure you fill in yourself
 
 Author books are the simplest type to create: the skill sets up the book's structure
 (universal files + a starter README suited to your purpose) and hands off to you for
@@ -16,13 +16,13 @@ writing. Claude Code can help you draft, review, or organize content later — b
 content itself is yours.
 
 Every author book conforms to the universal book shape (see
-`docs/library/book-shape.md`).
+`docs/coll/book-shape.md`).
 
 ## Before starting
 
-Detect the library context by walking up from the current directory looking for
-`.library-index.yaml`. If not found, explain that /new-author must run inside an
-alexandria library and offer to help create one with /library.
+Detect the collection context by walking up from the current directory looking for
+`.collection-index.yaml`. If not found, explain that /coll-author must run inside an
+alexandria collection and offer to help create one with /coll.
 
 ## The workflow
 
@@ -53,12 +53,12 @@ If they explicitly don't want any starter structure, use **freeform**.
 
 ### 2. Classify
 
-Same as other book types: propose a section based on existing library sections and the
+Same as other book types: propose a section based on existing collection sections and the
 topic. Let the user confirm or choose a different section. If none of the existing
 sections fit, offer to create a new one.
 
-Generate a slug from the title (see `docs/library/book-shape.md` for rules). Check
-uniqueness within the library; suffix with `-2`, `-3` if needed.
+Generate a slug from the title (see `docs/coll/book-shape.md` for rules). Check
+uniqueness within the collection; suffix with `-2`, `-3` if needed.
 
 ### 3. Create and hand off
 
@@ -74,9 +74,9 @@ suggests a structure appropriate to the purpose (e.g., "consider a `notes/` subd
 for working notes"), but alexandria doesn't pre-create them. The user creates whatever
 they actually need as they go.
 
-Update `.library-index.yaml` with the new book's universal fields.
+Update `.collection-index.yaml` with the new book's universal fields.
 
-Invoke `/take-notes` once at the end to log the acquisition to `library-context.md`.
+Invoke `/coll-notes` once at the end to log the acquisition to `collection-context.md`.
 
 Tell the user where the book is and how to get started:
 
@@ -236,7 +236,7 @@ An author book — content the user is writing themselves. Purpose: {purpose}.
 ## Files
 - `metadata.yaml` — catalog entry
 - `README.md` — the book's spine (currently the starter; user edits freely)
-- `context.md` — interaction history (written by /take-notes)
+- `context.md` — interaction history (written by /coll-notes)
 
 Additional files and subdirectories are created by the user as needed. The README
 suggests a structure appropriate to the purpose, but the user decides the actual shape.
@@ -255,12 +255,12 @@ but the user makes the edits. The content is theirs.
 ## Updating this record
 
 - Edit `metadata.yaml` to change metadata fields
-- Use `/library` to move the book to a different section or rename it
-- Use `/take-notes` to log significant decisions or state
+- Use `/coll` to move the book to a different section or rename it
+- Use `/coll-notes` to log significant decisions or state
 
 ## Recent context
 
-(updated automatically by /take-notes after significant work sessions)
+(updated automatically by /coll-notes after significant work sessions)
 ```
 
 ## Adapting to the user
@@ -273,7 +273,7 @@ Don't over-explain the structure. The user wants to start writing, not read docu
 about their writing space. Keep the creation conversation short (three questions max:
 title, description, purpose). Classify the section, create the files, hand off.
 
-## What /new-author does not do
+## What /coll-author does not do
 
 - Does not pre-create subdirectories or content files beyond the universal files
 - Does not impose a specific structure; the purpose-based starter is a suggestion

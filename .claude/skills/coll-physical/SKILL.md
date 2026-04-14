@@ -1,4 +1,4 @@
-# /new-physical
+# /coll-physical
 
 Create a catalog record for a physical book (or other physical item) the user owns. No
 content is copied — the book lives on a shelf; this directory becomes its entry in the
@@ -6,15 +6,15 @@ library. Photo-based creation is the primary path; manual entry is supported as 
 fallback or supplement.
 
 Every book created by this skill conforms to the universal book shape (see
-`docs/library/book-shape.md` in the alexandria repo).
+`docs/coll/book-shape.md` in the alexandria repo).
 
 ## Before starting
 
-Detect the library context by walking up from the current directory looking for
-`.library-index.yaml`. If not found, explain that /new-physical must run inside an
-alexandria library and offer to help create one with /library.
+Detect the collection context by walking up from the current directory looking for
+`.collection-index.yaml`. If not found, explain that /coll-physical must run inside an
+alexandria collection and offer to help create one with /coll.
 
-Read the library index to understand existing sections; you'll need them for
+Read the collection index to understand existing sections; you'll need them for
 classification.
 
 ## The workflow
@@ -81,7 +81,7 @@ are `text:hardcover` for photographed books, but common options include `text:pa
 - **Shelf photo**: ask once for a shelf-level default (applied to all candidates), with
   per-book override available during confirmation. Shelves are typically homogeneous —
   one question covers the batch. A mixed shelf is rare; override is there when needed.
-- **Shortcut skills** (`/new-hardcover`, `/new-paperback`): media_type is pre-set by the
+- **Shortcut skills** (`/coll-hardcover`, `/coll-paperback`): media_type is pre-set by the
   shortcut; this question is skipped entirely.
 
 **Default confirmation**: for each candidate, show the draft metadata (including
@@ -110,14 +110,14 @@ from open book databases.
 
 For each confirmed (and possibly enriched) book:
 
-**Propose a section**. Base the proposal on existing library sections, the book's
+**Propose a section**. Base the proposal on existing collection sections, the book's
 subject if known from enrichment, and recent placements of similar books. If the batch
 came from a single shelf photo, propose one section as the shelf-level default and let
 the user accept it or override per book. If the user wants a new section, create it.
 
-**Generate a slug** from the title per the rules in docs/library/book-shape.md
+**Generate a slug** from the title per the rules in docs/coll/book-shape.md
 (lowercase, non-alphanumeric to hyphens, truncate to ~50 chars). Check uniqueness
-against existing slugs in the library; suffix with `-2`, `-3` if needed.
+against existing slugs in the collection; suffix with `-2`, `-3` if needed.
 
 **Create the book directory** at `{library}/{section}/{slug}/`.
 
@@ -129,11 +129,11 @@ against existing slugs in the library; suffix with `-2`, `-3` if needed.
 - `photo.{ext}` — the source photo, preserved by default. If the user opted out of
   preservation, omit this file and remove the `photo:` field from metadata.yaml.
 
-**Update `.library-index.yaml`** with the book's universal fields (one entry under its
+**Update `.collection-index.yaml`** with the book's universal fields (one entry under its
 section). For shelf batches, update once at the end rather than per book.
 
-**Invoke /take-notes** once at the end of the invocation to log the acquisition batch
-to `library-context.md`. Include: how many books were added, what workflow was used,
+**Invoke /coll-notes** once at the end of the invocation to log the acquisition batch
+to `collection-context.md`. Include: how many books were added, what workflow was used,
 any notable user preferences observed (e.g., "user prefers no online enrichment").
 
 ## metadata.yaml template
@@ -210,7 +210,7 @@ See `metadata.yaml` for the full catalog entry.
 ```markdown
 # {title}
 
-A physical book record. The book itself is on a shelf; this directory is the library's
+A physical book record. The book itself is on a shelf; this directory is the collection's
 catalog entry for it.
 
 ## Details
@@ -223,17 +223,17 @@ catalog entry for it.
 - `metadata.yaml` — catalog entry
 - `README.md` — the book's spine (what's displayed in views)
 - `photo.jpg` — visual record (if present)
-- `context.md` — interaction history (written by /take-notes on first use)
+- `context.md` — interaction history (written by /coll-notes on first use)
 
 ## Updating this record
 
 - Edit `metadata.yaml` to change metadata fields
 - Replace `photo.jpg` to update the visual record
-- Use `/library` to move or re-classify
+- Use `/coll` to move or re-classify
 
 ## Recent context
 
-(updated automatically by /take-notes after significant work sessions)
+(updated automatically by /coll-notes after significant work sessions)
 ```
 
 ## Adapting to the user
@@ -260,7 +260,7 @@ preferences.
 - **Photos are preserved locally by default** in the book's directory. Users can opt
   out. They are never uploaded anywhere beyond the vision LLM call.
 
-## What /new-physical does not do
+## What /coll-physical does not do
 
 - Does not digitize or copy book content
 - Does not store more than a short description from online enrichment

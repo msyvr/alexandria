@@ -1,28 +1,28 @@
-# /take-notes
+# /coll-notes
 
 Save persistent context for an alexandria book or library: decisions, user preferences,
 session history, open questions, and useful Q&A. Maintains the book's `context.md` (or
-the library's `library-context.md`) and updates the "Recent context" summary in CLAUDE.md.
+the collection's `collection-context.md`) and updates the "Recent context" summary in CLAUDE.md.
 
 ## Detection
 
-Walk up from the current directory looking for `.library-index.yaml` (the only definitive
-marker that we're inside an alexandria library):
+Walk up from the current directory looking for `.collection-index.yaml` (the only definitive
+marker that we're inside an alexandria collection):
 
-1. **`.library-index.yaml` found in an ancestor:**
-   - If the current directory IS the library root → target is `library-context.md` at the
-     library root
+1. **`.collection-index.yaml` found in an ancestor:**
+   - If the current directory IS the collection root → target is `collection-context.md` at the
+     collection root
    - If the current directory is (or is inside) one of the books listed in the index →
      target is that book's `context.md`
-   - Otherwise (inside the library tree but not in a recognized book) → explain to the
+   - Otherwise (inside the collection tree but not in a recognized book) → explain to the
      user and exit
 
-2. **No `.library-index.yaml` found in any ancestor** → not an alexandria context.
+2. **No `.collection-index.yaml` found in any ancestor** → not an alexandria context.
    Explain that take-notes is for alexandria libraries and exit.
 
 ## Process
 
-1. Locate the target file (`context.md` for a book, `library-context.md` for the library
+1. Locate the target file (`context.md` for a book, `collection-context.md` for the collection
    root) using detection above. If it doesn't exist yet, create it with this initial
    structure:
 

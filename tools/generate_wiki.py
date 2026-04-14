@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate a browseable wiki view of an alexandria library.
+"""Generate a browseable wiki view of an alexandria collection.
 
-Reads the library's .library-index.yaml and each book's metadata.yaml, produces
-static HTML in the library's wiki/ directory. Works over file:// — no server
+Reads the collection's .collection-index.yaml and each book's metadata.yaml, produces
+static HTML in the collection's wiki/ directory. Works over file:// — no server
 needed. Includes multi-axis index pages (by section, date, type, form, media_type)
 and individual book pages.
 
@@ -10,7 +10,7 @@ Run from the command line:
 
     uv run python tools/generate_wiki.py /path/to/alexandria-library
 
-Or invoked by the /library skill after library-modifying actions.
+Or invoked by the /coll skill after library-modifying actions.
 """
 
 import argparse
@@ -49,12 +49,12 @@ def narrative_enrich(book_data: dict) -> dict:
 
 
 def load_library(library_path: Path) -> dict:
-    """Load the library index from .library-index.yaml."""
-    index_path = library_path / ".library-index.yaml"
+    """Load the collection index from .collection-index.yaml."""
+    index_path = library_path / ".collection-index.yaml"
     if not index_path.exists():
         sys.exit(
             f"Error: {index_path} not found.\n"
-            f"Is {library_path} an alexandria library? Run /library to create one."
+            f"Is {library_path} an alexandria collection? Run /coll to create one."
         )
     with open(index_path) as f:
         data = yaml.safe_load(f) or {}
@@ -149,7 +149,7 @@ def slugify_section(section: str) -> str:
 
 
 def generate_wiki(library_path: Path) -> None:
-    """Generate the complete wiki for a library."""
+    """Generate the complete wiki for a collection."""
     library = load_library(library_path)
     all_books = collect_books(library_path, library)
 
@@ -194,7 +194,7 @@ def generate_wiki(library_path: Path) -> None:
     for section, books in books_by_section.items():
         section_slug = slugify_section(section)
         # Include removed books on section pages (rendered with "removed" marker);
-        # they're part of the historical record the library keeps. Sort active books
+        # they're part of the historical record the collection keeps. Sort active books
         # first, then removed books, both alphabetically within their group.
         sorted_books = sorted(
             books,
@@ -264,11 +264,11 @@ def generate_wiki(library_path: Path) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate alexandria library wiki")
+    parser = argparse.ArgumentParser(description="Generate alexandria collection wiki")
     parser.add_argument(
         "library_path",
         type=Path,
-        help="Path to the alexandria library root (contains .library-index.yaml)",
+        help="Path to the alexandria collection root (contains .collection-index.yaml)",
     )
     args = parser.parse_args()
 

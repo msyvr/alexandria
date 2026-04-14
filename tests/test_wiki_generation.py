@@ -86,14 +86,14 @@ def validate_metadata(metadata: dict, label: str):
             f"got {metadata['media_type']!r}",
         )
     if "slug" in metadata:
-        # Slug should match directory name (checked during library creation)
+        # Slug should match directory name (checked during collection creation)
         check(
             f"{label}: slug is lowercase with hyphens",
             metadata["slug"] == metadata["slug"].lower() and " " not in metadata["slug"],
         )
 
 
-# --- Synthetic library creation ---
+# --- Synthetic collection creation ---
 
 def create_book(lib: Path, section: str, slug: str, metadata: dict, readme: str):
     """Create a book directory with metadata.yaml and README.md."""
@@ -207,7 +207,7 @@ def create_synthetic_library(lib: Path):
         "title": "Outdated Reference",
         "book_type": "physical",
         "section": "fiction",
-        "description": "A book that was removed from the library.",
+        "description": "A book that was removed from the collection.",
         "date_added": "2025-06-01",
         "form": "physical",
         "media_type": "text:paperback",
@@ -220,18 +220,18 @@ def create_synthetic_library(lib: Path):
                 "# Outdated Reference\n\nThis content should not be shown — the book is removed.")
     books.append({"path": "fiction/outdated-reference", **{k: meta_removed[k] for k in REQUIRED_FIELDS | {"author", "removed_at", "removed_reason"}}})
 
-    # --- Build .library-index.yaml ---
+    # --- Build .collection-index.yaml ---
     sections: dict[str, list] = {}
     for book in books:
         section = book.get("section", "unsorted")
         sections.setdefault(section, []).append(book)
 
     index = {
-        "library_name": "test-library",
+        "collection_name": "test-library",
         "created": "2026-03-01",
         "sections": {s: {"books": bks} for s, bks in sections.items()},
     }
-    (lib / ".library-index.yaml").write_text(yaml.dump(index, default_flow_style=False, sort_keys=False))
+    (lib / ".collection-index.yaml").write_text(yaml.dump(index, default_flow_style=False, sort_keys=False))
 
     return books
 

@@ -118,6 +118,10 @@ Claude Code determines the appropriate book type and guides you through building
 ### Guides
 
 - [Terminal basics](docs/guides/terminal-basics.md) — directories, git repos, Claude Code sessions, running multiple sessions with tabs
+- [YAML basics](docs/guides/yaml-basics.md) — reading and editing metadata.yaml files
+- [Anatomy of a book](docs/guides/anatomy-of-a-book.md) — what's inside a book directory, what each file does, what you can safely change
+- [Working with scouts](docs/guides/working-with-scouts.md) — the scout lifecycle: creating, maintaining, settling, importing
+- [Troubleshooting](docs/guides/troubleshooting.md) — common issues and how to fix them
 
 ### Reference docs
 

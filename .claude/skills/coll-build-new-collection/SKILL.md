@@ -9,9 +9,17 @@ remove books, and so on.
 
 ## Before starting
 
-If a `.collection-index.yaml` already exists in the current directory or a parent,
-a collection already exists here. Let the user know and ask if they want to create
-a separate collection elsewhere, or work with the existing one.
+**Always start by asking the user for a name and location.** Do not check for
+existing collections before asking — go straight to the two questions below.
+Claude Code may have memory from a previous session suggesting a collection
+existed, but that state may be stale (the user may have deleted it, moved it,
+or started fresh). The user invoked this skill because they want to create a
+new collection; trust that intent.
+
+After the user provides a name and location, check whether a
+`.collection-index.yaml` already exists at that specific path. If it does, let
+the user know and ask: create a fresh collection there (overwriting the index),
+use a different location, or work with the existing one?
 
 ## The workflow
 

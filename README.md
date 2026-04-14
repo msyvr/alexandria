@@ -216,10 +216,9 @@ This reads the list of what alexandria needs and installs it. You'll see output 
 
 ### 7. Create your collection
 
-Start Claude Code from the alexandria repo directory:
+You should still be in the alexandria directory from the previous step. Start Claude Code:
 
 ```
-cd ~/alexandria
 claude
 ```
 

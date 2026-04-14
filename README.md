@@ -228,7 +228,19 @@ At the Claude Code prompt, type:
 /coll-build-new-collection
 ```
 
-Name your collection and choose where to create it. The skill copies the collection skills into your new collection's `.claude/skills/` directory.
+Name your collection and choose where to create it. Claude will then create the collection's files. You'll see prompts asking for permission to create files and directories — for example:
+
+```
+Create file
+  .collection-index.yaml
+
+Do you want to create .collection-index.yaml?
+> 1. Yes
+  2. Yes, allow all edits in my-collection/ during this session
+  3. No
+```
+
+Say **Yes** (or choose option 2 to allow all edits in the collection without being asked for each one — recommended if you don't want to approve every file individually). These are the collection's catalog and skill files being set up. The skill copies the collection skills into your new collection's `.claude/skills/` directory.
 
 ### 8. Work from your collection
 

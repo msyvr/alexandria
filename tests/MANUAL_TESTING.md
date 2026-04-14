@@ -48,12 +48,11 @@ This checklist defines what "done" looks like for skills-level testing. Run thro
 - [ ] `/coll-digital` and paste a block of text with a title
 - [ ] Verify: `original.txt` stored, `media_type: text:plaintext`
 
-## Author book
+## User-created content (via /coll-digital)
 
-- [ ] `/coll-author`
-- [ ] Choose a purpose (e.g., "project")
-- [ ] Verify: book directory created with starter README matching the chosen purpose
-- [ ] Verify: no pre-created subdirectories (only universal files)
+- [ ] `/coll-digital` with a markdown file you've written
+- [ ] Verify: file imported, metadata populated, `book_type: digital`
+- [ ] Verify: the `author` field can be set to your name if desired
 
 ## Scout
 

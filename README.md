@@ -1,6 +1,6 @@
 # alexandria
 
-Lightweight personal collection infrastructure for books and other content/items you own, keep, and reference — physical and digital alike.
+Lightweight private collection infrastructure for books and other content/items you own, keep, and reference — physical and digital alike.
 
 Alexandria provides minimal structure to make a collection browseable at scale: a catalog, consistent book shape, classification conventions, and generated views. The structure is lightweight enough that you can browse it without invoking any AI at all.
 
@@ -10,7 +10,7 @@ See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, collection invariants,
 
 ## Who is this for?
 
-Anyone who wants to organize a personal collection independently — to own the result rather than depend on an external platform, and to have the ability to use the collection without any special or proprietary software. Content can be viewed in any browser, in a simple format. No technical background required, though technical users are equally welcome.
+Anyone who wants to organize a private collection independently — to own the result rather than depend on an external platform, and to have the ability to use the collection without any special or proprietary software. Content can be viewed in any browser, in a simple format. No technical background required, though technical users are equally welcome.
 
 ### An optional side benefit: technical upskilling
 
@@ -31,10 +31,6 @@ Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanni
 ### Digital
 
 Digital content you want to bring into the collection — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. The collection copies the content, preserves the original exactly, and extracts metadata so you can find it later. Run `/coll-digital` or `/coll` → add a book → digital.
-
-### Author
-
-A container for content you write yourself — notes, research, drafts, project plans, journal entries, essays. The skill creates the book's structure (metadata, starter README, operational context) and hands off to you for writing. Pick a purpose (project, collection, journal, notes, or freeform) and get a starter README suited to that shape. Run `/coll-author` or `/coll` → add a book → author.
 
 ### Scout
 
@@ -81,7 +77,6 @@ From `/coll`, choose "add a book" and describe what you need:
 - "I have a physical book I want to catalog" — runs /coll-physical
 - "I want to photograph my bookshelf and catalog the books" — runs /coll-physical with the shelf workflow
 - "I want to add these PDFs (or URLs, or notes) to my library" — runs /coll-digital
-- "I want to start a new writing project / journal / notes collection" — runs /coll-author
 - "I need to understand treatment options for [condition]" — runs /coll-scout
 - "I want to track developments in [field]" — runs /coll-scout
 
@@ -116,7 +111,6 @@ Claude Code determines the appropriate book type and guides you through building
 - [/coll-hardcover](.claude/skills/coll-hardcover/SKILL.md) — shortcut for a hardcover (calls /coll-physical with media_type pre-set)
 - [/coll-paperback](.claude/skills/coll-paperback/SKILL.md) — shortcut for a paperback
 - [/coll-digital](.claude/skills/coll-digital/SKILL.md) — bring digital content (files, URLs, text) into the collection
-- [/coll-author](.claude/skills/coll-author/SKILL.md) — create a container for your own writing (notes, drafts, projects, journals)
 - [/coll-scout](.claude/skills/coll-scout/SKILL.md) — create a scout for any topic
 - [/coll-notes](.claude/skills/coll-notes/SKILL.md) — save notes about a book or the collection
 
@@ -226,8 +220,7 @@ All `/coll-*` commands are available here. Type `/coll` and hit tab to see the f
 From the `/coll` prompt, choose "add a book" and describe what you need. A few examples:
 
 - **Physical book**: "I have a physical book I want to catalog" — you'll be asked for a photo (single book or shelf) or to enter the metadata by hand
-- **Digital content**: "I want to add these files" or "save this URL" — files are copied, URLs are fetched and archived, metadata is extracted
-- **Author book**: "I want to start a new project / journal / notes collection" — the skill creates the structure; you start writing
+- **Digital content**: "I want to add these files" or "save this URL" — files are copied, URLs are fetched and archived, metadata is extracted (also use this for your own writing — markdown notes, drafts, anything you've created)
 - **Scout**: "I need to understand treatment options for [condition]" or "I want to track developments in [field]" — Claude Code builds a structured knowledge base through a seven-phase process
 
 Claude Code guides you from there, asking the questions relevant to the book type you chose. You provide the direction; it handles the construction.

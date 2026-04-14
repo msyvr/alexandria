@@ -20,7 +20,6 @@ Present these options:
 - **Add a hardcover** (shortcut — skips the media type question) → `/coll-hardcover`
 - **Add a paperback** (shortcut) → `/coll-paperback`
 - **Add digital content** (files, URLs, or pasted text) → `/coll-digital`
-- **Start a writing project** (notes, drafts, journal, freeform) → `/coll-author`
 - **Create a scout** (a living knowledge base that monitors a domain) → `/coll-scout`
 
 **Manage:**
@@ -58,7 +57,7 @@ organized by section:
 My Collection
 ├── Fiction
 │   ├── The Dispossessed (physical, text:hardcover)
-│   └── Short Stories (author, text:markdown)
+│   └── Short Stories (digital, text:markdown)
 └── Research
     ├── AI Safety Scout (scout, live)
     └── Causal Inference Primer (digital, text:pdf)

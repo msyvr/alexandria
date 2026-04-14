@@ -2,7 +2,7 @@
 
 ## The core idea
 
-Alexandria is lightweight personal collection infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
+Alexandria is lightweight private collection infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
 
 The collection is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent outer shape. Some books are content you've collected from elsewhere. Some are your own writing. A few may be dynamic — living resources that update themselves. The collection's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
 
@@ -27,7 +27,7 @@ The structure is deliberately lightweight. It's not a database. It's not an app.
 
 ## Who this is for
 
-Anyone who would benefit from an organized, personal collection of digital content they want to own rather than depend on someone else's platform. No technical background is required. Some users will be software engineers who don't want to build the scaffolding from scratch. Some will have never opened a terminal. Both want the same thing: a collection they own, understand, and can use.
+Anyone who would benefit from an organized, private collection of digital content they want to own rather than depend on someone else's platform. No technical background is required. Some users will be software engineers who don't want to build the scaffolding from scratch. Some will have never opened a terminal. Both want the same thing: a collection they own, understand, and can use.
 
 The tool meets people where they are technically. For users new to working in a terminal, the process builds practical skills as a side effect. For technical users, it skips the hand-holding and gets to the result.
 
@@ -77,15 +77,11 @@ Best-quality AI is the default for photo extraction (vision models benefit from 
 
 ### Digital (available now)
 
-Digital content the user wants to bring into their library — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. Content is copied into the collection, preserved exactly in its original format, and cataloged with extracted metadata (titles, authors, source URLs, timestamps). Runs through `/coll-digital` or `/coll` → add a book → digital.
-
-### Author (available now)
-
-A container for content the user writes themselves — notes, research, drafts, project plans, journal entries, essays. The /coll-author skill creates an empty book structure (universal files plus a starter README suited to the user's stated purpose) and hands off to the user for writing. Five supported purposes: project, collection, journal, notes, freeform. Structured enough to be searchable; flexible enough for any shape of personal writing.
+Digital content the user wants to bring into their collection — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. This includes the user's own work (notes, drafts, creative output) as well as content from other sources. Content is copied into the collection, preserved exactly in its original format, and cataloged with extracted metadata. Runs through `/coll-digital`.
 
 ### Scout (available, but not the focus)
 
-A living knowledge base that monitors a domain. Unlike digital and author, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+A living knowledge base that monitors a domain. Unlike other book types, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
 
 A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static book in the collection.
 

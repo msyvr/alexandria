@@ -80,19 +80,9 @@ Remaining for later passes:
 - [ ] **Reference manager bulk import** (Zotero, Mendeley exports) — separate pass
 - [ ] **More enrichment sources** — currently Open Library and Semantic Scholar
 
-## Author book type (initial implementation complete)
+## Author book type (removed)
 
-A container for content the user writes themselves.
-
-- [x] **Define scope**: notes, research, drafts, project plans, journal entries, essays — any personal writing
-- [x] **Design the structure**: five purposes (project, collection, journal, notes, freeform), each with a short starter README template. No pre-created subdirectories; user creates content files as they need them.
-- [x] **Build the /coll-author skill**: three-step conversational flow (intent → classify → create and hand off); no extraction, no confirmation, no enrichment since the content is user-produced
-- [x] **/coll routing**: "I want to organize my own writing" → /coll-author
-
-Remaining for later passes:
-- [ ] Help-the-user commands: drafting, reviewing, organizing assistance (currently handled ad-hoc through Claude Code reading the book's files)
-- [ ] Version history integration for books with frequent edits (if git per-book proves insufficient)
-- [ ] Purpose-specific skills (e.g., /new-journal, /new-project) if the usage pattern warrants shortcut skills similar to /coll-hardcover
+The Author book type was removed. User-created content (notes, drafts, art, writing) is handled by `/coll-digital` (for digital files) or `/coll-physical` (for physical creations). There's no need for a separate book type when the existing types cover the use case — the `author` metadata field captures who created the content.
 
 ## Scout book type
 

@@ -10,7 +10,6 @@ building and organizing personal curated collections.
 - `.claude/skills/coll-hardcover/SKILL.md` — shortcut for hardcover (calls coll-physical)
 - `.claude/skills/coll-paperback/SKILL.md` — shortcut for paperback
 - `.claude/skills/coll-digital/SKILL.md` — bring in digital content
-- `.claude/skills/coll-author/SKILL.md` — create a container for user-written content
 - `.claude/skills/coll-scout/SKILL.md` — create a scout (living knowledge base)
 - `.claude/skills/coll-notes/SKILL.md` — maintain persistent context
 - `docs/collection/` — collection-level reference docs (book shape spec)

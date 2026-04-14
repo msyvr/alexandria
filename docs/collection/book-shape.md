@@ -30,7 +30,7 @@ One more file is created on first use but isn't required at acquisition:
 └── context.md          # interaction history, written by /coll-notes
 ```
 
-**README.md**: the book's spine. A reader should be able to open it and understand what this book is, what's in it, and how to navigate its contents, without any other context. Each book type provides its own README template; scouts generate a rich overview, physical books show metadata and (if present) a photo, digital books show provenance and content, author books show the user's writing.
+**README.md**: the book's spine. A reader should be able to open it and understand what this book is, what's in it, and how to navigate its contents, without any other context. Each book type provides its own README template; scouts generate a rich overview, physical books show metadata and (if present) a photo, digital books show provenance and content.
 
 **metadata.yaml**: the catalog entry (see schema below).
 
@@ -47,7 +47,7 @@ One more file is created on first use but isn't required at acquisition:
 ```yaml
 slug: "condition-x-treatments"        # unique within library; matches directory name
 title: "Condition X Treatments"       # display name, any characters
-book_type: "scout"                    # physical, digital, author, or scout
+book_type: "scout"                    # physical, digital, or scout
 section: "health"                     # top-level library section
 description: "Living knowledge base tracking treatment options."  # one line
 date_added: "2026-04-10"              # ISO 8601 date
@@ -100,9 +100,8 @@ Display name. Any characters allowed. Shown in catalog views and used as the `<t
 ### `book_type` (required, enum)
 
 One of:
-- `physical` — a record of a physical book the user owns (no content files)
-- `digital` — digital content the user has brought into the collection (local files, URLs, pasted text) with provenance
-- `author` — content the user wrote themselves
+- `physical` — a record of a physical item the user owns (no content files; the item lives on a shelf)
+- `digital` — digital content the user has brought into the collection (local files, URLs, pasted text, including the user's own work)
 - `scout` — a living, AI-maintained knowledge base
 
 This determines which creation skill was used and what type-specific fields to expect.
@@ -177,7 +176,6 @@ Image formats:
 - `physical`: asked during acquisition (common options: hardcover, paperback, magazine, vinyl, cd, dvd, other)
 - `digital`: inferred from file extension (`.pdf` → `text:pdf`, `.mp3` → `audio:digital`, etc.)
 - `scout`: `text:markdown` (scouts are structurally markdown files)
-- `author`: `text:markdown` default (future)
 
 ### `status` (required, enum)
 
@@ -192,8 +190,9 @@ There is no `archived` status. Archiving is accomplished by moving a book to an 
 Semantics vary by book type:
 - **physical**: the literal author of the physical book (e.g., "Ursula K. Le Guin")
 - **digital**: the author(s) of the digital source; for papers with many authors, use "First Author et al."
-- **author**: typically omitted; this is content the user wrote
 - **scout**: typically omitted; scouts are aggregated rather than authored
+
+For the user's own work (imported via `/coll-digital`), set author to the user's name or leave it null — the provenance notes can capture that the user created it.
 
 When null or omitted, catalog views display "—" or skip the author display.
 

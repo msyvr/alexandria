@@ -51,7 +51,7 @@ def check_not_contains(name: str, text: str, substring: str):
 # --- Metadata validation ---
 
 REQUIRED_FIELDS = {"slug", "title", "book_type", "section", "description", "date_added", "form", "media_type", "status"}
-VALID_BOOK_TYPES = {"physical", "digital", "author", "scout"}
+VALID_BOOK_TYPES = {"physical", "digital", "scout"}
 VALID_FORMS = {"physical", "digital"}
 VALID_STATUSES = {"active", "removed"}
 
@@ -149,22 +149,21 @@ def create_synthetic_library(lib: Path):
                 "# Causal Inference Primer\n\n*by A. Researcher*\n\nContent preserved in original.pdf.")
     books.append({"path": "professional/causal-inference-primer", **{k: meta_digital[k] for k in REQUIRED_FIELDS | {"author"}}})
 
-    # --- Author book (project purpose) ---
-    meta_author = {
+    # --- User-authored digital book (markdown notes) ---
+    meta_notes = {
         "slug": "thesis-notes",
         "title": "Thesis Notes",
-        "book_type": "author",
+        "book_type": "digital",
         "section": "research",
         "description": "Working notes for my thesis on policy evaluation.",
         "date_added": "2026-04-05",
         "form": "digital",
         "media_type": "text:markdown",
         "status": "active",
-        "purpose": "project",
     }
-    create_book(lib, "research", "thesis-notes", meta_author,
+    create_book(lib, "research", "thesis-notes", meta_notes,
                 "# Thesis Notes\n\n## Current focus\n\nLiterature review on IV methods.\n\n## Open questions\n\n- How to handle weak instruments?")
-    books.append({"path": "research/thesis-notes", **{k: meta_author[k] for k in REQUIRED_FIELDS}})
+    books.append({"path": "research/thesis-notes", **{k: meta_notes[k] for k in REQUIRED_FIELDS}})
 
     # --- Live scout ---
     meta_scout_live = {
@@ -320,10 +319,10 @@ def verify_wiki(lib: Path, books: list[dict]):
     check_contains("digital book: title shown", digital_page, "Causal Inference Primer")
     check_contains("digital book: media_type shown", digital_page, "text:pdf")
 
-    # --- Author book ---
-    author_page = (wiki / "books" / "thesis-notes.html").read_text()
-    check_contains("author book: title shown", author_page, "Thesis Notes")
-    check_contains("author book: inline content", author_page, "Literature review on IV methods")
+    # --- User-authored digital book ---
+    notes_page = (wiki / "books" / "thesis-notes.html").read_text()
+    check_contains("digital notes: title shown", notes_page, "Thesis Notes")
+    check_contains("digital notes: inline content", notes_page, "Literature review on IV methods")
 
     # --- Section page includes removed books ---
     fiction_section = (wiki / "by-section" / "fiction.html").read_text()

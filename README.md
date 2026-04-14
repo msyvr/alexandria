@@ -6,7 +6,7 @@ Alexandria provides minimal structure to make a collection browseable at scale: 
 
 Alexandria borrows heavily from the real-world library: a curated collection where items are stored in predictable places, findable by catalog or by walking the stacks. The collection is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent shape. Most books are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves (see [scout](#scout-available-now--the-exception-not-the-rule)). The collection's job is to hold them, organize them, and make them browseable — with or without an agent-librarian's help.
 
-See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page.
+See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).
 
 ## Who is this for?
 
@@ -115,9 +115,14 @@ Claude Code determines the appropriate book type and guides you through building
 - [/coll-scout](.claude/skills/coll-scout/SKILL.md) — import an existing scout into the collection
 - [/coll-notes](.claude/skills/coll-notes/SKILL.md) — save notes about a book or the collection
 
+### Guides
+
+- [Terminal basics](docs/guides/terminal-basics.md) — directories, git repos, Claude Code sessions, running multiple sessions with tabs
+
 ### Reference docs
 
-- [docs/scout/](docs/scout/) — process phases, critique checklist, schema patterns, walkthroughs
+- [docs/collection/](docs/collection/) — collection-level specs (universal book shape)
+- [docs/scout/](docs/scout/) — scout process phases, critique checklist, schema patterns, walkthroughs
 
 ### Project direction
 

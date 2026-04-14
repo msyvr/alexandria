@@ -112,10 +112,15 @@ The Author book type was removed. User-created content (notes, drafts, art, writ
 
 - [ ] Terminal basics guide
 - [ ] Claude Code onboarding: installation walkthrough, first session, what to expect
-- [ ] YAML literacy: how to read and edit structured data
+- [x] Terminal basics guide (docs/guides/terminal-basics.md)
+- [x] Python and uv guide (docs/guides/python-and-uv.md) — what Python, dependencies, uv, and git are for non-technical users
+- [x] YAML basics guide (docs/guides/yaml-basics.md)
+- [x] Anatomy of a book guide (docs/guides/anatomy-of-a-book.md)
+- [x] Working with scouts guide (docs/guides/working-with-scouts.md)
+- [x] Troubleshooting guide (docs/guides/troubleshooting.md)
+- [ ] **Dependency diagram**: visual graph/diagram showing what tools are needed, what depends on what, with links for each. Add to README or a dedicated guide.
 - [ ] Running scripts: what the scripts do, how to read output, what to do on failure
-- [ ] Git basics and GitHub basics
-- [ ] Order guides so each builds on the last
+- [ ] Order guides so each builds on the last (reading path from first-timer to comfortable user)
 
 ## Delivery
 

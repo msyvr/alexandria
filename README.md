@@ -120,6 +120,7 @@ Claude Code determines the appropriate book type and guides you through building
 ### Guides
 
 - [Terminal basics](docs/guides/terminal-basics.md) — directories, git repos, Claude Code sessions, running multiple sessions with tabs
+- [Python and uv](docs/guides/python-and-uv.md) — what Python, dependencies, uv, and git are (one paragraph each) and why you need them
 - [YAML basics](docs/guides/yaml-basics.md) — reading and editing metadata.yaml files
 - [Anatomy of a book](docs/guides/anatomy-of-a-book.md) — what's inside a book directory, what each file does, what you can safely change
 - [Working with scouts](docs/guides/working-with-scouts.md) — the scout lifecycle: creating, maintaining, settling, importing
@@ -141,48 +142,64 @@ Claude Code determines the appropriate book type and guides you through building
 
 Step-by-step instructions assuming no prior terminal experience. Every command is shown exactly as you'll type it.
 
+Alexandria needs a few tools installed on your machine. For background on what each tool is and why it's needed, see the [Python and uv guide](docs/guides/python-and-uv.md). For help with the terminal itself, see the [terminal basics guide](docs/guides/terminal-basics.md).
+
 ### 1. Open a terminal
 
+A terminal is a text window where you type commands. See the [terminal basics guide](docs/guides/terminal-basics.md) for more detail.
+
 - **macOS**: Press `Cmd + Space`, type `Terminal`, press Enter.
-- **Windows**: Install WSL (Windows Subsystem for Linux) from the Microsoft Store, then open Ubuntu from the Start menu.
+- **Windows**: You'll need WSL (Windows Subsystem for Linux), which lets you run Linux commands on Windows. Install "Ubuntu" from the Microsoft Store, then open it from the Start menu. This gives you a terminal.
 - **Linux**: Open your Terminal or Konsole application.
 
 ### 2. Check that Python is installed
+
+Python is the programming language alexandria's tools are written in. You don't need to write Python — you just need it installed so the tools can run.
 
 ```
 python3 --version
 ```
 
-You should see something like `Python 3.13.2`. If you see "command not found," install Python from [python.org/downloads](https://python.org/downloads).
+You should see something like `Python 3.13.2`. If you see "command not found," install Python from [python.org/downloads](https://python.org/downloads) — download the installer for your system, run it, then try the command again.
 
 ### 3. Check that Git is installed
+
+Git is a tool for downloading and tracking changes to projects. You need it to download alexandria.
 
 ```
 git --version
 ```
 
-You should see something like `git version 2.43.0`. If not:
+You should see something like `git version 2.43.0`. If you see "command not found":
 
-- **macOS**: `xcode-select --install`
-- **Windows (WSL)**: `sudo apt install git`
-- **Linux**: `sudo apt install git` (Ubuntu/Debian) or `sudo dnf install git` (Fedora)
+- **macOS**: type `xcode-select --install` and follow the prompts
+- **Windows (WSL/Ubuntu)**: type `sudo apt install git` (it will ask for your password)
+- **Linux**: type `sudo apt install git` (Ubuntu/Debian) or `sudo dnf install git` (Fedora)
 
 ### 4. Install Claude Code
 
-Go to [claude.ai/claude-code](https://claude.ai/claude-code) and follow the installation instructions. You'll need an Anthropic account.
+Claude Code is the AI assistant that reads alexandria's skills and helps you build and manage your collection. You'll need an Anthropic account (free to create; Claude Code is included with a [Claude Pro subscription](https://claude.com/pricing) at $20/month).
 
-Verify: `claude --version`
+Go to [claude.ai/claude-code](https://claude.ai/claude-code) and follow their installation instructions.
+
+Verify it's installed by typing: `claude --version`
 
 ### 5. Download alexandria
+
+This command downloads the alexandria project to your computer:
 
 ```
 cd ~
 git clone https://github.com/msyvr/alexandria.git
 ```
 
-### 6. Install uv and alexandria's Python dependencies
+The first line (`cd ~`) goes to your home directory. The second line downloads alexandria into a folder called `alexandria`. You'll see progress messages — wait until you're back at the prompt.
 
-Alexandria uses [uv](https://docs.astral.sh/uv/) to manage Python dependencies. Install uv (one-time):
+### 6. Install uv and alexandria's dependencies
+
+Alexandria's tools depend on a few shared Python packages (for reading YAML files, converting markdown to HTML, extracting PDF metadata, and so on). [uv](https://docs.astral.sh/uv/) is the tool that installs and manages these. See the [Python and uv guide](docs/guides/python-and-uv.md) for more about what these are.
+
+Install uv (one-time — paste this line and press Enter):
 
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -195,7 +212,7 @@ cd ~/alexandria
 uv sync
 ```
 
-This creates a virtual environment in `~/alexandria/.venv` and installs everything alexandria needs (PyYAML, requests, markdown-it-py, BeautifulSoup, html2text, pypdf).
+This reads the list of what alexandria needs and installs it. You'll see output showing what was installed. After this, everything is ready.
 
 ### 7. Create your collection
 

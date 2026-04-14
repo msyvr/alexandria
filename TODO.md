@@ -4,7 +4,7 @@
 
 These items earn alexandria's place over a plain folder. See ASPIRATIONS.md for the collection invariants that drive them.
 
-- [x] **Universal book shape**: defined in `docs/coll/book-shape.md`. Every book has README, metadata.yaml, CLAUDE.md; universal fields are slug, title, book_type, section, description, date_added, form (binary), media_type (hierarchical), status. /coll-scout updated to conform.
+- [x] **Universal book shape**: defined in `docs/coll/book-shape.md`. Every book has README, metadata.yaml, CLAUDE.md; universal fields are slug, title, book_type, section, description, date_added, form (binary), media_type (hierarchical), status. /coll-new-scout updated to conform.
 - [x] **Form + media_type fields on every book**: schema uses `form` (binary: digital/physical) and `media_type` (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). Generated views can filter by either axis.
 - [ ] **Multi-axis catalog views**: generate library views by section (current), by date added, by book type, by form, by media_type (with content-type grouping via the `:` split). All generated from `.collection-index.yaml`, all browseable without Claude.
 - [ ] **Library-level reference docs** (`docs/coll/`): catalog format specification, classification conventions, acquisition and weeding patterns. Rebalance the repo so library docs match the depth of scout docs.

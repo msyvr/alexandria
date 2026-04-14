@@ -77,8 +77,8 @@ From `/coll`, choose "add a book" and describe what you need:
 - "I have a physical book I want to catalog" — runs /coll-physical
 - "I want to photograph my bookshelf and catalog the books" — runs /coll-physical with the shelf workflow
 - "I want to add these PDFs (or URLs, or notes) to my library" — runs /coll-digital
-- "I need to understand treatment options for [condition]" — runs /coll-scout
-- "I want to track developments in [field]" — runs /coll-scout
+- "I need to understand treatment options for [condition]" — runs /coll-new-scout
+- "I want to track developments in [field]" — runs /coll-new-scout
 
 Claude Code determines the appropriate book type and guides you through building it. Physical and scout book types are available now; import and author are planned.
 
@@ -111,7 +111,8 @@ Claude Code determines the appropriate book type and guides you through building
 - [/coll-hardcover](.claude/skills/coll-hardcover/SKILL.md) — shortcut for a hardcover (calls /coll-physical with media_type pre-set)
 - [/coll-paperback](.claude/skills/coll-paperback/SKILL.md) — shortcut for a paperback
 - [/coll-digital](.claude/skills/coll-digital/SKILL.md) — bring digital content (files, URLs, text) into the collection
-- [/coll-scout](.claude/skills/coll-scout/SKILL.md) — create a scout for any topic
+- [/coll-new-scout](.claude/skills/coll-new-scout/SKILL.md) — create a new scout for any topic
+- [/coll-scout](.claude/skills/coll-scout/SKILL.md) — import an existing scout into the collection
 - [/coll-notes](.claude/skills/coll-notes/SKILL.md) — save notes about a book or the collection
 
 ### Reference docs

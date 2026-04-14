@@ -20,7 +20,8 @@ Present these options:
 - **Add a hardcover** (shortcut — skips the media type question) → `/coll-hardcover`
 - **Add a paperback** (shortcut) → `/coll-paperback`
 - **Add digital content** (files, URLs, or pasted text) → `/coll-digital`
-- **Create a scout** (a living knowledge base that monitors a domain) → `/coll-scout`
+- **Create a new scout** (a living knowledge base that monitors a domain) → `/coll-new-scout`
+- **Import an existing scout** (one built independently, outside the collection) → `/coll-scout`
 
 **Manage:**
 - **Browse my collection** — show the table of contents in the terminal; or regenerate

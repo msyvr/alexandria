@@ -34,7 +34,7 @@ One more file is created on first use but isn't required at acquisition:
 
 **metadata.yaml**: the catalog entry (see schema below).
 
-**CLAUDE.md**: operational context for Claude Code when the user returns to the book in a future session. Book-type-specific content: scouts describe their schema and update commands, physical books describe their source and any online enrichment policy, etc. Kept lean (~40-60 lines). See `.claude/skills/coll-scout/SKILL.md` for the scout template.
+**CLAUDE.md**: operational context for Claude Code when the user returns to the book in a future session. Book-type-specific content: scouts describe their schema and update commands, physical books describe their source and any online enrichment policy, etc. Kept lean (~40-60 lines). See `.claude/skills/coll-new-scout/SKILL.md` for the scout creation template.
 
 **context.md**: interaction history written by `/coll-notes`. Created on first invocation. Contains decisions, user preferences, session log, open questions, and useful Q&A. Universal format across all book types.
 

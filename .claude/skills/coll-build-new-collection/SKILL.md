@@ -47,6 +47,7 @@ a separate collection elsewhere, or work with the existing one.
    ├── coll-hardcover/SKILL.md
    ├── coll-paperback/SKILL.md
    ├── coll-digital/SKILL.md
+   ├── coll-new-scout/SKILL.md
    ├── coll-scout/SKILL.md
    └── coll-notes/SKILL.md
    ```
@@ -83,7 +84,8 @@ a separate collection elsewhere, or work with the existing one.
    > Then type `/coll-menu` for guided options, or invoke skills directly:
    > - `/coll-physical` — catalog a physical book
    > - `/coll-digital` — add digital content (files, URLs, text)
-   > - `/coll-scout` — create a living knowledge base on a topic
+   > - `/coll-new-scout` — create a living knowledge base on a topic
+   > - `/coll-scout` — import an existing scout into the collection
    >
    > Type `/coll-` and hit tab to see all available commands.
 

@@ -54,11 +54,19 @@ This checklist defines what "done" looks like for skills-level testing. Run thro
 - [ ] Verify: file imported, metadata populated, `book_type: digital`
 - [ ] Verify: the `author` field can be set to your name if desired
 
-## Scout
+## Scout — create new
 
-- [ ] `/coll-scout` with a small topic (e.g., "the top 5 programming languages")
+- [ ] `/coll-new-scout` with a small topic (e.g., "the top 5 programming languages")
 - [ ] Verify: the seven-phase process runs through at least scope and research
 - [ ] (Full scout testing takes longer; confirm at least the first 2-3 phases work)
+
+## Scout — import existing
+
+- [ ] Build a scout independently first (outside the collection), or have one from a previous session
+- [ ] `/coll-scout` and provide the path to the existing scout directory
+- [ ] Verify: scout directory moved/copied into the collection under the right section
+- [ ] Verify: metadata.yaml present with universal fields + `book_type: scout`
+- [ ] Verify: `.collection-index.yaml` updated
 
 ## Browsing
 

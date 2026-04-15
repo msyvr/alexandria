@@ -37,12 +37,8 @@ work with the existing one? If it doesn't exist, proceed with creation.
    ```yaml
    collection_name: "my-collection"
    created: "YYYY-MM-DD"
-   source_repo: "/path/to/current/project"
    sections: {}
    ```
-
-   The `source_repo` field records where the alexandria repo lives on this machine.
-   It's used by `/coll-menu` → update-skills to find the latest skill files.
    Set it to the current project root (the directory Claude Code is running from,
    which should be the cloned alexandria repo on first run).
 
@@ -59,7 +55,8 @@ work with the existing one? If it doesn't exist, proceed with creation.
    ├── coll-digital/SKILL.md
    ├── coll-new-scout/SKILL.md
    ├── coll-scout/SKILL.md
-   └── coll-notes/SKILL.md
+   ├── coll-notes/SKILL.md
+   └── coll-update-from-latest-alexandria/SKILL.md
    ```
 
    This makes all `/coll-*` commands available when the user starts Claude Code

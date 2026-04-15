@@ -33,8 +33,7 @@ Present these options:
 - **Review sections** — propose reorganization when sections have grown or drifted. See
   "Soft-locked section management" below.
 - **Regenerate wiki** — rebuild the browseable HTML view from the current catalog
-- **Update skills** — copy the latest skills from the alexandria repo into this
-  collection. See "Update skills" below.
+- **Update skills** → `/coll-update-from-latest-alexandria`
 - **Save notes** → `/coll-notes`
 
 ## Adapting to the user
@@ -134,17 +133,6 @@ conditions suggest the structure isn't serving the collection:
 7. Invoke `/coll-notes` to log the review.
 8. Regenerate the wiki.
 
-## Update skills
-
-Copies the latest skills from the alexandria source repo into this collection.
-
-1. Read `source_repo` from `.collection-index.yaml`.
-2. Check that the path exists and has `.claude/skills/`.
-3. If the path is missing, ask the user for the current path to the alexandria repo.
-4. Copy `.claude/skills/` from the source repo into the collection's `.claude/skills/`,
-   overwriting existing files.
-5. Confirm what was updated.
-
 ## Collection index cache format
 
 The `.collection-index.yaml` at the collection root is a regenerable cache of universal
@@ -153,7 +141,6 @@ fields from every item's `metadata.yaml`. Type-specific fields are not in the ca
 ```yaml
 collection_name: "my-collection"
 created: "2026-04-07"
-source_repo: "/Users/me/alexandria"
 sections:
   fiction:
     items:

@@ -16,7 +16,9 @@ item structure, scouts, and troubleshooting.
 This directory is the source code for alexandria — it's where skills are developed
 and where new collections are created from. It is NOT a collection itself.
 
-**The only skill that should be used here is `/coll-build-new-collection`.**
+**Only two skills should be used here:**
+- `/coll-build-new-collection` — create a new collection
+- `/coll-update-from-latest-alexandria` — update an existing collection's skills
 
 If a user invokes any other `/coll-*` skill from this directory (e.g., `/coll-digital`,
 `/coll-physical`, `/coll-menu`), do NOT proceed with the skill. Instead, explain:

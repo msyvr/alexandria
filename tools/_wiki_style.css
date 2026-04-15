@@ -324,6 +324,19 @@ blockquote.user-notes {
   margin-top: 0.1em;
 }
 
+.search-item mark {
+  background: rgba(139, 105, 20, 0.2);
+  color: inherit;
+  padding: 0;
+  border-radius: 1px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-item mark {
+    background: rgba(196, 160, 80, 0.25);
+  }
+}
+
 /* Collection journal */
 
 .journal-intro {

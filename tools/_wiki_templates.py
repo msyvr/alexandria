@@ -377,10 +377,11 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
 
 
 def search_page(library: dict, all_items: list[dict]) -> str:
-    """Render the search page: a flat listing of all items with a search prompt.
+    """Render the search page with inline JS for filtering and highlighting.
 
-    The page includes a form that reloads with ?q=term, and minimal JS that
-    reads the query parameter and displays it as a prompt to use Cmd+F.
+    Fully client-side: no external dependencies, no CDN, no network requests.
+    The JS filters items to show only matches and highlights matching text.
+    Case-insensitive partial matching. Works over file://.
     """
     collection_name = library.get("collection_name", "alexandria")
 
@@ -396,7 +397,7 @@ def search_page(library: dict, all_items: list[dict]) -> str:
         slug = item.get("slug", "")
         user_notes = escape(item.get("user_notes", ""))
 
-        parts = [f'<div class="search-item">']
+        parts = [f'<div class="search-item" data-searchable>']
         parts.append(f'<div class="search-title"><a href="../items/{slug}.html">{title}</a></div>')
         if author:
             parts.append(f'<div class="search-meta">{author}</div>')
@@ -416,6 +417,105 @@ def search_page(library: dict, all_items: list[dict]) -> str:
 
     listing = "\n".join(item_entries) if item_entries else "<p>No items in the collection yet.</p>"
 
+    # The search script: ~80 lines inline, zero dependencies
+    search_script = """
+<script>
+(function() {
+  var input = document.getElementById('search-input');
+  var prompt = document.getElementById('search-prompt');
+  var items = document.querySelectorAll('[data-searchable]');
+  var listing = document.querySelector('.search-listing');
+
+  // Read query from URL on page load
+  var params = new URLSearchParams(location.search);
+  var initial = params.get('q') || '';
+  if (initial) {
+    input.value = initial;
+    runSearch(initial);
+  }
+
+  // Live search on input (no need to press Enter after first load)
+  input.addEventListener('input', function() {
+    runSearch(input.value);
+  });
+
+  // Prevent form submission reload when typing — search live instead
+  input.closest('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    runSearch(input.value);
+    // Update URL without reload so bookmarking works
+    var url = new URL(location);
+    if (input.value) url.searchParams.set('q', input.value);
+    else url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+  });
+
+  function runSearch(query) {
+    var q = query.trim().toLowerCase();
+
+    // Clear previous highlights
+    items.forEach(function(el) {
+      el.style.display = '';
+      // Restore original text (strip <mark> tags)
+      el.querySelectorAll('mark').forEach(function(m) {
+        m.replaceWith(m.textContent);
+      });
+    });
+
+    if (!q) {
+      prompt.style.display = 'none';
+      return;
+    }
+
+    var shown = 0;
+    var terms = q.split(/\\s+/).filter(function(t) { return t.length > 0; });
+
+    items.forEach(function(el) {
+      var text = el.textContent.toLowerCase();
+      var match = terms.every(function(t) { return text.indexOf(t) !== -1; });
+
+      if (match) {
+        el.style.display = '';
+        shown++;
+        // Highlight matching terms in text nodes
+        highlightTerms(el, terms);
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    prompt.style.display = 'block';
+    if (shown === 0) {
+      prompt.innerHTML = 'No matches for <strong>' + esc(query) + '</strong>';
+    } else {
+      prompt.innerHTML = shown + ' match' + (shown === 1 ? '' : 'es') + ' for <strong>' + esc(query) + '</strong>';
+    }
+  }
+
+  function highlightTerms(root, terms) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach(function(node) {
+      var html = node.textContent;
+      terms.forEach(function(term) {
+        var re = new RegExp('(' + escRegex(term) + ')', 'gi');
+        html = html.replace(re, '<mark>$1</mark>');
+      });
+      if (html !== node.textContent) {
+        var span = document.createElement('span');
+        span.innerHTML = html;
+        node.replaceWith(span);
+      }
+    });
+  }
+
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escRegex(s) { return s.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'); }
+})();
+</script>"""
+
     body = f"""{_axes_nav("search", from_subdir=True)}
 
 <form class="search-form" action="index.html" method="get">
@@ -428,15 +528,7 @@ def search_page(library: dict, all_items: list[dict]) -> str:
 {listing}
 </div>
 
-<script>
-const q = new URLSearchParams(location.search).get('q');
-if (q) {{
-  const el = document.getElementById('search-prompt');
-  el.style.display = 'block';
-  el.innerHTML = 'Searching for: <strong>' + q.replace(/</g, '&lt;') + '</strong> — press <kbd>Cmd+F</kbd> (or <kbd>Ctrl+F</kbd>) to find matches on this page';
-  document.getElementById('search-input').value = q;
-}}
-</script>
+{search_script}
 """
     breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / Search'
     return _page(f"{collection_name} — search", breadcrumb, body, "../" + STYLESHEET_REL)

@@ -9,17 +9,19 @@ remove items, and so on.
 
 ## Before starting
 
-**Always start by asking the user for a name and location.** Do not check for
-existing collections before asking — go straight to the two questions below.
-Claude Code may have memory from a previous session suggesting a collection
-existed, but that state may be stale (the user may have deleted it, moved it,
-or started fresh). The user invoked this skill because they want to create a
-new collection; trust that intent.
+**Always start by asking the user for a name and location.** Go straight to
+the two questions below — do not check the filesystem or rely on memory from
+previous sessions first. Your memory about whether a collection exists at a
+given path may be stale (the user may have deleted it, moved it, or started
+fresh since your last session). The user invoked this skill because they want
+to create a new collection; trust that intent.
 
-After the user provides a name and location, check whether a
-`.collection-index.yaml` already exists at that specific path. If it does, let
-the user know and ask: create a fresh collection there (overwriting the index),
-use a different location, or work with the existing one?
+After the user provides a name and location, **verify by actually reading the
+filesystem** — check whether `.collection-index.yaml` exists at that specific
+path right now. Do not rely on memory to answer this; only trust what the
+filesystem shows. If the file exists, let the user know and ask: create a
+fresh collection there (overwriting the index), use a different location, or
+work with the existing one? If it doesn't exist, proceed with creation.
 
 ## The workflow
 

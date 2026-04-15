@@ -19,7 +19,7 @@ STYLESHEET_REL = "_assets/style.css"
 def _page(title: str, breadcrumb_html: str, body: str, css_rel: str = STYLESHEET_REL, stats: str = "") -> str:
     """Wrap body content in the full HTML page shell."""
     breadcrumb_block = f'<nav class="breadcrumb">{breadcrumb_html}</nav>' if breadcrumb_html else ""
-    stats_line = f'<div class="footer-stats">{escape(stats)}</div>' if stats else ""
+    stats_line = f'<div class="footer-stats">{stats}</div>' if stats else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,7 +85,6 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
         ("by-type", "By type"),
         ("by-media-type", "By media type"),
         ("by-topic", "By topic"),
-        ("collection-journal", "Journal"),
         ("search", "Search"),
     ]
     prefix = "../" if from_subdir else ""
@@ -132,7 +131,7 @@ def homepage(library: dict, all_items: list[dict]) -> str:
         recent_section = """<h2>Recent additions</h2>
 <p>No items yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first item.</p>"""
 
-    stats = f"{total} item{'s' if total != 1 else ''} · {n_sections} section{'s' if n_sections != 1 else ''} · {form_counts.get('physical', 0)} physical · {form_counts.get('digital', 0)} digital"
+    stats = f"{total} item{'s' if total != 1 else ''} · {n_sections} section{'s' if n_sections != 1 else ''} · {form_counts.get('physical', 0)} physical · {form_counts.get('digital', 0)} digital &ensp;|&ensp; <a href=\"collection-journal/index.html\">Journal</a>"
 
     body = f"""{_axes_nav()}
 

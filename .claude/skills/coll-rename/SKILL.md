@@ -27,47 +27,37 @@ skill must be run inside a collection.
 
 5. **If NOT renaming the directory** (display name only):
 
-   Regenerate the wiki immediately:
+   Regenerate the wiki:
    ```
    uv run python tools/generate_wiki.py .
    ```
 
-   Confirm:
-   > Collection display name changed to "{new name}". Wiki regenerated.
+   Done. Confirm the new name is live.
 
-6. **If renaming the directory**: do NOT run `mv` during this session.
-   Renaming the directory while Claude Code is running from it will break
-   all subsequent operations.
+6. **If renaming the directory**:
 
-   Instead, update `.collection-index.yaml` with the new name (this works
-   because the file is written before anything moves), then give the user
-   clear instructions to do the rest themselves:
+   a. Update `.collection-index.yaml` with the new name (do this first,
+      while the current path still works).
+   b. Rename the directory with `mv`.
+   c. **Do NOT attempt to regenerate the wiki or do any further file
+      operations** — the working directory no longer exists. Everything
+      after the `mv` will fail, and that's expected.
+   d. Tell the user:
 
-   > Display name updated to "{new name}" in `.collection-index.yaml`.
-   >
-   > To rename the directory, exit this session and run these commands:
-   >
-   > ```
-   > exit
-   > mv {current_path} {new_path}
-   > cd {new_path}
-   > uv run python tools/generate_wiki.py .
-   > claude
-   > ```
-   >
-   > The `mv` renames the directory, the next line regenerates the wiki
-   > with the new name, and then you start a fresh Claude Code session
-   > from the new location.
-
-   This is three commands the user pastes into their terminal. The wiki
-   regeneration must happen from the new path (after the mv).
+      > Collection renamed. Start a new session from the new location:
+      >
+      > ```
+      > cd {new_path}
+      > claude
+      > ```
+      >
+      > Then regenerate the wiki: `uv run python tools/generate_wiki.py .`
 
 ## What this changes
 
 - `collection_name` in `.collection-index.yaml`
-- All wiki HTML (via regeneration — either done in-session or by the user
-  after the directory rename)
-- Optionally the directory name (done by the user, not by Claude)
+- All wiki HTML (via regeneration)
+- Optionally the directory name
 
 ## What this does NOT change
 

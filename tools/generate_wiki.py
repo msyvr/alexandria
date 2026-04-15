@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Generate a browseable wiki view of an alexandria collection.
 
-Reads the collection's .collection-index.yaml and each book's metadata.yaml, produces
+Reads the collection's .collection-index.yaml and each item's metadata.yaml, produces
 static HTML in the collection's wiki/ directory. Works over file:// — no server
 needed. Includes multi-axis index pages (by section, date, type, form, media_type)
-and individual book pages.
+and individual item pages.
 
 Run from the command line:
 
@@ -39,13 +39,13 @@ README_WORD_LIMIT = 2000
 def narrative_enrich(book_data: dict) -> dict:
     """Pass 2 hook: LLM-assisted topic extraction and cross-references.
 
-    Currently a no-op stub. When Pass 2 is built, this returns per-book topics
-    and related-book links that the templates inject into pages.
+    Currently a no-op stub. When Pass 2 is built, this returns per-item topics
+    and related-item links that the templates inject into pages.
 
     Default model when Pass 2 lands: Claude. Local model support deferred until
     there's a clear path and non-technical setup instructions.
     """
-    return {"topics": [], "related_books": []}
+    return {"topics": [], "related_items": []}
 
 
 def load_library(library_path: Path) -> dict:
@@ -63,8 +63,8 @@ def load_library(library_path: Path) -> dict:
     return data
 
 
-def load_book_metadata(library_path: Path, book_path: str) -> dict | None:
-    """Read a book's metadata.yaml. Returns None if missing."""
+def load_item_metadata(library_path: Path, book_path: str) -> dict | None:
+    """Read an item's metadata.yaml. Returns None if missing."""
     if not book_path:
         return None
     full_path = library_path / book_path / "metadata.yaml"
@@ -78,8 +78,8 @@ def load_book_metadata(library_path: Path, book_path: str) -> dict | None:
         return None
 
 
-def load_book_readme(library_path: Path, book_path: str) -> str | None:
-    """Read a book's README.md. Returns None if missing."""
+def load_item_readme(library_path: Path, book_path: str) -> str | None:
+    """Read an item's README.md. Returns None if missing."""
     if not book_path:
         return None
     full_path = library_path / book_path / "README.md"
@@ -109,28 +109,28 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
 
 
 def collect_books(library_path: Path, library: dict) -> list[dict]:
-    """Build the list of all books, merging index cache with full metadata.
+    """Build the list of all items, merging index cache with full metadata.
 
     The index cache contains universal fields; metadata.yaml may have more
     (type-specific fields, provenance details). Metadata.yaml wins when there's
     a conflict, since it's the source of truth.
     """
-    all_books: list[dict] = []
+    all_items: list[dict] = []
     sections = library.get("sections", {})
     if not isinstance(sections, dict):
-        return all_books
+        return all_items
 
     for section_name, section_data in sections.items():
         if not isinstance(section_data, dict):
             continue
-        books_list = section_data.get("books", [])
+        books_list = section_data.get("items", [])
         if not isinstance(books_list, list):
             continue
         for book_entry in books_list:
             if not isinstance(book_entry, dict):
                 continue
             book_path = book_entry.get("path", "")
-            metadata = load_book_metadata(library_path, book_path)
+            metadata = load_item_metadata(library_path, book_path)
             # Merge: start with index entry, overlay with full metadata
             merged = dict(book_entry)
             if metadata:
@@ -139,8 +139,8 @@ def collect_books(library_path: Path, library: dict) -> list[dict]:
             merged.setdefault("slug", book_entry.get("slug", "unknown"))
             merged.setdefault("section", section_name)
             merged.setdefault("path", book_path)
-            all_books.append(merged)
-    return all_books
+            all_items.append(merged)
+    return all_items
 
 
 def slugify_section(section: str) -> str:
@@ -151,15 +151,15 @@ def slugify_section(section: str) -> str:
 def generate_wiki(library_path: Path) -> None:
     """Generate the complete wiki for a collection."""
     library = load_library(library_path)
-    all_books = collect_books(library_path, library)
+    all_items = collect_books(library_path, library)
 
     wiki_dir = library_path / "wiki"
     wiki_dir.mkdir(exist_ok=True)
 
-    # Subdirectories for each index axis and for individual books
+    # Subdirectories for each index axis and for individual items
     subdirs = [
         "_assets",
-        "books",
+        "items",
         "by-section",
         "by-date",
         "by-type",
@@ -178,26 +178,26 @@ def generate_wiki(library_path: Path) -> None:
 
     md_renderer = MarkdownIt("commonmark", {"breaks": True, "html": False})
 
-    # Group books by section (used by homepage and by-section pages)
-    books_by_section: dict[str, list[dict]] = {}
-    for book in all_books:
-        section = book.get("section", "unsorted")
-        books_by_section.setdefault(section, []).append(book)
+    # Group items by section (used by homepage and by-section pages)
+    items_by_section: dict[str, list[dict]] = {}
+    for item in all_items:
+        section = item.get("section", "unsorted")
+        items_by_section.setdefault(section, []).append(item)
 
     # --- Homepage ---
-    (wiki_dir / "index.html").write_text(templates.homepage(library, all_books))
+    (wiki_dir / "index.html").write_text(templates.homepage(library, all_items))
 
     # --- By section ---
     (wiki_dir / "by-section" / "index.html").write_text(
-        templates.by_section_index(library, books_by_section)
+        templates.by_section_index(library, items_by_section)
     )
-    for section, books in books_by_section.items():
+    for section, items in items_by_section.items():
         section_slug = slugify_section(section)
-        # Include removed books on section pages (rendered with "removed" marker);
-        # they're part of the historical record the collection keeps. Sort active books
-        # first, then removed books, both alphabetically within their group.
+        # Include removed items on section pages (rendered with "removed" marker);
+        # they're part of the historical record the collection keeps. Sort active items
+        # first, then removed items, both alphabetically within their group.
         sorted_books = sorted(
-            books,
+            items,
             key=lambda b: (
                 b.get("status", "active") == "removed",
                 b.get("title", "").lower(),
@@ -209,22 +209,22 @@ def generate_wiki(library_path: Path) -> None:
 
     # --- By date ---
     (wiki_dir / "by-date" / "index.html").write_text(
-        templates.by_date_index(library, all_books)
+        templates.by_date_index(library, all_items)
     )
 
     # --- By type ---
     (wiki_dir / "by-type" / "index.html").write_text(
-        templates.by_type_index(library, all_books)
+        templates.by_type_index(library, all_items)
     )
 
     # --- By form ---
     (wiki_dir / "by-form" / "index.html").write_text(
-        templates.by_form_index(library, all_books)
+        templates.by_form_index(library, all_items)
     )
 
     # --- By media type ---
     (wiki_dir / "by-media-type" / "index.html").write_text(
-        templates.by_media_type_index(library, all_books)
+        templates.by_media_type_index(library, all_items)
     )
 
     # --- By topic (Pass 2 placeholder) ---
@@ -232,35 +232,35 @@ def generate_wiki(library_path: Path) -> None:
         templates.topic_placeholder(library)
     )
 
-    # --- Individual book pages ---
-    for book in all_books:
-        slug = book.get("slug", "unknown")
-        book_path = book.get("path", "")
-        status = book.get("status", "active")
-        book_type = book.get("book_type", "unknown")
-        settled = bool(book.get("settled", False))
+    # --- Individual item pages ---
+    for item in all_items:
+        slug = item.get("slug", "unknown")
+        book_path = item.get("path", "")
+        status = item.get("status", "active")
+        book_type = item.get("book_type", "unknown")
+        settled = bool(item.get("settled", False))
 
         readme_html = ""
         readme_truncated = False
 
         # Live scouts link out to their own presentation; settled scouts and other
-        # book types render their README inline. Removed books show the removal
+        # item types render their README inline. Removed items show the removal
         # notice instead of content.
         is_live_scout = book_type == "scout" and not settled
         if status != "removed" and not is_live_scout:
-            readme_md = load_book_readme(library_path, book_path)
+            readme_md = load_item_readme(library_path, book_path)
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)
 
         # Pass 2 hook (currently a no-op)
-        narrative_enrich(book)
+        narrative_enrich(item)
 
-        (wiki_dir / "books" / f"{slug}.html").write_text(
-            templates.book_page(book, readme_html, readme_truncated)
+        (wiki_dir / "items" / f"{slug}.html").write_text(
+            templates.item_page(item, readme_html, readme_truncated)
         )
 
-    n_books = len(all_books)
-    print(f"Generated wiki at {wiki_dir} ({n_books} book{'s' if n_books != 1 else ''})")
+    n_books = len(all_items)
+    print(f"Generated wiki at {wiki_dir} ({n_books} item{'s' if n_books != 1 else ''})")
 
 
 def main() -> None:

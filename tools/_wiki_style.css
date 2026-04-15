@@ -101,7 +101,7 @@ h3 { margin-top: 1.5em; font-size: 1.15em; }
   margin: 1em 0;
 }
 
-article.book-card {
+article.item-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -109,34 +109,34 @@ article.book-card {
   transition: border-color 0.15s;
 }
 
-article.book-card:hover {
+article.item-card:hover {
   border-color: var(--link);
 }
 
-article.book-card h3 {
+article.item-card h3 {
   margin: 0 0 0.3em 0;
   font-size: 1.1em;
 }
 
-article.book-card h3 a { color: var(--text); }
-article.book-card h3 a:hover { color: var(--link); text-decoration: none; }
+article.item-card h3 a { color: var(--text); }
+article.item-card h3 a:hover { color: var(--link); text-decoration: none; }
 
-article.book-card .meta {
+article.item-card .meta {
   font-size: 0.85em;
   color: var(--muted);
   margin-bottom: 0.5em;
 }
 
-article.book-card .description {
+article.item-card .description {
   margin: 0;
   font-size: 0.95em;
 }
 
-article.book-card.removed {
+article.item-card.removed {
   opacity: 0.6;
 }
 
-article.book-card .removed-tag {
+article.item-card .removed-tag {
   color: var(--removed);
   font-weight: bold;
   text-transform: uppercase;
@@ -191,7 +191,7 @@ th {
   border-bottom: 2px solid var(--muted);
 }
 
-.book-metadata {
+.item-metadata {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -199,16 +199,16 @@ th {
   margin: 1.5em 0;
 }
 
-.book-metadata dl { margin: 0; }
-.book-metadata dt { font-weight: bold; color: var(--muted); font-size: 0.85em; text-transform: uppercase; margin-top: 0.7em; }
-.book-metadata dt:first-child { margin-top: 0; }
-.book-metadata dd { margin: 0.1em 0 0 0; }
+.item-metadata dl { margin: 0; }
+.item-metadata dt { font-weight: bold; color: var(--muted); font-size: 0.85em; text-transform: uppercase; margin-top: 0.7em; }
+.item-metadata dt:first-child { margin-top: 0; }
+.item-metadata dd { margin: 0.1em 0 0 0; }
 
-.book-content {
+.item-content {
   margin: 2em 0;
 }
 
-.book-content img {
+.item-content img {
   max-width: 100%;
   height: auto;
   border-radius: 4px;

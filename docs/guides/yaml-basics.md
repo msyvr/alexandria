@@ -1,6 +1,6 @@
 # Reading and editing YAML
 
-Every book in your collection has a `metadata.yaml` file — the catalog entry that stores the book's title, author, section, and other information. This guide explains what you're looking at when you open one, and how to make changes safely.
+Every item in your collection has a `metadata.yaml` file — the catalog entry that stores the item's title, author, section, and other information. This guide explains what you're looking at when you open one, and how to make changes safely.
 
 ## What is YAML?
 
@@ -17,7 +17,7 @@ Each line has a **field name** (like `title`), a colon, and a **value** (like `"
 
 ## A real metadata.yaml file
 
-Here's what a complete book entry looks like:
+Here's what a complete item entry looks like:
 
 ```yaml
 slug: "the-dispossessed"
@@ -43,7 +43,7 @@ isbn: "978-0-06-012563-3"
 
 ### What each field means
 
-The first group (required for every book):
+The first group (required for every item):
 
 | Field | What it is | Example |
 |---|---|---|
@@ -62,16 +62,16 @@ The second group (optional — include what's relevant):
 | Field | What it is |
 |---|---|
 | `author` | Who wrote or created it |
-| `user_notes` | Your personal notes about this book |
+| `user_notes` | Your personal notes about this item |
 | `provenance` | Where it came from and why you have it |
 
-The third group (type-specific — varies by book type):
+The third group (type-specific — varies by item type):
 
 | Field | Which types use it |
 |---|---|
-| `photo` | Physical books (path to the photograph) |
-| `shelf_location` | Physical books |
-| `isbn` | Physical and digital books |
+| `photo` | Physical items (path to the photograph) |
+| `shelf_location` | Physical items |
+| `isbn` | Physical and digital items |
 | `settled` | Scouts (true if frozen as a static reference) |
 
 ## How to edit metadata.yaml
@@ -90,16 +90,16 @@ This opens it in TextEdit. Make your change, save, close. That's it.
 - **`description`** — if you want a better one-line summary
 - **`user_notes`** — add, edit, or remove your personal notes anytime
 - **`author`** — correct or add the author
-- **`section`** — move the book to a different section (but you'll also need to move the directory; it's easier to use `/coll-menu` → reorganize for this)
-- **`shelf_location`** — update where the book is on your shelf
-- **`provenance`** — add notes about where the book came from
+- **`section`** — move the item to a different section (but you'll also need to move the directory; it's easier to use `/coll-menu` → reorganize for this)
+- **`shelf_location`** — update where the item is on your shelf
+- **`provenance`** — add notes about where the item came from
 
 ### What you should leave alone
 
 - **`slug`** — this matches the directory name. Changing one without the other breaks things.
 - **`book_type`** — this describes what kind of book it is. Changing it doesn't change what's in the directory.
 - **`date_added`** — this is the historical record of when you added it.
-- **`form`** and **`media_type`** — these describe the format. If they're wrong, it's fine to correct them, but changing `form: physical` to `form: digital` doesn't make a physical book into a digital one.
+- **`form`** and **`media_type`** — these describe the format. If they're wrong, it's fine to correct them, but changing `form: physical` to `form: digital` doesn't make a physical item into a digital one.
 
 ### After editing
 

@@ -1,6 +1,6 @@
 # Working with scouts
 
-A scout is a living knowledge base that monitors a domain — it's the one book type in your collection that actively updates itself. This guide covers the scout lifecycle: creating one, maintaining it, and eventually settling it into a static reference when you're done.
+A scout is a living knowledge base that monitors a domain — it's the one item type in your collection that actively updates itself. This guide covers the scout lifecycle: creating one, maintaining it, and eventually settling it into a static reference when you're done.
 
 ## When to use a scout
 
@@ -9,7 +9,7 @@ Scouts are useful when:
 - The topic is **personal** enough that no generic tool fits (your specific questions, your specific constraints)
 - The landscape is **evolving** fast enough that a static reference goes stale
 
-Most items in your collection should be static (physical books, imported digital content). Scouts are the exception — powerful, but they take more effort to create and maintain.
+Most items in your collection should be static (physical items, imported digital content). Scouts are the exception — powerful, but they take more effort to create and maintain.
 
 ## Creating a scout
 
@@ -130,9 +130,9 @@ From your collection directory, use `/coll-menu` → settle-scout (or ask Claude
 - Sets `settled: true` in the scout's `metadata.yaml`
 - Stops any discovery automation
 - Preserves all content as-is
-- Changes the wiki rendering: settled scouts show their content inline (like other static books) instead of linking out
+- Changes the wiki rendering: settled scouts show their content inline (like other static items) instead of linking out
 
-A settled scout is just another static book in your collection from that point forward. If you later want to resume updates, you can edit `metadata.yaml` to set `settled: false` and re-enable discovery.
+A settled scout is just another static item in your collection from that point forward. If you later want to resume updates, you can edit `metadata.yaml` to set `settled: false` and re-enable discovery.
 
 ### Short-lived vs. long-lived scouts
 

@@ -7,7 +7,7 @@
 
 If you need help at any point, just describe what you're trying to do in plain
 language. See the [guides](docs/guides/) for reference on terminals, YAML,
-book structure, scouts, and troubleshooting.
+item structure, scouts, and troubleshooting.
 
 ## A note about permissions
 
@@ -29,9 +29,9 @@ building and organizing private curated collections.
 - `.claude/skills/` — all collection skills (coll-build-new-collection, coll-menu,
   coll-physical, coll-hardcover, coll-paperback, coll-digital, coll-new-scout,
   coll-scout, coll-notes)
-- `docs/collection/` — collection-level specs (universal book shape)
-- `docs/scout/` — scout book type reference docs (process, prompts, conventions, examples)
-- `docs/guides/` — user-facing guides (terminal basics, YAML, book anatomy, scouts, troubleshooting)
+- `docs/collection/` — collection-level specs (universal item shape)
+- `docs/scout/` — scout item type reference docs (process, prompts, conventions, examples)
+- `docs/guides/` — user-facing guides (terminal basics, YAML, item anatomy, scouts, troubleshooting)
 - `tools/` — Python tools (wiki generator, templates, stylesheet)
 - `tests/` — automated tests and manual testing checklist
 
@@ -41,4 +41,4 @@ building and organizing private curated collections.
 - Users update their collection's skills via `/coll-menu` → update-skills (re-copies from this repo)
 - Reference docs in docs/scout/ informed the /coll-new-scout skill; they're not loaded during build sessions
 - Changes to skills should be reflected in both the skill file and any relevant reference docs
-- Future book types will add: a skill in `.claude/skills/` and reference docs in `docs/[type]/`
+- Future item types will add: a skill in `.claude/skills/` and reference docs in `docs/[type]/`

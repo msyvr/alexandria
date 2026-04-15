@@ -1,20 +1,20 @@
 # /coll-paperback
 
-A shortcut for cataloging a paperback book. Invokes `/coll-physical` with
+A shortcut for cataloging a paperback item. Invokes `/coll-physical` with
 `media_type` pre-set to `text:paperback`, so you don't need to answer the media type
 question during acquisition.
 
 ## What this skill does
 
-Invoke `/coll-physical` and, when generating `metadata.yaml` for each confirmed book,
+Invoke `/coll-physical` and, when generating `metadata.yaml` for each confirmed item,
 set `media_type: text:paperback` automatically. Skip the media type question for
-single-book photos. For shelf photos, use `text:paperback` as the shelf-level default
-without prompting (users can still override per book during confirmation).
+single-item photos. For shelf photos, use `text:paperback` as the shelf-level default
+without prompting (users can still override per item during confirmation).
 
 Everything else — library context detection, photo workflow, manual entry, confirmation,
 enrichment, section classification, directory creation, index update, /coll-notes
 invocation — is handled by `/coll-physical`. This skill is a thin wrapper for users
-who know they're adding paperback books.
+who know they're adding paperback items.
 
 ## When to use this
 
@@ -26,5 +26,5 @@ For any other physical media type, use `/coll-physical` directly.
 ## What this does not do
 
 - Does not bypass any of `/coll-physical`'s other behavior
-- Does not assume every book on a shelf is a paperback — per-book override still
+- Does not assume every item on a shelf is a paperback — per-item override still
   available during confirmation

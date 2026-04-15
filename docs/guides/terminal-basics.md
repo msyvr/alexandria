@@ -16,15 +16,15 @@ When you open a terminal, you see a prompt — something like `~$` or `user@comp
 
 A directory is a folder. They're the same thing — "directory" is the terminal word, "folder" is the visual word you see in Finder or File Explorer.
 
-Your collection is a directory. Each book in your collection is a subdirectory inside it. The sections are directories too.
+Your collection is a directory. Each item in your collection is a subdirectory inside it. The sections are directories too.
 
 ```
 my-collection/              ← this is a directory
 ├── fiction/                 ← this is a subdirectory (a section)
-│   ├── the-dispossessed/   ← this is a subdirectory (a book)
-│   └── short-stories/      ← another book
+│   ├── the-dispossessed/   ← this is a subdirectory (an item)
+│   └── short-stories/      ← another item
 └── research/               ← another section
-    └── ai-safety-scout/    ← a book (this one is a scout)
+    └── ai-safety-scout/    ← an item (this one is a scout)
 ```
 
 ### Useful commands
@@ -44,14 +44,14 @@ You can always type `pwd` to check where you are if you get lost.
 
 Git is a tool that tracks changes to files over time — like a detailed undo history for an entire directory. A directory that uses git is called a "git repo" (short for repository).
 
-**Not every directory is a git repo.** Your collection directory (`my-collection/`) is not a git repo — it's just a plain directory. But each book inside it might be its own git repo, especially scouts. This means each book has its own change history, independent of the others.
+**Not every directory is a git repo.** Your collection directory (`my-collection/`) is not a git repo — it's just a plain directory. But each item inside it might be its own git repo, especially scouts. This means each item has its own change history, independent of the others.
 
 ### Why this matters
 
 You don't need to use git directly. But it's useful to know that:
 
-- **Scout books are git repos.** They track their own changes, which is helpful when the scout is actively updating.
-- **Your collection is not a git repo.** It's a plain directory holding book directories. The `.collection-index.yaml` and wiki files are managed by the collection skills, not by git.
+- **Scout items are git repos.** They track their own changes, which is helpful when the scout is actively updating.
+- **Your collection is not a git repo.** It's a plain directory holding item directories. The `.collection-index.yaml` and wiki files are managed by the collection skills, not by git.
 - **Claude Code uses the git repo to scope its memory.** When you start Claude Code inside a git repo, it remembers things about that specific repo between sessions. When you start it in a non-git directory (like your collection root), it doesn't have repo-scoped memory — but it can still read the collection's context files.
 
 ### If you want to learn more about git
@@ -96,16 +96,16 @@ The directory you're in when you type `claude` determines:
 
 **From your collection root** (`cd ~/my-collection && claude`):
 - All `/coll-*` commands are available
-- Good for: browsing, adding books, weeding, settling scouts, reviewing sections, any collection-level operation
-- Claude doesn't auto-load any book's context — you're at the collection level
+- Good for: browsing, adding items, weeding, settling scouts, reviewing sections, any collection-level operation
+- Claude doesn't auto-load any item's context — you're at the collection level
 
-**From inside a specific book** (`cd ~/my-collection/research/ai-safety-scout && claude`):
+**From inside a specific item** (`cd ~/my-collection/research/ai-safety-scout && claude`):
 - All `/coll-*` commands are still available (found in the parent collection's `.claude/skills/`)
-- Claude auto-loads this book's `CLAUDE.md` (schema, files, update instructions)
-- Good for: substantive work on this specific book (adding many entries, running critique, restructuring)
-- The book's operational context is loaded; the rest of the collection isn't
+- Claude auto-loads this item's `CLAUDE.md` (schema, files, update instructions)
+- Good for: substantive work on this specific item (adding many entries, running critique, restructuring)
+- The item's operational context is loaded; the rest of the collection isn't
 
-**Rule of thumb**: start from the collection root for general work. Move into a specific book's directory when you're doing focused work on that one book.
+**Rule of thumb**: start from the collection root for general work. Move into a specific item's directory when you're doing focused work on that one item.
 
 ## Running multiple sessions
 
@@ -141,14 +141,14 @@ Tools like `tmux` or `screen` let you manage multiple sessions inside a single t
 
 ### Which option to start with
 
-**Start with tabs.** They're built into every modern terminal, require no installation, and give you the most useful pattern: one tab for your collection, one tab for a specific book you're working on. You can always come back to the collection tab to browse, add a new book, or check on other items.
+**Start with tabs.** They're built into every modern terminal, require no installation, and give you the most useful pattern: one tab for your collection, one tab for a specific item you're working on. You can always come back to the collection tab to browse, add a new item, or check on other items.
 
 ## A typical workflow
 
 1. Open your terminal
 2. Navigate to your collection: `cd ~/my-collection`
 3. Start Claude Code: `claude`
-4. Do collection-level work: `/coll-menu` to browse, add books, or manage
+4. Do collection-level work: `/coll-menu` to browse, add items, or manage
 5. If you need to do focused work on a scout:
    - Open a new tab (`Cmd + T` on macOS)
    - In the new tab: `cd ~/my-collection/research/ai-safety-scout && claude`

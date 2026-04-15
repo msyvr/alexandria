@@ -91,12 +91,12 @@ Built-in checkpoint — before leaving this phase, verify:
 
 ### Phase 4: Build (Claude Code-driven)
 Create the repo: YAML data, editorial content, generate script, README, and the files
-required by the universal book shape.
+required by the universal item shape.
 
 File structure:
 ```
-metadata.yaml              — catalog entry (universal book shape)
-README.md                  — generated output (do not edit directly); serves as the book's spine
+metadata.yaml              — catalog entry (universal item shape)
+README.md                  — generated output (do not edit directly); serves as the item's spine
 CLAUDE.md                  — operational context for Claude Code on return visits
 data/entries.yaml          — all structured data (single source of truth)
 docs/getting-started.md    — hand-written editorial (Part 1 of README)
@@ -114,7 +114,7 @@ editorial + generated content into README.md.
 hand-written, not generated from data. Every recommended option must include a risk/tradeoff
 callout: what it's good for and what it doesn't cover.
 
-**Generate metadata.yaml** with the universal book shape fields plus scout-specific fields.
+**Generate metadata.yaml** with the universal item shape fields plus scout-specific fields.
 This file is required by the collection infrastructure (see `docs/coll/book-shape.md` in
 the alexandria repo for the full specification).
 
@@ -266,13 +266,13 @@ When a scout is settled:
 - `metadata.yaml` gains `settled: true` and `settled_at: YYYY-MM-DD`
 - Any discovery automation is disabled or removed
 - The scout's content (data, README, scripts) is preserved as-is
-- The wiki renders the scout inline like other static book types instead of linking
+- The wiki renders the scout inline like other static item types instead of linking
   out, visibly marking the state change
 
 Users invoke settling via `/coll` → settle-scout. See the /coll skill for the
 full workflow.
 
-A settled scout is just a static book in the collection from that point forward. If
+A settled scout is just a static item in the collection from that point forward. If
 circumstances change and the user wants to resume updating, they can edit
 `metadata.yaml` to set `settled: false` and re-enable discovery. This is uncommon
 and not exposed as a first-class action.
@@ -281,7 +281,7 @@ and not exposed as a first-class action.
 
 If this scout is being created within a collection (detected by `.collection-index.yaml` in a
 parent directory), update the collection index after Phase 4 (Build) completes:
-- Add the book entry with name, path, type ("scout"), creation date, and a one-line
+- Add the item entry with name, path, type ("scout"), creation date, and a one-line
   description derived from the scope document.
 
 If invoked standalone (no library context), skip this step — the scout works independently.

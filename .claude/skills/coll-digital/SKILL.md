@@ -2,12 +2,12 @@
 
 Bring digital content into the collection — files you already have on your machine, URLs
 you want to save, or text you want to paste in. The collection copies the content, extracts
-readable metadata, and creates a catalog entry conforming to the universal book shape
+readable metadata, and creates a catalog entry conforming to the universal item shape
 (see `docs/coll/book-shape.md`).
 
 "Digital" here means the same thing it does for `/coll-physical`: the form of the
-catalog entry. A physical book record catalogs something that lives on a shelf; a
-digital book record catalogs content that lives as files in the collection. The name
+catalog entry. A physical item record catalogs something that lives on a shelf; a
+digital item record catalogs content that lives as files in the collection. The name
 is symmetric with `/coll-physical` and deliberately doesn't use "import" — which could
 mislead users into thinking the skill only fetches from elsewhere.
 
@@ -22,9 +22,9 @@ alexandria collection and offer to help create one with /coll.
 Four things need to happen, conversationally:
 
 1. **Gather intent and input** — what's being added and from where
-2. **Extract candidates** — produce a list of draft book records
+2. **Extract candidates** — produce a list of draft item records
 3. **Confirm, edit, optionally enrich** — user reviews each candidate
-4. **Classify, create, record** — write the book directories and update the index
+4. **Classify, create, record** — write the item directories and update the index
 
 ### 1. Gather intent and input
 
@@ -49,7 +49,7 @@ If inputs fail validation, report and offer alternatives.
 
 ### 2. Extract candidates
 
-Produce a list of candidate book records. Each candidate has draft metadata: title,
+Produce a list of candidate item records. Each candidate has draft metadata: title,
 author if detectable, description, and the right `media_type` (a `{content_type}:{format}`
 value from the v1 vocabulary — see book-shape.md).
 
@@ -100,7 +100,7 @@ value from the v1 vocabulary — see book-shape.md).
 
 **Default mode**: for each candidate, show the draft metadata (title, author,
 description, media_type, provenance) and let the user confirm, edit fields, or skip.
-A skipped candidate doesn't become a book. Failed candidates require manual entry
+A skipped candidate doesn't become an item. Failed candidates require manual entry
 before they can be confirmed.
 
 **Yolo mode**: accept clean extractions as-is. Partial and failed still prompt for
@@ -108,7 +108,7 @@ user input.
 
 **Enrichment** is a single batch decision after candidates are confirmed:
 
-> "For these N items, want me to fetch public metadata from open databases? (Books →
+> "For these N items, want me to fetch public metadata from open databases? (Items →
 > Open Library; academic papers → Semantic Scholar.) Options: yes-all / no / per-item."
 
 - **yes-all**: fetch metadata for every confirmed candidate, present fetched data for
@@ -117,8 +117,8 @@ user input.
 - **per-item**: ask the user per candidate
 
 Enrichment fetches only bibliographic metadata — title, author, publisher, subjects,
-short description. Book content is never fetched. General web content (not matching
-a book or paper) doesn't get enrichment; the source URL is its provenance.
+short description. Item content is never fetched. General web content (not matching
+an item or paper) doesn't get enrichment; the source URL is its provenance.
 
 ### 4. Classify, create, record
 
@@ -135,7 +135,7 @@ a book or paper) doesn't get enrichment; the source URL is its provenance.
 **Generate a slug** from the title per `docs/coll/book-shape.md` rules. Check
 uniqueness; suffix with `-2`, `-3` if needed.
 
-**Create the book directory** at `{library}/{section}/{slug}/`.
+**Create the item directory** at `{library}/{section}/{slug}/`.
 
 **Copy or save the content**:
 - Local files: copy as `original.{ext}` preserving the original bytes
@@ -148,7 +148,7 @@ The original is preserved exactly as received. Alexandria does not modify the so
 **Write the universal files**:
 
 - `metadata.yaml` — catalog entry (template below)
-- `README.md` — the book's spine (template below)
+- `README.md` — the item's spine (template below)
 - `CLAUDE.md` — operational context for return sessions (template below)
 - `content.md` — **only** for HTML sources: a one-time markdown extraction via html2text.
   Not regenerated automatically. User hand-edits persist across re-runs. Not created
@@ -160,11 +160,11 @@ and tells the user to open it in their PDF viewer. Full-text extraction is inten
 not done in this skill — it's lossy, dependency-heavy, and users open PDFs in PDF
 viewers anyway.
 
-**Update `.collection-index.yaml`** with each new book's universal fields. For multi-item
+**Update `.collection-index.yaml`** with each new item's universal fields. For multi-item
 batches, update once at the end rather than per item.
 
 **Invoke /coll-notes** once at the end of the invocation to log the import batch to
-`collection-context.md`: how many books were added, what sources, any notable preferences
+`collection-context.md`: how many items were added, what sources, any notable preferences
 observed (e.g., "user declined online enrichment").
 
 ## metadata.yaml template
@@ -259,7 +259,7 @@ copy of the original.
 
 ## Files
 - `metadata.yaml` — catalog entry
-- `README.md` — the book's spine
+- `README.md` — the item's spine
 - `original.{ext}` — the preserved original
 - `content.md` — markdown extraction (HTML sources only; one-time, hand-edits preserved)
 - `context.md` — interaction history (written by /coll-notes)
@@ -310,10 +310,10 @@ the explicit URL fetches they provided and the optional enrichment lookups.
   content is not sent to any other service.
 - **Enrichment is opt-in** and fetches only bibliographic metadata (title, author,
   publisher, subjects, short description) from Open Library or Semantic Scholar.
-  Book content is never fetched.
+  Item content is never fetched.
 - **No crawling**: the skill fetches only URLs the user explicitly provides. It does
   not follow links or discover related content.
-- **Originals are preserved exactly** in the book's directory. Alexandria does not
+- **Originals are preserved exactly** in the item's directory. Alexandria does not
   convert or modify them.
 
 ## What /coll-digital does not do

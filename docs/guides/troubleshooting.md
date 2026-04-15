@@ -22,21 +22,21 @@ Common issues and how to fix them.
 2. Run the generator with the full path: `uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection`
 3. If you get "No such file or directory" for `.collection-index.yaml`, the collection index is missing. Create it by asking Claude (from inside the collection) to scan the collection and rebuild the index.
 
-## Photo not reading (physical books)
+## Photo not reading (physical items)
 
 **Symptom**: Claude can't extract metadata from a photo you provided.
 
 **Possible causes**:
 - The file path is wrong — check that the file exists: `ls /path/to/your/photo.jpg`
 - The file format isn't supported — use JPEG, PNG, HEIC, or WebP
-- The photo is too dark, blurry, or the book spine text isn't legible
+- The photo is too dark, blurry, or the item spine text isn't legible
 - The file is very large (>20MB) — try a smaller version
 
 **Fix**: Try a clearer photo, or switch to manual entry. Claude will always offer manual entry as a fallback.
 
 ## metadata.yaml has an error
 
-**Symptom**: The wiki generator or Claude Code reports an error reading a book's `metadata.yaml`.
+**Symptom**: The wiki generator or Claude Code reports an error reading an item's `metadata.yaml`.
 
 **Common causes**:
 - A colon in a value that isn't quoted: `title: LLMs: A Survey` should be `title: "LLMs: A Survey"`
@@ -59,14 +59,14 @@ After installing, close and reopen your terminal (some tools aren't available un
 
 ## Collection index seems stale
 
-**Symptom**: You added or removed a book, but the wiki or browse view doesn't reflect the change.
+**Symptom**: You added or removed an item, but the wiki or browse view doesn't reflect the change.
 
 **Fix**: Regenerate the wiki:
 ```
 uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection
 ```
 
-If the `.collection-index.yaml` is also stale (e.g., a book you added manually without using a skill), ask Claude to rebuild the index by scanning the collection for `metadata.yaml` files.
+If the `.collection-index.yaml` is also stale (e.g., an item you added manually without using a skill), ask Claude to rebuild the index by scanning the collection for `metadata.yaml` files.
 
 ## Scout discovery script fails
 

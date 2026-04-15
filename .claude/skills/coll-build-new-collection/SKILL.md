@@ -1,11 +1,11 @@
 # /coll-build-new-collection
 
-Create a new personal collection — a directory on your machine where books of all
+Create a new personal collection — a directory on your machine where items of all
 types live, organized by sections, with a catalog and a browseable wiki view.
 
 This skill is typically run once. After the collection exists, use `/coll-menu` for
-guided management or invoke individual `/coll-*` skills directly to add books,
-remove books, and so on.
+guided management or invoke individual `/coll-*` skills directly to add items,
+remove items, and so on.
 
 ## Before starting
 
@@ -72,7 +72,7 @@ use a different location, or work with the existing one?
 
    ## Sections
 
-   (Sections will appear here as you add books.)
+   (Sections will appear here as you add items.)
 
    ## Browsing
 
@@ -90,7 +90,7 @@ use a different location, or work with the existing one?
    > ```
    >
    > Then type `/coll-menu` for guided options, or invoke skills directly:
-   > - `/coll-physical` — catalog a physical book
+   > - `/coll-physical` — catalog a physical item
    > - `/coll-digital` — add digital content (files, URLs, text)
    > - `/coll-new-scout` — create a living knowledge base on a topic
    > - `/coll-scout` — import an existing scout into the collection
@@ -99,6 +99,6 @@ use a different location, or work with the existing one?
 
 ## What this skill does NOT do
 
-- Does not create any books (that's what the other `/coll-*` skills are for)
+- Does not create any items (that's what the other `/coll-*` skills are for)
 - Does not require an existing collection (that's the whole point — it creates one)
 - Does not install skills globally (skills live in the collection's `.claude/skills/`)

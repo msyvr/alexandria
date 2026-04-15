@@ -1,7 +1,7 @@
 # /coll-notes
 
-Save persistent context for an alexandria book or library: decisions, user preferences,
-session history, open questions, and useful Q&A. Maintains the book's `context.md` (or
+Save persistent context for an alexandria item or library: decisions, user preferences,
+session history, open questions, and useful Q&A. Maintains the item's `context.md` (or
 the collection's `collection-context.md`) and updates the "Recent context" summary in CLAUDE.md.
 
 ## Detection
@@ -12,9 +12,9 @@ marker that we're inside an alexandria collection):
 1. **`.collection-index.yaml` found in an ancestor:**
    - If the current directory IS the collection root → target is `collection-context.md` at the
      collection root
-   - If the current directory is (or is inside) one of the books listed in the index →
-     target is that book's `context.md`
-   - Otherwise (inside the collection tree but not in a recognized book) → explain to the
+   - If the current directory is (or is inside) one of the items listed in the index →
+     target is that item's `context.md`
+   - Otherwise (inside the collection tree but not in a recognized item) → explain to the
      user and exit
 
 2. **No `.collection-index.yaml` found in any ancestor** → not an alexandria context.
@@ -22,12 +22,12 @@ marker that we're inside an alexandria collection):
 
 ## Process
 
-1. Locate the target file (`context.md` for a book, `collection-context.md` for the collection
+1. Locate the target file (`context.md` for an item, `collection-context.md` for the collection
    root) using detection above. If it doesn't exist yet, create it with this initial
    structure:
 
    ```markdown
-   # Context: {book or library name}
+   # Context: {item or library name}
 
    Interaction history, decisions, and observed user preferences.
    This file is updated automatically when significant work is done. You can read and
@@ -45,7 +45,7 @@ marker that we're inside an alexandria collection):
      (or "none new")
    - **Open questions**: unresolved items the user mentioned but didn't act on (or "none")
    - **Q&A worth keeping**: substantive questions and answers, with links to where the
-     answer was filed if it became part of the book (or "none")
+     answer was filed if it became part of the item (or "none")
 
    Only record what's actually useful for future sessions. Don't pad. "None" is a fine
    answer for any section.

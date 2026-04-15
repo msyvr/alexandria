@@ -4,9 +4,9 @@
 
 Alexandria is lightweight private collection infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
 
-The collection is a directory on your machine. Inside it, "books" are the things you hold — self-contained units with a consistent outer shape. Some books are content you've collected from elsewhere. Some are your own writing. A few may be dynamic — living resources that update themselves. The collection's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
+The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent outer shape. Some items are content you've collected from elsewhere. Some are your own writing. A few may be dynamic — living resources that update themselves. The collection's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
 
-Alexandria is AI-assisted, but not AI-dependent. A librarian (Claude Code today, a local open-source model eventually) helps with cataloging, search, and cross-book questions — but every feature of the collection works without one. You can browse the catalog, walk the sections, and read any book without invoking any AI at all.
+Alexandria is AI-assisted, but not AI-dependent. A librarian (Claude Code today, a local open-source model eventually) helps with cataloging, search, and cross-item questions — but every feature of the collection works without one. You can browse the catalog, walk the sections, and read any item without invoking any AI at all.
 
 ## Why not just a plain folder?
 
@@ -17,10 +17,10 @@ Alexandria adds the minimum structure that makes a collection browseable at scal
 | Concern                            | Plain folder             | Alexandria                        |
 | ---------------------------------- | ------------------------ | --------------------------------- |
 | Finding an item without opening it | Filename only            | Catalog with metadata             |
-| Consistent item shape              | Whatever was dropped     | Every book has known structure    |
+| Consistent item shape              | Whatever was dropped     | Every item has known structure    |
 | Classification conventions         | Arbitrary subdirectories | Sections with documented patterns |
 | Browseable view                    | `ls` or Finder           | Generated catalog, multiple axes  |
-| Context about why items are there  | None                     | Per-book metadata and history     |
+| Context about why items are there  | None                     | Per-item metadata and history     |
 | Works without AI assistance        | No, at scale             | Yes — that's the point            |
 
 The structure is deliberately lightweight. It's not a database. It's not an app. It's files on disk, organized in a way that scales past a few hundred items without requiring an AI to navigate.
@@ -43,35 +43,35 @@ Alexandria is designed so this learning happens as a side effect of building som
 
 These derive from the real-world collection metaphor and are the acceptance criteria for alexandria's design. Every invariant must hold for the collection to earn its place over a plain folder.
 
-1. **Every book has a catalog entry.** Title, author/source, classification, description, date added, book type, form (digital or physical), media_type (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). You can find a book without opening it.
-2. **Every book has a consistent outer shape.** Regardless of book type: a README (the spine), metadata (the catalog entry), and content files.
-3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by book type, by form, by media_type. Views are generated from the catalog and rendered as static HTML in the wiki.
+1. **Every item has a catalog entry.** Title, author/source, classification, description, date added, item type, form (digital or physical), media_type (hierarchical: content_type:format, e.g., text:hardcover, text:pdf, audio:vinyl). You can find an item without opening it.
+2. **Every item has a consistent outer shape.** Regardless of item type: a README (the spine), metadata (the catalog entry), and content files.
+3. **The catalog is browseable by multiple axes.** Not just by directory structure — by section, by date added, by item type, by form, by media_type. Views are generated from the catalog and rendered as static HTML in the wiki.
 4. **Classification is convention-based and learnable.** Sections are directories. The user chooses their taxonomy; alexandria suggests starting patterns and documents them.
-5. **Acquisition is a first-class process.** Adding a book requires determining type, populating the catalog, recording provenance.
-6. **Weeding is a first-class process.** Books can be removed through a defined process. Default behavior keeps the catalog entry and marks the resource as removed (preserving the record that the book was once in the collection); full deletion is available as an opt-in. Both log to `collection-context.md`.
-7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static book at any time.
+5. **Acquisition is a first-class process.** Adding an item requires determining type, populating the catalog, recording provenance.
+6. **Weeding is a first-class process.** Items can be removed through a defined process. Default behavior keeps the catalog entry and marks the resource as removed (preserving the record that the item was once in the collection); full deletion is available as an opt-in. Both log to `collection-context.md`.
+7. **Dynamic content is an exception, and can be settled.** Scouts are allowed but marked as dynamic. Users can freeze a scout into a static item at any time.
 8. **The librarian is optional — and eventually local.** Every library feature is usable without AI. Claude accelerates it; a local open-source model will eventually be the default librarian.
 
-9. **Books record their form and media_type.** Every catalog entry includes a `form` field (binary: digital or physical — where does this live?) and a `media_type` field (hierarchical: content_type:format — what specifically is this? e.g., `text:hardcover`, `text:pdf`, `audio:vinyl`). The two axes let users browse by both dimensions: "show me my physical items" (form) or "show me my vinyl collection" (media_type). Linking duplicates across form (same work in physical and digital) is deferred — for v1, duplicates are separate entries.
+9. **Items record their form and media_type.** Every catalog entry includes a `form` field (binary: digital or physical — where does this live?) and a `media_type` field (hierarchical: content_type:format — what specifically is this? e.g., `text:hardcover`, `text:pdf`, `audio:vinyl`). The two axes let users browse by both dimensions: "show me my physical items" (form) or "show me my vinyl collection" (media_type). Linking duplicates across form (same work in physical and digital) is deferred — for v1, duplicates are separate entries.
 
-## Book types
+## Item types
 
-A book type defines how content of a particular kind gets created, organized, and maintained. All book types share the universal outer shape (README, metadata, classification, catalog entry) and the collection's infrastructure. Beyond that, each type has its own creation process and conventions.
+An item type defines how content of a particular kind gets created, organized, and maintained. All item types share the universal outer shape (README, metadata, classification, catalog entry) and the collection's infrastructure. Beyond that, each type has its own creation process and conventions.
 
 ### Physical (planned, top priority)
 
-A record of a physical book (or other physical item) you own. Unlike import, no content is copied — the book itself lives on your shelf. The catalog entry is the collection's representation of the book. Creation is primarily photo-based: photograph a single book or a whole shelf, and the librarian extracts title, author, and other metadata from the image. Manual entry is supported as well, with or without a photo. An optional visual record (the photograph itself) is preserved.
+A record of a physical item (or other physical item) you own. Unlike import, no content is copied — the item itself lives on your shelf. The catalog entry is the collection's representation of the item. Creation is primarily photo-based: photograph a single item or a whole shelf, and the librarian extracts title, author, and other metadata from the image. Manual entry is supported as well, with or without a photo. An optional visual record (the photograph itself) is preserved.
 
 For users who permit it, the librarian can also fetch publicly available metadata and summaries (from open book databases) to enrich the record — the book's content never leaves your shelf, but its title and author are public information. This is opt-in for privacy-first users who prefer fully offline operation.
 
-**Physical is the top-priority book type.** The cataloging space has solid tools for standard use cases — LibraryThing, Libib, and CLZ Books handle barcode scanning, metadata retrieval, and cloud sync well. Where alexandria differentiates:
+**Physical is the top-priority item type.** The cataloging space has solid tools for standard use cases — LibraryThing, Libib, and CLZ Books handle barcode scanning, metadata retrieval, and cloud sync well. Where alexandria differentiates:
 
-- **Shelf photo workflow with strong accuracy**: Photograph a whole shelf and get a draft catalog of every book visible. The one existing tool attempting this (Shelf Scan, launched 2024) has reportedly poor accuracy because it uses weaker vision models. Alexandria can meaningfully beat this by defaulting to best-available vision models.
+- **Shelf photo workflow with strong accuracy**: Photograph a whole shelf and get a draft catalog of every item visible. The one existing tool attempting this (Shelf Scan, launched 2024) has reportedly poor accuracy because it uses weaker vision models. Alexandria can meaningfully beat this by defaulting to best-available vision models.
 - **Local-first, files you own**: Most existing tools are cloud-first. Alexandria's files live on your machine, browseable without the app, portable forever.
 - **No subscription lock-in**: Free and unlimited.
-- **Integration with other book types**: Alexandria holds physical books alongside digital imports, user-authored content, and scouts in a single library. No existing cataloging tool spans all these.
+- **Integration with other item types**: Alexandria holds physical items alongside digital imports, user-authored content, and scouts in a single library. No existing cataloging tool spans all these.
 
-Leading with physical also signals what alexandria values: the considered, ownership-oriented approach to personal knowledge, where a book on your shelf is as first-class as a PDF on your drive.
+Leading with physical also signals what alexandria values: the considered, ownership-oriented approach to personal knowledge, where an item on your shelf is as first-class as a PDF on your drive.
 
 Best-quality AI is the default for photo extraction (vision models benefit from stronger models), with a local-model option for privacy-first users.
 
@@ -81,38 +81,38 @@ Digital content the user wants to bring into their collection — local files (P
 
 ### Scout (available, but not the focus)
 
-A living knowledge base that monitors a domain. Unlike other book types, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+A living knowledge base that monitors a domain. Unlike other item types, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
 
-A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static book in the collection.
+A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static item in the collection.
 
-Because scout creation depends on capabilities that currently only the best models have (research, critique, editorial writing), scouts remain Claude-assisted even as the collection librarian shifts to local models. This asymmetry is intentional: the collection foundation should be maximally portable; the ambitious book-building work can reasonably require better models.
+Because scout creation depends on capabilities that currently only the best models have (research, critique, editorial writing), scouts remain Claude-assisted even as the collection librarian shifts to local models. This asymmetry is intentional: the collection foundation should be maximally portable; the ambitious item-building work can reasonably require better models.
 
 ### Future types
 
-The architecture accommodates book types not yet designed. The constraint is the shared infrastructure: a book type must produce a self-contained directory with the universal outer shape, fit into the collection's classification, and integrate with the catalog. Beyond that, book types are free.
+The architecture accommodates item types not yet designed. The constraint is the shared infrastructure: an item type must produce a self-contained directory with the universal outer shape, fit into the collection's classification, and integrate with the catalog. Beyond that, item types are free.
 
 ## Where this is headed
 
 ### Near-term (largely complete)
 
-- ✅ Universal book shape defined and enforced across all four book types
-- ✅ Physical, digital, author, and scout book types all implemented
+- ✅ Universal item shape defined and enforced across all four item types
+- ✅ Physical, digital, author, and scout item types all implemented
 - ✅ Multi-axis catalog views generated by the wiki (by section, date, type, form, media_type)
-- ✅ Weeding (`remove-book` non-destructive default, `delete-book` opt-in) and scout settling implemented as first-class `/coll` actions
-- ✅ **Wiki view** (catalog layer) — browseable static HTML generated from the collection catalog, working offline over `file://`. Homepage with summary and recent additions; multi-axis index pages; individual book pages rendered inline for static book types (including settled scouts) and link-out for live scouts. This is the primary browsing interface for non-CLI users and makes the collection genuinely usable without invoking Claude. The narrative layer (LLM-assisted topics and cross-references) is scaffolded but not yet built.
-- ✅ **Soft-locked section management** — sections are stable between organizational reviews. New books go into existing sections; `unsorted` is the fallback. Claude notices catch-all, size-drift, and unsorted-accumulation conditions and proposes a review via `/coll` → review-sections. Addresses the classification drift problem: never-updated taxonomies go stale; constantly-churning ones make nothing findable.
+- ✅ Weeding (`remove-item` non-destructive default, `delete-item` opt-in) and scout settling implemented as first-class `/coll` actions
+- ✅ **Wiki view** (catalog layer) — browseable static HTML generated from the collection catalog, working offline over `file://`. Homepage with summary and recent additions; multi-axis index pages; individual item pages rendered inline for static item types (including settled scouts) and link-out for live scouts. This is the primary browsing interface for non-CLI users and makes the collection genuinely usable without invoking Claude. The narrative layer (LLM-assisted topics and cross-references) is scaffolded but not yet built.
+- ✅ **Soft-locked section management** — sections are stable between organizational reviews. New items go into existing sections; `unsorted` is the fallback. Claude notices catch-all, size-drift, and unsorted-accumulation conditions and proposes a review via `/coll` → review-sections. Addresses the classification drift problem: never-updated taxonomies go stale; constantly-churning ones make nothing findable.
 - Library-level reference docs to rebalance against the depth of scout-level docs (partial — `docs/coll/book-shape.md` exists)
 
 ### Medium-term
 
-- Narrative layer for the wiki view (topics, cross-references, related-books). Default to Claude; local model support when there's a clear path and non-technical setup instructions.
+- Narrative layer for the wiki view (topics, cross-references, related-items). Default to Claude; local model support when there's a clear path and non-technical setup instructions.
 - Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed
 - Plugin packaging for streamlined installation
-- End-to-end user testing across all four book types and collection operations
+- End-to-end user testing across all four item types and collection operations
 
 ### Long-term
 
-- Default librarian is a local, open-source model; Claude remains the default only for the most demanding tasks (scout creation, vision-based physical book cataloging, narrative layer wiki generation)
-- Q&A as a first-class interaction with books and the collection as a whole
+- Default librarian is a local, open-source model; Claude remains the default only for the most demanding tasks (scout creation, vision-based physical item cataloging, narrative layer wiki generation)
+- Q&A as a first-class interaction with items and the collection as a whole
 - Compounding exploration: questions and answers can be filed back into the collection
 - The technical minimalism path proven out: people building and maintaining sophisticated personal libraries regardless of starting technical level

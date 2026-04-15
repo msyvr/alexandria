@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-STALE_TERMS = ["sota-tracker", "build-tracker", "tracker book"]
+STALE_TERMS = ["sota-tracker", "build-tracker", "tracker item"]
 FAILURES = []
 
 

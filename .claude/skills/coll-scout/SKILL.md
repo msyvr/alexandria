@@ -2,7 +2,7 @@
 
 Import an existing scout into the collection. Use this when you have a scout that was
 built independently (outside any collection) and you want to add it to your collection
-as a cataloged book.
+as a cataloged item.
 
 To create a new scout from scratch inside the collection, use `/coll-new-scout` instead.
 

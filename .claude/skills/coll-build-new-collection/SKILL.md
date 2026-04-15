@@ -70,7 +70,7 @@ work with the existing one? If it doesn't exist, proceed with creation.
    ```markdown
    # {collection name}
 
-   A personal curated collection managed by [alexandria](https://github.com/msyvr/alexandria).
+   A private curated collection managed by [alexandria](https://github.com/msyvr/alexandria).
 
    ## Sections
 
@@ -82,7 +82,36 @@ work with the existing one? If it doesn't exist, proceed with creation.
    Or start Claude Code from this directory and type `/coll-menu` for guided access.
    ```
 
-6. **Tell the user what to do next:**
+6. **Create a CLAUDE.md** for the collection. This is what Claude reads on
+   every session start from the collection directory. It should orient Claude
+   to the collection context and guide first interactions:
+
+   ```markdown
+   # {collection name}
+
+   This is a private collection managed by alexandria. The user is working
+   from inside their collection — it already exists.
+
+   ## Quick start
+
+   - **New here?** Type `/coll-menu` for a guided menu of what you can do
+   - **Adding items?** Type `/coll-physical`, `/coll-digital`, or `/coll-new-scout`
+   - **Browsing?** Type `/coll-menu` → browse, or open `wiki/index.html` in a browser
+   - **Need help?** Just describe what you're trying to do
+
+   Type `/coll-` and press tab to see all available commands.
+
+   ## Important
+
+   - Do NOT offer to create a new collection — this collection already exists
+   - Do NOT offer to run `/coll-build-new-collection` — that skill is for
+     creating collections from the alexandria repo, not for use inside an
+     existing collection
+   - The `.collection-index.yaml` in this directory is the collection's catalog
+   - Items are organized in section subdirectories
+   ```
+
+7. **Tell the user what to do next:**
 
    > Your collection is ready at `{path}`.
    >

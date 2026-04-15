@@ -19,43 +19,55 @@ skill must be run inside a collection.
 3. **Ask whether to also rename the directory.** The collection directory
    doesn't have to match the collection name, but most users will want
    them consistent. Options:
-   - **Yes, rename the directory too** — rename the directory to match
-     the new name (slugified: lowercase, spaces to hyphens). Warn the
-     user that they'll need to `cd` to the new path afterward.
-   - **No, just change the display name** — the directory stays where it
-     is, only `.collection-index.yaml` and the wiki change.
+   - **Yes, rename the directory too**
+   - **No, just change the display name**
 
 4. **Update `.collection-index.yaml`**: change `collection_name` to the
    new name.
 
-5. **If renaming the directory**: rename it using `mv`. Tell the user
-   the new path.
+5. **If NOT renaming the directory** (display name only):
 
-6. **Regenerate the wiki** so the header, footer, and all pages reflect
-   the new name:
-
+   Regenerate the wiki immediately:
    ```
    uv run python tools/generate_wiki.py .
    ```
 
-   (If the directory was renamed, run this from the new path.)
+   Confirm:
+   > Collection display name changed to "{new name}". Wiki regenerated.
 
-7. **Confirm what was done and remind the user:**
+6. **If renaming the directory**: do NOT run `mv` during this session.
+   Renaming the directory while Claude Code is running from it will break
+   all subsequent operations.
 
-   > Collection renamed to "{new name}".
+   Instead, update `.collection-index.yaml` with the new name (this works
+   because the file is written before anything moves), then give the user
+   clear instructions to do the rest themselves:
+
+   > Display name updated to "{new name}" in `.collection-index.yaml`.
    >
-   > {if directory renamed:}
-   > The directory was moved to `{new path}`. Start your next session from there:
+   > To rename the directory, exit this session and run these commands:
+   >
    > ```
-   > cd {new path}
+   > exit
+   > mv {current_path} {new_path}
+   > cd {new_path}
+   > uv run python tools/generate_wiki.py .
    > claude
    > ```
+   >
+   > The `mv` renames the directory, the next line regenerates the wiki
+   > with the new name, and then you start a fresh Claude Code session
+   > from the new location.
+
+   This is three commands the user pastes into their terminal. The wiki
+   regeneration must happen from the new path (after the mv).
 
 ## What this changes
 
 - `collection_name` in `.collection-index.yaml`
-- All wiki HTML (via regeneration)
-- Optionally the directory name
+- All wiki HTML (via regeneration — either done in-session or by the user
+  after the directory rename)
+- Optionally the directory name (done by the user, not by Claude)
 
 ## What this does NOT change
 

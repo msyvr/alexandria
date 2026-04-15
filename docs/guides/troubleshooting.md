@@ -19,7 +19,7 @@ Common issues and how to fix them.
 
 **Fix**:
 1. Make sure dependencies are installed: `cd ~/alexandria && uv sync`
-2. Run the generator with the full path: `uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection`
+2. Run the generator with the full path: `uv run python tools/generate_wiki.py .`
 3. If you get "No such file or directory" for `.collection-index.yaml`, the collection index is missing. Create it by asking Claude (from inside the collection) to scan the collection and rebuild the index.
 
 ## Photo not reading (physical items)
@@ -63,7 +63,7 @@ After installing, close and reopen your terminal (some tools aren't available un
 
 **Fix**: Regenerate the wiki:
 ```
-uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection
+uv run python tools/generate_wiki.py .
 ```
 
 If the `.collection-index.yaml` is also stale (e.g., an item you added manually without using a skill), ask Claude to rebuild the index by scanning the collection for `metadata.yaml` files.

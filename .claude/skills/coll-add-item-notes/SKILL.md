@@ -64,7 +64,7 @@ inside a collection.
    > Note saved. To see it in the wiki, regenerate it:
    >
    > ```
-   > uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection
+   > uv run python tools/generate_wiki.py .
    > ```
    >
    > Or use `/coll-menu` → regenerate wiki.

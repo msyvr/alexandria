@@ -91,7 +91,7 @@ Claude Code determines the appropriate item type and guides you through building
 - **Update an item**: `cd` into it and work with Claude Code directly
 - **Reorganize**: `/coll` → reorganize when the structure needs adjusting
 - **Remove an item**: `/coll` → remove-item (keeps the catalog entry marked as removed) or `delete-item` (removes the entry entirely)
-- **Regenerate the wiki manually**: `/coll` → regenerate-wiki (or run the generator directly via `uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection`)
+- **Regenerate the wiki manually**: `/coll-menu` → regenerate-wiki (or from the collection directory: `uv run python tools/generate_wiki.py .`)
 
 ## What uses Claude Code and what doesn't
 

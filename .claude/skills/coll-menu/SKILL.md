@@ -66,7 +66,7 @@ My Collection
 Read `.collection-index.yaml` to build the TOC. If the index is missing or stale,
 regenerate it by scanning the collection tree for `metadata.yaml` files.
 
-**Full browse**: regenerate the wiki (`uv run python {alexandria-repo}/tools/generate_wiki.py {collection-path}`) and open `wiki/index.html` in the default browser.
+**Full browse**: regenerate the wiki (`uv run python tools/generate_wiki.py .` from the collection directory) and open `wiki/index.html` in the default browser.
 
 ## Remove an item (weeding)
 
@@ -167,5 +167,5 @@ The collection has a generated wiki at `{collection}/wiki/index.html`. Regenerat
 with the `regenerate-wiki` menu option or directly via:
 
 ```
-uv run python {alexandria-repo}/tools/generate_wiki.py {collection-path}
+uv run python tools/generate_wiki.py .
 ```

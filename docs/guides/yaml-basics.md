@@ -106,7 +106,7 @@ This opens it in TextEdit. Make your change, save, close. That's it.
 If you've changed a field that shows up in the collection views (title, description, author, section), you'll want to regenerate the wiki so the views reflect the change:
 
 ```
-uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection
+uv run python tools/generate_wiki.py .
 ```
 
 Or, from a Claude Code session inside your collection: ask Claude to regenerate the wiki, or use `/coll-menu` → regenerate wiki.

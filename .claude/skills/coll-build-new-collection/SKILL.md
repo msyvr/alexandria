@@ -42,9 +42,11 @@ work with the existing one? If it doesn't exist, proceed with creation.
    Set it to the current project root (the directory Claude Code is running from,
    which should be the cloned alexandria repo on first run).
 
-4. **Copy the collection skills** from the current project's `.claude/skills/`
-   directory into the new collection's `.claude/skills/` directory:
+4. **Copy skills, tools, and dependencies** from the current project into the
+   new collection. The collection becomes self-contained — it can regenerate
+   its wiki and run all skills without needing the alexandria repo.
 
+   Copy `.claude/skills/` (all skill directories):
    ```
    {new-collection}/.claude/skills/
    ├── coll-menu/SKILL.md
@@ -60,8 +62,22 @@ work with the existing one? If it doesn't exist, proceed with creation.
    └── coll-update-from-latest-alexandria/SKILL.md
    ```
 
-   This makes all `/coll-*` commands available when the user starts Claude Code
-   from their collection directory. They don't need to install skills globally.
+   Copy `tools/` (wiki generator, templates, stylesheet):
+   ```
+   {new-collection}/tools/
+   ├── generate_wiki.py
+   ├── _wiki_templates.py
+   └── _wiki_style.css
+   ```
+
+   Copy `pyproject.toml` (so `uv sync` works inside the collection):
+   ```
+   {new-collection}/pyproject.toml
+   ```
+
+   This makes the collection fully self-contained. Skills, wiki generation,
+   and dependency management all work from the collection directory without
+   needing the alexandria repo to be present.
 
 5. **Create a root README.md** for the collection:
 

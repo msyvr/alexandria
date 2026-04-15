@@ -1,8 +1,8 @@
 # /coll-update-from-latest-alexandria
 
 Update an existing collection to match the current alexandria repo — skills,
-wiki styling, and generated views. Run this from the alexandria repo directory
-after pulling the latest changes.
+tools, dependencies, and generated views. Run this from the alexandria repo
+directory after pulling the latest changes.
 
 ## When to use this
 
@@ -26,27 +26,44 @@ Then start Claude Code from the alexandria repo and run this skill.
    `.collection-index.yaml`. If not, explain that the path doesn't appear
    to be a collection and ask for the correct path.
 
-3. **Copy the skills.** Copy every directory from this repo's
-   `.claude/skills/` into the collection's `.claude/skills/`, replacing
-   existing files.
+3. **Copy skills.** Copy every directory from this repo's `.claude/skills/`
+   into the collection's `.claude/skills/`, replacing existing files.
 
-4. **Regenerate the wiki.** Run the wiki generator from this repo against
-   the collection. This updates the stylesheet, templates, and all generated
-   HTML to reflect any changes in the tools:
+4. **Copy tools.** Copy the `tools/` directory from this repo into the
+   collection's `tools/`, replacing existing files:
+   - `generate_wiki.py` — the wiki generator
+   - `_wiki_templates.py` — HTML templates
+   - `_wiki_style.css` — the stylesheet
+
+5. **Copy pyproject.toml.** Copy `pyproject.toml` from this repo into the
+   collection root, replacing the existing one. This ensures the collection's
+   dependency list matches the current alexandria version.
+
+6. **Run `uv sync` in the collection** to install any new or updated
+   dependencies:
 
    ```
-   uv run python {this_repo}/tools/generate_wiki.py {collection_path}
+   cd {collection_path} && uv sync
    ```
 
-5. **Report what was updated:**
-   - List skill directories that were copied (note any new ones)
-   - Confirm the wiki was regenerated with the latest styling and templates
+7. **Regenerate the wiki.** Run the wiki generator from the collection's
+   own copy of the tools (not the repo's):
 
-6. **Remind the user.** Updated skills take effect in the next Claude Code
+   ```
+   cd {collection_path} && uv run python tools/generate_wiki.py .
+   ```
+
+8. **Report what was updated:**
+   - Skills: list directories copied (note any new ones)
+   - Tools: updated (generator, templates, stylesheet)
+   - Dependencies: synced
+   - Wiki: regenerated with latest styling and templates
+
+9. **Remind the user.** Updated skills take effect in the next Claude Code
    session from the collection directory:
 
    > Collection at `{path}` updated:
-   > - Skills: latest versions copied
+   > - Skills, tools, and dependencies: latest versions
    > - Wiki: regenerated with current styling
    >
    > To use the updated skills, start a new Claude Code session:
@@ -59,12 +76,13 @@ Then start Claude Code from the alexandria repo and run this skill.
 ## What this updates
 
 - Skill instruction files (`.claude/skills/coll-*/SKILL.md`)
-- Wiki HTML, stylesheet, and all generated views (homepage, index pages,
-  item pages, journal)
+- Wiki generator and templates (`tools/`)
+- Stylesheet (`tools/_wiki_style.css` → copied into `wiki/_assets/` on regen)
+- Python dependency list (`pyproject.toml`)
+- All generated wiki HTML
 
 ## What this does NOT modify
 
 - The collection's data (items, metadata, sections, journal content)
 - Item directories or their contents (README, metadata.yaml, notes/)
-- The `.collection-index.yaml` catalog (it's read, not written)
-- Python dependencies — `uv sync` (done before this skill) handles that
+- The `.collection-index.yaml` catalog (read for wiki generation, not written)

@@ -295,7 +295,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     check("homepage exists", (wiki / "index.html").is_file())
     check("stylesheet exists", (wiki / "_assets" / "style.css").is_file())
 
-    expected_indexes = ["by-section", "by-date", "by-type", "by-form", "by-media-type", "by-topic", "collection-journal"]
+    expected_indexes = ["by-section", "by-date", "by-type", "by-media-type", "by-topic", "collection-journal"]
     for idx in expected_indexes:
         check(f"{idx}/index.html exists", (wiki / idx / "index.html").is_file())
 
@@ -315,11 +315,6 @@ def verify_wiki(lib: Path, items: list[dict]):
     check_contains("by-section: research section listed", by_section, "research")
     check_contains("by-section: health section listed", by_section, "health")
     check_contains("by-section: professional section listed", by_section, "professional")
-
-    # --- By-form index ---
-    by_form = (wiki / "by-form" / "index.html").read_text()
-    check_contains("by-form: physical group", by_form, "Physical")
-    check_contains("by-form: digital group", by_form, "Digital")
 
     # --- By-media-type index ---
     by_media = (wiki / "by-media-type" / "index.html").read_text()

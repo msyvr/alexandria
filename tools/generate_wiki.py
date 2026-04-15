@@ -266,7 +266,6 @@ def generate_wiki(library_path: Path) -> None:
         "by-section",
         "by-date",
         "by-type",
-        "by-form",
         "by-media-type",
         "by-topic",
     ]
@@ -318,11 +317,6 @@ def generate_wiki(library_path: Path) -> None:
     # --- By type ---
     (wiki_dir / "by-type" / "index.html").write_text(
         templates.by_type_index(library, all_items)
-    )
-
-    # --- By form ---
-    (wiki_dir / "by-form" / "index.html").write_text(
-        templates.by_form_index(library, all_items)
     )
 
     # --- By media type ---

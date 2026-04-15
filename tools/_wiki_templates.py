@@ -81,10 +81,9 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
         ("by-section", "By section"),
         ("by-date", "By date"),
         ("by-type", "By type"),
-        ("by-form", "By form"),
         ("by-media-type", "By media type"),
-        ("collection-journal", "Journal"),
         ("by-topic", "By topic"),
+        ("collection-journal", "Journal"),
     ]
     prefix = "../" if from_subdir else ""
     links = []
@@ -236,34 +235,6 @@ def by_type_index(library: dict, all_items: list[dict]) -> str:
 """
     breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By type'
     return _page(f"{collection_name} — by type", breadcrumb, body, "../" + STYLESHEET_REL)
-
-
-def by_form_index(library: dict, all_items: list[dict]) -> str:
-    """Render the by-form index: physical vs digital."""
-    collection_name = library.get("collection_name", "alexandria")
-    groups: dict[str, list[dict]] = {"physical": [], "digital": []}
-    for item in all_items:
-        form = item.get("form", "digital")
-        groups.setdefault(form, []).append(item)
-
-    sections = []
-    for form_name in ["physical", "digital"]:
-        items = sorted(groups.get(form_name, []), key=lambda b: b.get("title", "").lower())
-        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
-        count = len([b for b in items if b.get("status", "active") != "removed"])
-        if count == 0:
-            continue
-        sections.append(
-            f'<div class="section-group"><h2>{form_name.capitalize()} <small>({count})</small></h2>'
-            f'<div class="index-grid">\n{cards}\n</div></div>'
-        )
-
-    body = f"""{_axes_nav("by-form", from_subdir=True)}
-
-{''.join(sections) if sections else '<p>No items to display.</p>'}
-"""
-    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By form'
-    return _page(f"{collection_name} — by form", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def by_media_type_index(library: dict, all_items: list[dict]) -> str:

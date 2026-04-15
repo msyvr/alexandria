@@ -126,17 +126,16 @@ work with the existing one? If it doesn't exist, proceed with creation.
 
    > Your collection is ready at `{path}`.
    >
-   > To start using it, **close this Claude Code session first** (type `/exit`
-   > or press `Ctrl+C`), then open a new terminal session from your collection
-   > directory:
+   > To start using it, **open a new terminal** (or a new tab with `Cmd+T` on
+   > macOS) and run:
    >
    > ```
    > cd {path}
    > claude
    > ```
    >
-   > (Or open a new terminal tab with `Cmd+T` on macOS, then run those two
-   > commands there.)
+   > You can keep this session open for reference, or close it when you're
+   > working from your collection (type `/exit` or press `Ctrl+C`).
    >
    > From your collection directory, type `/coll-menu` for guided options, or
    > invoke skills directly:

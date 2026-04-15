@@ -246,16 +246,14 @@ Say **Yes** (or choose option 2 to allow all edits in the collection without bei
 
 ### 8. Switch to your collection
 
-**Close the current Claude Code session** — type `/exit` or press `Ctrl+C`. You need to start a fresh session from your collection directory for the skills to work there.
-
-Open a new terminal (or a new tab with `Cmd+T` on macOS), then:
+Open a new terminal (or a new tab with `Cmd+T` on macOS) and start Claude Code from your collection directory:
 
 ```
 cd ~/my-collection
 claude
 ```
 
-You're now working from your collection. Type `/coll-` and hit tab to see all available commands, or type `/coll-menu` for a guided menu.
+You're now working from your collection. Type `/coll-` and hit tab to see all available commands, or type `/coll-menu` for a guided menu. You can keep the alexandria session open for reference, or close it when you're comfortable (`/exit` or `Ctrl+C`).
 
 ### 9. Add your first item (from your collection directory)
 

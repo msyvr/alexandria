@@ -98,6 +98,13 @@ def load_item_notes(library_path: Path, book_path: str) -> str | None:
     return full_path.read_text()
 
 
+def has_notes_pdf(library_path: Path, book_path: str) -> bool:
+    """Check if an item has a notes.pdf file."""
+    if not book_path:
+        return False
+    return (library_path / book_path / "notes.pdf").exists()
+
+
 def truncate_by_words(text: str, limit: int) -> tuple[str, bool]:
     """Truncate text to roughly `limit` words. Returns (truncated, was_truncated)."""
     words = text.split()
@@ -329,17 +336,19 @@ def generate_wiki(library_path: Path) -> None:
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)
 
-        # Load user notes (notes.md) if present
+        # Load user notes (notes.md and/or notes.pdf) if present
+        has_pdf_notes = False
         if status != "removed":
             notes_md = load_item_notes(library_path, book_path)
             if notes_md:
                 notes_html = md_renderer.render(notes_md)
+            has_pdf_notes = has_notes_pdf(library_path, book_path)
 
         # Pass 2 hook (currently a no-op)
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated, notes_html)
+            templates.item_page(item, readme_html, readme_truncated, notes_html, has_pdf_notes)
         )
 
     n_books = len(all_items)

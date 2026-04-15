@@ -411,12 +411,13 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
     return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
-def item_page(item: dict, readme_html: str, readme_truncated: bool, notes_html: str = "") -> str:
+def item_page(item: dict, readme_html: str, readme_truncated: bool, notes_html: str = "", has_pdf_notes: bool = False) -> str:
     """Render a single item page.
 
     `readme_html` is the item's README content rendered to HTML (may be empty).
     `readme_truncated` is True if the content was truncated to the word limit.
     `notes_html` is the user's notes.md rendered to HTML (may be empty).
+    `has_pdf_notes` is True if a notes.pdf file exists in the item's directory.
     """
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
@@ -491,12 +492,19 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
     description_html = f'<p class="description">{description}</p>' if description else ""
     user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
 
-    # notes.md rendered as a full section if present
+    # notes.md and/or notes.pdf rendered as a section
     notes_section = ""
-    if notes_html:
+    if notes_html or has_pdf_notes:
+        notes_parts = []
+        if notes_html:
+            notes_parts.append(notes_html)
+        if has_pdf_notes:
+            notes_parts.append(
+                f'<p class="pdf-notes-link">📄 <a href="../../{path}/notes.pdf">Open notes as PDF</a></p>'
+            )
         notes_section = f"""<div class="item-notes">
 <h2>Notes</h2>
-{notes_html}
+{''.join(notes_parts)}
 </div>"""
 
     body = f"""{description_html}

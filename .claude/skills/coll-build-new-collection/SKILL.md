@@ -56,6 +56,7 @@ work with the existing one? If it doesn't exist, proceed with creation.
    ├── coll-new-scout/SKILL.md
    ├── coll-scout/SKILL.md
    ├── coll-notes/SKILL.md
+   ├── coll-add-item-notes/SKILL.md
    └── coll-update-from-latest-alexandria/SKILL.md
    ```
 

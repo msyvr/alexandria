@@ -555,31 +555,30 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: 
     slug = escape(item.get("slug", ""))
     path = item.get("path", "")
 
-    # Metadata — rendered as a compact inline line
-    meta_parts = []
+    # Metadata grid
+    metadata_rows = []
     if media_type:
-        meta_parts.append(f"{media_type} ({form})")
+        metadata_rows.append(f"<dt>Format</dt><dd>{media_type} ({form})</dd>")
     else:
-        meta_parts.append(form)
-    meta_parts.append(f'<a href="../by-section/{section.lower().replace(" ", "-")}.html">{section}</a>')
-    meta_parts.append(date_added)
+        metadata_rows.append(f"<dt>Form</dt><dd>{form}</dd>")
+    metadata_rows.append(f"<dt>Section</dt><dd><a href=\"../by-section/{section.lower().replace(' ', '-')}.html\">{section}</a></dd>")
+    metadata_rows.append(f"<dt>Added</dt><dd>{date_added}</dd>")
 
     if item.get("book_type") == "scout":
         if settled:
             settled_at = escape(item.get("settled_at", ""))
-            label = f"settled{' ' + settled_at if settled_at else ''}"
-            meta_parts.append(label)
+            metadata_rows.append(f"<dt>Status</dt><dd>Settled{' ' + settled_at if settled_at else ''}</dd>")
         else:
-            meta_parts.append("live scout")
+            metadata_rows.append(f"<dt>Status</dt><dd>Live scout</dd>")
 
     if status == "removed":
         removed_at = escape(item.get("removed_at", ""))
         removed_reason = escape(item.get("removed_reason", ""))
-        meta_parts.append(f"<strong>removed</strong>{' ' + removed_at if removed_at else ''}")
+        metadata_rows.append(f"<dt>Status</dt><dd><strong>Removed</strong>{' ' + removed_at if removed_at else ''}</dd>")
         if removed_reason:
-            meta_parts.append(removed_reason)
+            metadata_rows.append(f"<dt>Reason</dt><dd>{removed_reason}</dd>")
 
-    metadata_block = f'<div class="item-metadata">{" · ".join(meta_parts)}</div>'
+    metadata_block = f'<div class="item-metadata"><dl>{"".join(metadata_rows)}</dl></div>'
 
     # File link for digital items with original files
     file_link = ""

@@ -329,7 +329,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     # --- Live scout: links out (does NOT render inline content) ---
     live_scout_page = (wiki / "items" / "ai-safety-scout.html").read_text()
     check_contains("live scout: has link-out", live_scout_page, "Open the scout")
-    check_contains("live scout: shows Live status", live_scout_page, "live scout")
+    check_contains("live scout: shows Live status", live_scout_page, "Live scout")
     # REGRESSION CHECK: live scout should NOT have the README body rendered inline
     # (the page title in <header> is fine; it's the README content we're checking against)
     check_not_contains("live scout: no inline README body", live_scout_page, "A living knowledge base with 23 entries")

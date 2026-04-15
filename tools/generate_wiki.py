@@ -146,9 +146,23 @@ def truncate_by_words(text: str, limit: int) -> tuple[str, bool]:
 
 
 def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bool]:
-    """Render README markdown to HTML, truncating to the word limit."""
+    """Render README markdown to HTML, truncating to the word limit.
+
+    Strips the first <h1> (duplicates the page title) and the first
+    italic paragraph if it looks like an author line (duplicates the
+    template's author display).
+    """
+    import re
+
     truncated_md, was_truncated = truncate_by_words(readme_md, README_WORD_LIMIT)
     html = md_renderer.render(truncated_md)
+
+    # Strip first <h1>...</h1> (the README's title duplicates the page header)
+    html = re.sub(r'<h1>.*?</h1>\n?', '', html, count=1)
+
+    # Strip first <p><em>by ...</em></p> (author line duplicates template author)
+    html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
+
     return html, was_truncated
 
 

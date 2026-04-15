@@ -193,16 +193,16 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
 /* Item metadata */
 
 .item-metadata {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.4em 0;
   margin: 0.5em 0;
-  padding: 0.3em 0;
 }
 
-.item-metadata dl { margin: 0; display: flex; flex-wrap: wrap; gap: 0.1em 0; font-size: 0.75em; color: var(--muted); }
-.item-metadata dt { display: none; }
-.item-metadata dd { margin: 0; }
-.item-metadata dd::after { content: " · "; }
-.item-metadata dd:last-child::after { content: ""; }
-.item-metadata dd a { color: var(--muted); }
+.item-metadata dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.1em 0.6em; font-size: 0.8em; }
+.item-metadata dt { color: var(--muted); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.04em; align-self: baseline; }
+.item-metadata dd { margin: 0; align-self: baseline; }
+.item-metadata dd a { color: var(--text); }
 .item-metadata dd a:hover { color: var(--link); }
 
 /* File link */
@@ -213,10 +213,16 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
   margin: 0.3em 0;
 }
 
-/* Item content */
+/* Item content (rendered from README) */
 
-.item-content { margin: 1em 0; }
+.item-content { margin: 0.8em 0; font-size: 0.9em; }
 .item-content img { max-width: 100%; height: auto; }
+.item-content h1 { font-size: 1.1em; font-weight: 600; }
+.item-content h2 { font-size: 1em; font-weight: 600; margin-top: 1em; border-bottom: none; padding-bottom: 0; }
+.item-content h3 { font-size: 0.92em; }
+.item-content ul, .item-content ol { padding-left: 1.2em; }
+.item-content li { margin: 0.15em 0; }
+.item-content p { margin: 0.4em 0; }
 
 /* User notes (metadata field) */
 

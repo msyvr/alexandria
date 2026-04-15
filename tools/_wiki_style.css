@@ -59,6 +59,16 @@ header.page-header h1 {
   letter-spacing: 0.01em;
 }
 
+.header-home {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.header-home:hover {
+  color: var(--link);
+  text-decoration: none;
+}
+
 .header-search {
   font-size: 0.78em;
   color: var(--muted);
@@ -69,18 +79,6 @@ header.page-header h1 {
 .header-search:hover {
   color: var(--link);
 }
-
-/* Breadcrumb */
-
-nav.breadcrumb {
-  font-size: 0.82em;
-  color: var(--muted);
-  margin-bottom: 0.6em;
-  letter-spacing: 0.02em;
-}
-
-nav.breadcrumb a { color: var(--muted); text-decoration: none; }
-nav.breadcrumb a:hover { color: var(--link); }
 
 /* Links */
 

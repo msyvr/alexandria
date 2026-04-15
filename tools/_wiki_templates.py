@@ -92,8 +92,8 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     axes = [
         ("by-section", "By section"),
         ("by-date", "By date"),
-        ("by-type", "By type"),
-        ("by-media-type", "By media type"),
+        ("by-media-type", "By format"),
+        ("by-type", "Physical / Digital"),
         ("by-topic", "By topic"),
     ]
     prefix = "../" if from_subdir else ""

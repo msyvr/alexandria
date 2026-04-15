@@ -147,6 +147,18 @@ def create_synthetic_library(lib: Path):
     }
     create_item(lib, "professional", "causal-inference-primer", meta_digital,
                 "# Causal Inference Primer\n\n*by A. Researcher*\n\nContent preserved in original.pdf.")
+    # Add notes.md for this item
+    (lib / "professional" / "causal-inference-primer" / "notes.md").write_text(
+        "# Reading Notes\n\n"
+        "## Key takeaways\n\n"
+        "- The IV framework in section 3 is directly applicable to my thesis\n"
+        "- The robustness checks in section 5 should be replicated\n\n"
+        "## Quotes\n\n"
+        "> \"The fundamental problem of causal inference is that we can never observe\n"
+        "> the counterfactual outcome.\" (p. 12)\n\n"
+        "## Connections\n\n"
+        "Relates to the weak instruments discussion in my thesis notes.\n"
+    )
     items.append({"path": "professional/causal-inference-primer", **{k: meta_digital[k] for k in REQUIRED_FIELDS | {"author"}}})
 
     # --- User-authored digital item (markdown notes) ---
@@ -346,10 +358,14 @@ def verify_wiki(lib: Path, items: list[dict]):
     check_contains("physical item: user_notes shown", physical_page, "First edition, signed")
     check_contains("physical item: user_notes in blockquote", physical_page, "user-notes")
 
-    # --- Digital item ---
+    # --- Digital item with notes.md ---
     digital_page = (wiki / "items" / "causal-inference-primer.html").read_text()
     check_contains("digital item: title shown", digital_page, "Causal Inference Primer")
     check_contains("digital item: media_type shown", digital_page, "text:pdf")
+    check_contains("digital item: notes section rendered", digital_page, "item-notes")
+    check_contains("digital item: notes heading", digital_page, "Reading Notes")
+    check_contains("digital item: notes content", digital_page, "IV framework in section 3")
+    check_contains("digital item: notes blockquote", digital_page, "counterfactual outcome")
 
     # --- User-authored digital item ---
     notes_page = (wiki / "items" / "thesis-notes.html").read_text()

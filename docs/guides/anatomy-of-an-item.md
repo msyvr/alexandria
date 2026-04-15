@@ -16,6 +16,9 @@ the-dispossessed/
 Some items have additional files depending on their type:
 
 ```
+# Any item can have:
+├── notes.md            ← your personal notes (rendered in the wiki)
+
 # A physical item might also have:
 ├── photo.jpg           ← photograph of the item
 
@@ -56,6 +59,14 @@ For scouts, the README is a generated overview with categories, comparison table
 ### CLAUDE.md — instructions for Claude Code (scouts only)
 
 Scouts have a CLAUDE.md file that Claude reads automatically when you start a session from the scout's directory. It describes the scout's schema, update commands, file locations, and discovery configuration. Physical and digital items don't have one — their metadata.yaml is self-documenting.
+
+### notes.md — your personal notes
+
+Create this file yourself in any item's directory when you want to keep detailed notes — annotations, quotes, connections to other items, section-by-section reactions, anything you want to remember. Write in markdown; it renders as a "Notes" section on the item's wiki page.
+
+Unlike `user_notes` in metadata.yaml (which is a short one-liner for catalog views), `notes.md` has no length limit. Use it for substantial annotations on papers, detailed thoughts about a physical item, or any extended personal writing about the item.
+
+The wiki regenerates the notes section each time, but your edits to `notes.md` always persist — it's your file.
 
 ### context.md — interaction history
 

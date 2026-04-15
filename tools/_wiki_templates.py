@@ -411,11 +411,12 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
     return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
-def item_page(item: dict, readme_html: str, readme_truncated: bool) -> str:
+def item_page(item: dict, readme_html: str, readme_truncated: bool, notes_html: str = "") -> str:
     """Render a single item page.
 
     `readme_html` is the item's README content rendered to HTML (may be empty).
     `readme_truncated` is True if the content was truncated to the word limit.
+    `notes_html` is the user's notes.md rendered to HTML (may be empty).
     """
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
@@ -488,15 +489,25 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 </div>"""
 
     description_html = f'<p class="description">{description}</p>' if description else ""
-    notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
+    user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
+
+    # notes.md rendered as a full section if present
+    notes_section = ""
+    if notes_html:
+        notes_section = f"""<div class="item-notes">
+<h2>Notes</h2>
+{notes_html}
+</div>"""
 
     body = f"""{description_html}
 
-{notes_html}
+{user_notes_html}
 
 {metadata_block}
 
 {content_block}
+
+{notes_section}
 
 <p><a href="../index.html">← Back to library</a></p>
 """

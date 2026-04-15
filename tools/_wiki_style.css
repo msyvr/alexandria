@@ -238,6 +238,30 @@ blockquote.user-notes {
   }
 }
 
+/* Item notes (notes.md) */
+
+.item-notes {
+  margin: 2em 0;
+  padding: 1.5em;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.item-notes h2 {
+  margin-top: 0;
+  font-size: 1.3em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+.item-notes blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 1em 0;
+  padding: 0.3em 1em;
+  color: var(--muted);
+}
+
 /* Collection journal */
 
 .journal-intro {

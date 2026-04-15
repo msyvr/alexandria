@@ -88,6 +88,16 @@ def load_item_readme(library_path: Path, book_path: str) -> str | None:
     return full_path.read_text()
 
 
+def load_item_notes(library_path: Path, book_path: str) -> str | None:
+    """Read an item's notes.md. Returns None if missing."""
+    if not book_path:
+        return None
+    full_path = library_path / book_path / "notes.md"
+    if not full_path.exists():
+        return None
+    return full_path.read_text()
+
+
 def truncate_by_words(text: str, limit: int) -> tuple[str, bool]:
     """Truncate text to roughly `limit` words. Returns (truncated, was_truncated)."""
     words = text.split()
@@ -308,6 +318,7 @@ def generate_wiki(library_path: Path) -> None:
 
         readme_html = ""
         readme_truncated = False
+        notes_html = ""
 
         # Live scouts link out to their own presentation; settled scouts and other
         # item types render their README inline. Removed items show the removal
@@ -318,11 +329,17 @@ def generate_wiki(library_path: Path) -> None:
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)
 
+        # Load user notes (notes.md) if present
+        if status != "removed":
+            notes_md = load_item_notes(library_path, book_path)
+            if notes_md:
+                notes_html = md_renderer.render(notes_md)
+
         # Pass 2 hook (currently a no-op)
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated)
+            templates.item_page(item, readme_html, readme_truncated, notes_html)
         )
 
     n_books = len(all_items)

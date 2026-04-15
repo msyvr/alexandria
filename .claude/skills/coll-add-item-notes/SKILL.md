@@ -1,7 +1,8 @@
 # /coll-add-item-notes
 
-Add personal notes to an item in your collection. You can write notes in any
-text editor and bring them in here — markdown, plain text, or PDF.
+Add personal notes to an item in your collection. Write notes in any text
+editor, then bring them in here. Each note is a separate file in the item's
+`notes/` directory — you can accumulate many notes on a single item over time.
 
 ## Before starting
 
@@ -15,41 +16,52 @@ inside a collection.
    slug. Search `.collection-index.yaml` to find a match. If ambiguous (multiple
    partial matches), show the options and let the user pick. Confirm the match.
 
-2. **Ask for the notes file.** The user provides the path to their notes file.
-   Verify it exists and is readable.
+2. **Ask what to do:**
 
-3. **Handle based on file type:**
+   - **Add a new note** — import a file as a new note
+   - **Update/replace an existing note** — replace a specific note that's
+     already in the item's `notes/` directory
+   - **Cancel**
 
-   **Markdown (`.md`):**
-   - Copy the file into the item's directory as `notes.md`
-   - If `notes.md` already exists, ask the user: replace it, append to it, or
-     cancel?
-   - The wiki will render this as a "Notes" section on the item's page
+3. **For a new note:**
 
-   **Plain text (`.txt`):**
-   - Read the content and convert to simple markdown: wrap each paragraph
-     (separated by blank lines) in its own block, preserve line breaks within
-     paragraphs
-   - Save as `notes.md` in the item's directory
-   - If `notes.md` already exists, same replace/append/cancel choice
-   - The wiki will render this the same as any other markdown notes
+   a. Ask for the notes file path. Verify it exists and is readable.
+   b. Ask for a short name for the note (used in the filename). Default:
+      derive from the source filename.
+   c. Generate the filename: `YYYY-MM-DD-{name}.{ext}` — date-prefixed
+      so notes sort chronologically.
+   d. Handle based on file type:
 
-   **PDF (`.pdf`):**
-   - Copy the file into the item's directory as `notes.pdf`
-   - If `notes.pdf` already exists, ask the user: replace or cancel?
-   - The wiki will link to the PDF from the item's page (PDFs can't be rendered
-     inline in static HTML)
+      **Markdown (`.md`):**
+      Copy into `{item}/notes/` with the generated filename.
 
-   **Other formats:**
-   - Explain that the supported formats are `.md`, `.txt`, and `.pdf`
-   - Offer to treat the file as plain text if the user wants
+      **Plain text (`.txt`):**
+      Copy into `{item}/notes/` with `.md` extension (plain text renders
+      fine as markdown).
 
-4. **Confirm what was done.** Tell the user where the notes file was saved and
-   how it will appear in the wiki.
+      **PDF (`.pdf`):**
+      Copy into `{item}/notes/` with the generated filename. The wiki
+      will link to it (PDFs can't render inline in static HTML).
 
-5. **Suggest regenerating the wiki** so the notes appear on the item's page:
+      **Other formats:**
+      Explain that supported formats are `.md`, `.txt`, and `.pdf`.
+      Offer to treat the file as plain text if appropriate.
 
-   > Notes saved. To see them in the wiki, regenerate it:
+   e. Create the `notes/` directory if it doesn't exist yet.
+
+4. **For updating an existing note:**
+
+   a. List the notes currently in `{item}/notes/`.
+   b. Let the user pick which note to replace.
+   c. Ask for the replacement file path.
+   d. Copy the new file over the existing one (same filename).
+
+5. **Confirm what was done.** Tell the user the note's filename and that it
+   will appear on the item's wiki page after regenerating.
+
+6. **Suggest regenerating the wiki:**
+
+   > Note saved. To see it in the wiki, regenerate it:
    >
    > ```
    > uv run python ~/alexandria/tools/generate_wiki.py ~/my-collection
@@ -57,25 +69,34 @@ inside a collection.
    >
    > Or use `/coll-menu` → regenerate wiki.
 
-## Appending notes
+## How notes appear in the wiki
 
-When the user chooses to append (for `.md` and `.txt` files when `notes.md`
-already exists):
+Each item's wiki page has a "Notes" section that shows all notes from the
+`notes/` directory, sorted chronologically by filename (newest last or first
+depending on preference). Markdown and text notes render inline. PDF notes
+show a download link.
 
-- Add a horizontal rule (`---`) and a timestamp header before the new content:
+## The notes/ directory
 
-  ```markdown
-  ---
+```
+causal-inference-primer/
+├── metadata.yaml
+├── README.md
+├── original.pdf
+└── notes/
+    ├── 2026-04-14-reading-notes.md
+    ├── 2026-04-21-seminar-followup.md
+    └── 2026-05-10-annotated-version.pdf
+```
 
-  *Added YYYY-MM-DD:*
-
-  {new content}
-  ```
-
-- This preserves the existing notes and makes it clear where new content starts.
+Each note is independent. The user can:
+- Edit any note directly in their text editor
+- Delete a note by removing the file
+- Rename a note (the date prefix keeps sort order)
+- Have both markdown and PDF notes on the same item
 
 ## What this does NOT do
 
-- Does not create or edit notes — the user writes them in their preferred editor
-- Does not convert PDF content to text (the PDF is preserved as-is)
+- Does not create or edit notes — the user writes them externally
+- Does not convert PDF content to text
 - Does not modify the item's metadata or README

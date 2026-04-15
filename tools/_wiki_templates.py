@@ -411,13 +411,13 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
     return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
-def item_page(item: dict, readme_html: str, readme_truncated: bool, notes_html: str = "", has_pdf_notes: bool = False) -> str:
+def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: list[dict] | None = None) -> str:
     """Render a single item page.
 
     `readme_html` is the item's README content rendered to HTML (may be empty).
     `readme_truncated` is True if the content was truncated to the word limit.
-    `notes_html` is the user's notes.md rendered to HTML (may be empty).
-    `has_pdf_notes` is True if a notes.pdf file exists in the item's directory.
+    `item_notes` is a list of note dicts from the notes/ directory, each with:
+      filename, title, html, is_pdf.
     """
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
@@ -492,19 +492,28 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
     description_html = f'<p class="description">{description}</p>' if description else ""
     user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
 
-    # notes.md and/or notes.pdf rendered as a section
+    # Render notes from notes/ directory
     notes_section = ""
-    if notes_html or has_pdf_notes:
-        notes_parts = []
-        if notes_html:
-            notes_parts.append(notes_html)
-        if has_pdf_notes:
-            notes_parts.append(
-                f'<p class="pdf-notes-link">📄 <a href="../../{path}/notes.pdf">Open notes as PDF</a></p>'
-            )
+    if item_notes:
+        note_blocks = []
+        for note in (item_notes or []):
+            if note["is_pdf"]:
+                note_blocks.append(
+                    f'<div class="note-entry">'
+                    f'<h3>{escape(note["title"])}</h3>'
+                    f'<p>📄 <a href="../../{path}/notes/{note["filename"]}">Open as PDF</a></p>'
+                    f'</div>'
+                )
+            else:
+                note_blocks.append(
+                    f'<div class="note-entry">'
+                    f'<h3>{escape(note["title"])}</h3>'
+                    f'{note["html"]}'
+                    f'</div>'
+                )
         notes_section = f"""<div class="item-notes">
 <h2>Notes</h2>
-{''.join(notes_parts)}
+{''.join(note_blocks)}
 </div>"""
 
     body = f"""{description_html}

@@ -88,21 +88,48 @@ def load_item_readme(library_path: Path, book_path: str) -> str | None:
     return full_path.read_text()
 
 
-def load_item_notes(library_path: Path, book_path: str) -> str | None:
-    """Read an item's notes.md. Returns None if missing."""
-    if not book_path:
-        return None
-    full_path = library_path / book_path / "notes.md"
-    if not full_path.exists():
-        return None
-    return full_path.read_text()
+def load_item_notes(library_path: Path, book_path: str, md_renderer) -> list[dict]:
+    """Load all notes from an item's notes/ directory.
 
-
-def has_notes_pdf(library_path: Path, book_path: str) -> bool:
-    """Check if an item has a notes.pdf file."""
+    Returns a list of dicts sorted by filename (date-prefixed), each with:
+      - filename: str
+      - title: str (extracted from first heading or derived from filename)
+      - html: str (rendered markdown)
+      - is_pdf: bool
+    """
     if not book_path:
-        return False
-    return (library_path / book_path / "notes.pdf").exists()
+        return []
+    notes_dir = library_path / book_path / "notes"
+    if not notes_dir.is_dir():
+        return []
+
+    notes = []
+    for f in sorted(notes_dir.iterdir()):
+        if f.name.startswith("."):
+            continue
+        if f.suffix == ".pdf":
+            notes.append({
+                "filename": f.name,
+                "title": f.stem.replace("-", " ").lstrip("0123456789 "),
+                "html": "",
+                "is_pdf": True,
+            })
+        elif f.suffix in (".md", ".txt"):
+            content = f.read_text()
+            # Extract title from first heading if present
+            title = f.stem.replace("-", " ").lstrip("0123456789 ")
+            for line in content.splitlines():
+                if line.startswith("# "):
+                    title = line[2:].strip()
+                    break
+            html = md_renderer.render(content)
+            notes.append({
+                "filename": f.name,
+                "title": title,
+                "html": html,
+                "is_pdf": False,
+            })
+    return notes
 
 
 def truncate_by_words(text: str, limit: int) -> tuple[str, bool]:
@@ -325,7 +352,7 @@ def generate_wiki(library_path: Path) -> None:
 
         readme_html = ""
         readme_truncated = False
-        notes_html = ""
+        item_notes: list[dict] = []
 
         # Live scouts link out to their own presentation; settled scouts and other
         # item types render their README inline. Removed items show the removal
@@ -336,19 +363,15 @@ def generate_wiki(library_path: Path) -> None:
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)
 
-        # Load user notes (notes.md and/or notes.pdf) if present
-        has_pdf_notes = False
+        # Load user notes from notes/ directory if present
         if status != "removed":
-            notes_md = load_item_notes(library_path, book_path)
-            if notes_md:
-                notes_html = md_renderer.render(notes_md)
-            has_pdf_notes = has_notes_pdf(library_path, book_path)
+            item_notes = load_item_notes(library_path, book_path, md_renderer)
 
         # Pass 2 hook (currently a no-op)
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated, notes_html, has_pdf_notes)
+            templates.item_page(item, readme_html, readme_truncated, item_notes)
         )
 
     n_books = len(all_items)

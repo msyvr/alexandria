@@ -17,7 +17,7 @@ Some items have additional files depending on their type:
 
 ```
 # Any item can have:
-├── notes.md            ← your personal notes (rendered in the wiki)
+├── notes/              ← your personal notes (each file rendered in the wiki)
 
 # A physical item might also have:
 ├── photo.jpg           ← photograph of the item
@@ -60,13 +60,22 @@ For scouts, the README is a generated overview with categories, comparison table
 
 Scouts have a CLAUDE.md file that Claude reads automatically when you start a session from the scout's directory. It describes the scout's schema, update commands, file locations, and discovery configuration. Physical and digital items don't have one — their metadata.yaml is self-documenting.
 
-### notes.md — your personal notes
+### notes/ — your personal notes
 
-Create this file yourself in any item's directory when you want to keep detailed notes — annotations, quotes, connections to other items, section-by-section reactions, anything you want to remember. Write in markdown; it renders as a "Notes" section on the item's wiki page.
+A directory for personal notes about the item. Each note is a separate file — you can accumulate many notes over time. Write them in any editor; use `/coll-add-item-notes` to import them, or just drop files directly into the `notes/` directory.
 
-Unlike `user_notes` in metadata.yaml (which is a short one-liner for catalog views), `notes.md` has no length limit. Use it for substantial annotations on papers, detailed thoughts about a physical item, or any extended personal writing about the item.
+```
+notes/
+├── 2026-04-14-reading-notes.md
+├── 2026-04-21-seminar-followup.md
+└── 2026-05-10-annotated-version.pdf
+```
 
-The wiki regenerates the notes section each time, but your edits to `notes.md` always persist — it's your file.
+Markdown and text files render inline on the item's wiki page. PDF files show a download link. Notes sort chronologically by filename (date-prefix them for clean ordering).
+
+Unlike `user_notes` in metadata.yaml (which is a short one-liner for catalog views), the `notes/` directory has no limit on the number or length of notes. Use it for substantial annotations on papers, detailed thoughts about a physical item, or any extended personal writing about the item.
+
+Each note is independent — edit, delete, or rename individual notes without affecting the others.
 
 ### context.md — interaction history
 

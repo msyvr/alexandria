@@ -193,15 +193,25 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
 /* Item metadata */
 
 .item-metadata {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0.6em 0;
-  margin: 0.8em 0;
+  margin: 0.5em 0;
+  padding: 0.3em 0;
 }
 
-.item-metadata dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.15em 0.8em; font-size: 0.88em; }
-.item-metadata dt { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.04em; align-self: baseline; }
-.item-metadata dd { margin: 0; align-self: baseline; }
+.item-metadata dl { margin: 0; display: flex; flex-wrap: wrap; gap: 0.1em 0; font-size: 0.75em; color: var(--muted); }
+.item-metadata dt { display: none; }
+.item-metadata dd { margin: 0; }
+.item-metadata dd::after { content: " · "; }
+.item-metadata dd:last-child::after { content: ""; }
+.item-metadata dd a { color: var(--muted); }
+.item-metadata dd a:hover { color: var(--link); }
+
+/* File link */
+
+.file-link {
+  font-size: 0.82em;
+  color: var(--muted);
+  margin: 0.3em 0;
+}
 
 /* Item content */
 

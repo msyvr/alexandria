@@ -329,7 +329,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     # --- Live scout: links out (does NOT render inline content) ---
     live_scout_page = (wiki / "items" / "ai-safety-scout.html").read_text()
     check_contains("live scout: has link-out", live_scout_page, "Open the scout")
-    check_contains("live scout: shows Live status", live_scout_page, "Live (updates via discovery)")
+    check_contains("live scout: shows Live status", live_scout_page, "live scout")
     # REGRESSION CHECK: live scout should NOT have the README body rendered inline
     # (the page title in <header> is fine; it's the README content we're checking against)
     check_not_contains("live scout: no inline README body", live_scout_page, "A living knowledge base with 23 entries")
@@ -338,7 +338,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     # --- Settled scout: renders inline (does NOT link out) ---
     settled_page = (wiki / "items" / "treatment-landscape.html").read_text()
     check_contains("settled scout: inline content rendered", settled_page, "This scout was settled on April 10")
-    check_contains("settled scout: shows Settled status", settled_page, "Settled (static reference)")
+    check_contains("settled scout: shows Settled status", settled_page, "settled")
     check_contains("settled scout: shows settled_at date", settled_page, "2026-04-10")
     # REGRESSION CHECK: settled scout should NOT have the link-out
     check_not_contains("settled scout: no link-out", settled_page, "Open the scout")

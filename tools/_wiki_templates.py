@@ -555,39 +555,42 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: 
     slug = escape(item.get("slug", ""))
     path = item.get("path", "")
 
-    # Metadata block
-    metadata_rows = []
-    # Combine form and media_type into one readable line
+    # Metadata — rendered as a compact inline line
+    meta_parts = []
     if media_type:
-        metadata_rows.append(f"<dt>Format</dt><dd>{media_type} ({form})</dd>")
+        meta_parts.append(f"{media_type} ({form})")
     else:
-        metadata_rows.append(f"<dt>Form</dt><dd>{form}</dd>")
-    metadata_rows.append(f"<dt>Section</dt><dd><a href=\"../by-section/{section.lower().replace(' ', '-')}.html\">{section}</a></dd>")
-    metadata_rows.append(f"<dt>Added</dt><dd>{date_added}</dd>")
-    if author:
-        metadata_rows.insert(0, f"<dt>Author</dt><dd>{escape(author)}</dd>")
+        meta_parts.append(form)
+    meta_parts.append(f'<a href="../by-section/{section.lower().replace(" ", "-")}.html">{section}</a>')
+    meta_parts.append(date_added)
 
     if item.get("book_type") == "scout":
         if settled:
             settled_at = escape(item.get("settled_at", ""))
-            metadata_rows.append(f"<dt>Scout status</dt><dd>Settled (static reference)</dd>")
-            if settled_at:
-                metadata_rows.append(f"<dt>Settled at</dt><dd>{settled_at}</dd>")
+            label = f"settled{' ' + settled_at if settled_at else ''}"
+            meta_parts.append(label)
         else:
-            metadata_rows.append(f"<dt>Scout status</dt><dd>Live (updates via discovery)</dd>")
+            meta_parts.append("live scout")
 
     if status == "removed":
         removed_at = escape(item.get("removed_at", ""))
         removed_reason = escape(item.get("removed_reason", ""))
-        metadata_rows.append(f"<dt>Status</dt><dd><strong>Removed</strong></dd>")
-        if removed_at:
-            metadata_rows.append(f"<dt>Removed at</dt><dd>{removed_at}</dd>")
+        meta_parts.append(f"<strong>removed</strong>{' ' + removed_at if removed_at else ''}")
         if removed_reason:
-            metadata_rows.append(f"<dt>Removal reason</dt><dd>{removed_reason}</dd>")
+            meta_parts.append(removed_reason)
 
-    metadata_block = f"""<div class="item-metadata"><dl>
-{''.join(metadata_rows)}
-</dl></div>"""
+    metadata_block = f'<div class="item-metadata">{" · ".join(meta_parts)}</div>'
+
+    # File link for digital items with original files
+    file_link = ""
+    if form == "digital" and status != "removed" and item.get("book_type") != "scout":
+        # Check common original file extensions
+        provenance = item.get("provenance", {}) if isinstance(item.get("provenance"), dict) else {}
+        original_path_field = provenance.get("original_path", "")
+        if original_path_field:
+            file_link = f'<p class="file-link">Open <a href="../../{path}/{original_path_field}">{escape(original_path_field)}</a> from the <a href="../../{path}/">item directory</a></p>'
+        else:
+            file_link = f'<p class="file-link"><a href="../../{path}/">Browse item directory</a></p>'
 
     # Content block
     if status == "removed":
@@ -643,6 +646,8 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 {user_notes_html}
 
 {metadata_block}
+
+{file_link}
 
 {content_block}
 

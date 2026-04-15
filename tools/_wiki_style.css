@@ -3,6 +3,7 @@
 :root {
   --bg: #fafaf7;
   --text: #1a1a1a;
+  --text-mid: #444;
   --muted: #777;
   --border: #e0ddd8;
   --link: #2c5f7c;
@@ -16,6 +17,7 @@
   :root {
     --bg: #191917;
     --text: #ddd8d0;
+    --text-mid: #b5b0a8;
     --muted: #8a8580;
     --border: #2e2c28;
     --link: #8fb8d0;
@@ -118,7 +120,7 @@ article.item-card .meta {
 article.item-card .description {
   margin: 0.1em 0 0 0;
   font-size: 0.85em;
-  color: var(--muted);
+  color: var(--text-mid);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

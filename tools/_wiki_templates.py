@@ -77,6 +77,7 @@ def _axes_nav(current: str | None = None) -> str:
         ("by-type", "By type"),
         ("by-form", "By form"),
         ("by-media-type", "By media type"),
+        ("collection-journal", "Journal"),
         ("by-topic", "By topic"),
     ]
     links = []
@@ -325,6 +326,82 @@ without it.</p>
 """
     breadcrumb = '<a href="../index.html">Home</a> / By topic'
     return _page(f"{collection_name} — by topic", breadcrumb, body, "../" + STYLESHEET_REL)
+
+
+def collection_journal(library: dict, entries: list[dict]) -> str:
+    """Render the collection journal as a timeline page.
+
+    Each entry is a dict with:
+      - date: str (YYYY-MM-DD)
+      - time: str (HH:MM)
+      - accomplished: str (the headline)
+      - full_html: str (the full checkpoint content rendered as HTML)
+    """
+    collection_name = library.get("collection_name", "alexandria")
+
+    if not entries:
+        body = f"""{_axes_nav("collection-journal")}
+
+<p>No journal entries yet. After adding items or making changes to your collection,
+run <code>/coll-notes</code> to record what was done. You can also add personal
+notes about your collection — thoughts, plans, or anything you want to remember.</p>
+
+<p>Journal entries appear here as a timeline, grouped by month.</p>
+"""
+        breadcrumb = '<a href="../index.html">Home</a> / Journal'
+        return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
+
+    # Group entries by year-month (newest first)
+    months: dict[str, list[dict]] = {}
+    for entry in entries:
+        date = entry.get("date", "")
+        if len(date) >= 7:
+            month_key = date[:7]
+        else:
+            month_key = "undated"
+        months.setdefault(month_key, []).append(entry)
+
+    month_sections = []
+    for month_key in sorted(months.keys(), reverse=True):
+        month_entries = sorted(months[month_key], key=lambda e: e.get("date", "") + e.get("time", ""), reverse=True)
+
+        entry_cards = []
+        for entry in month_entries:
+            date = escape(entry.get("date", ""))
+            time = escape(entry.get("time", ""))
+            accomplished = escape(entry.get("accomplished", ""))
+            full_html = entry.get("full_html", "")
+
+            timestamp = f"{date}"
+            if time:
+                timestamp += f" at {time}"
+
+            headline = accomplished if accomplished else "Checkpoint"
+
+            entry_cards.append(f"""<article class="journal-entry">
+<div class="journal-date">{timestamp}</div>
+<h3 class="journal-headline">{headline}</h3>
+<div class="journal-detail">
+{full_html}
+</div>
+</article>""")
+
+        label = escape(month_key) if month_key != "undated" else "Undated"
+        month_sections.append(
+            f'<div class="section-group"><h2>{label}</h2>\n'
+            + "\n".join(entry_cards)
+            + "\n</div>"
+        )
+
+    body = f"""{_axes_nav("collection-journal")}
+
+<p class="journal-intro">A timeline of your collection — what was added, changed, and decided,
+in chronological order. Run <code>/coll-notes</code> to add entries with personal details.</p>
+
+{''.join(month_sections)}
+"""
+    breadcrumb = '<a href="../index.html">Home</a> / Journal'
+    return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def item_page(item: dict, readme_html: str, readme_truncated: bool) -> str:

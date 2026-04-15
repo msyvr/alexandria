@@ -101,12 +101,23 @@ work with the existing one? If it doesn't exist, proceed with creation.
 
    Type `/coll-` and press tab to see all available commands.
 
+   ## Collection journal
+
+   Your collection keeps a journal at `collection-context.md`. After adding
+   items or making changes, you can run `/coll-notes` to record what was done
+   and add personal notes — thoughts, plans, or anything you want to remember.
+
+   The journal is viewable as a timeline at `wiki/collection-journal/index.html`
+   after regenerating the wiki.
+
    ## Important
 
    - Do NOT offer to create a new collection — this collection already exists
    - Do NOT offer to run `/coll-build-new-collection` — that skill is for
      creating collections from the alexandria repo, not for use inside an
      existing collection
+   - After adding or modifying items, remind the user they can run `/coll-notes`
+     to log what was done and add personal details to the collection journal
    - The `.collection-index.yaml` in this directory is the collection's catalog
    - Items are organized in section subdirectories
    ```

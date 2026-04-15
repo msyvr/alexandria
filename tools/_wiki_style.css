@@ -238,6 +238,50 @@ blockquote.user-notes {
   }
 }
 
+/* Collection journal */
+
+.journal-intro {
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 1.5em;
+}
+
+article.journal-entry {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 1em 1.2em;
+  margin: 1em 0;
+}
+
+.journal-date {
+  font-size: 0.85em;
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+}
+
+h3.journal-headline {
+  margin: 0.3em 0 0.5em 0;
+  font-size: 1.1em;
+  color: var(--text);
+}
+
+.journal-detail {
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.journal-detail strong {
+  color: var(--muted);
+  font-size: 0.85em;
+  text-transform: uppercase;
+}
+
+.journal-detail p {
+  margin: 0.3em 0;
+}
+
 footer.page-footer {
   margin-top: 3em;
   padding-top: 1em;

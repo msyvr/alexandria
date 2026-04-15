@@ -148,6 +148,65 @@ def slugify_section(section: str) -> str:
     return section.lower().replace("/", "-").replace(" ", "-")
 
 
+def parse_collection_context(library_path: Path, md_renderer) -> list[dict]:
+    """Parse collection-context.md into a list of journal entries.
+
+    Each entry is a dict with:
+      - date: str (YYYY-MM-DD)
+      - time: str (HH:MM)
+      - accomplished: str (the headline extracted from the Accomplished section)
+      - full_html: str (the full checkpoint content rendered as HTML)
+    """
+    import re
+
+    context_path = library_path / "collection-context.md"
+    if not context_path.exists():
+        return []
+
+    text = context_path.read_text()
+
+    # Split on checkpoint headers: ## [YYYY-MM-DD HH:MM] Checkpoint
+    # or ## [YYYY-MM-DD HH:MM] Checkpoint — description
+    checkpoint_pattern = re.compile(
+        r"^## \[(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})\]\s*(?:Checkpoint|.*?)$",
+        re.MULTILINE,
+    )
+
+    entries = []
+    matches = list(checkpoint_pattern.finditer(text))
+
+    for i, match in enumerate(matches):
+        date = match.group(1)
+        time = match.group(2)
+
+        # Extract the content between this header and the next (or end of file)
+        start = match.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        content = text[start:end].strip()
+
+        # Remove the SESSION_NOTES_CHECKPOINT sentinel if present
+        content = content.replace("SESSION_NOTES_CHECKPOINT", "").strip()
+
+        # Extract the "Accomplished" line for the headline
+        accomplished = ""
+        for line in content.splitlines():
+            if line.startswith("**Accomplished:**"):
+                accomplished = line.replace("**Accomplished:**", "").strip()
+                break
+
+        # Render the content as HTML
+        full_html = md_renderer.render(content) if content else ""
+
+        entries.append({
+            "date": date,
+            "time": time,
+            "accomplished": accomplished,
+            "full_html": full_html,
+        })
+
+    return entries
+
+
 def generate_wiki(library_path: Path) -> None:
     """Generate the complete wiki for a collection."""
     library = load_library(library_path)
@@ -230,6 +289,13 @@ def generate_wiki(library_path: Path) -> None:
     # --- By topic (Pass 2 placeholder) ---
     (wiki_dir / "by-topic" / "index.html").write_text(
         templates.topic_placeholder(library)
+    )
+
+    # --- Collection journal ---
+    (wiki_dir / "collection-journal").mkdir(exist_ok=True)
+    journal_entries = parse_collection_context(library_path, md_renderer)
+    (wiki_dir / "collection-journal" / "index.html").write_text(
+        templates.collection_journal(library, journal_entries)
     )
 
     # --- Individual item pages ---

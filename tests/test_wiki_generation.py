@@ -232,6 +232,38 @@ def create_synthetic_library(lib: Path):
     }
     (lib / ".collection-index.yaml").write_text(yaml.dump(index, default_flow_style=False, sort_keys=False))
 
+    # --- Create a collection-context.md with journal entries ---
+    (lib / "collection-context.md").write_text("""# Context: test-library
+
+## [2026-04-10 14:30] Checkpoint
+
+**Accomplished:** Added 3 physical items from the living room shelf
+
+**Decisions:** Used hardcover as the default media type for the shelf batch
+
+**User preferences:** Prefers no online enrichment
+
+**Open questions:** none
+
+**Q&A worth keeping:** none
+
+SESSION_NOTES_CHECKPOINT
+
+## [2026-04-12 09:15] Checkpoint
+
+**Accomplished:** Imported 2 research PDFs and settled the treatment landscape scout
+
+**Decisions:** Settled the scout because treatment decision is made
+
+**User preferences:** none new
+
+**Open questions:** Should we add a nutrition section?
+
+**Q&A worth keeping:** none
+
+SESSION_NOTES_CHECKPOINT
+""")
+
     return items
 
 
@@ -246,7 +278,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     check("homepage exists", (wiki / "index.html").is_file())
     check("stylesheet exists", (wiki / "_assets" / "style.css").is_file())
 
-    expected_indexes = ["by-section", "by-date", "by-type", "by-form", "by-media-type", "by-topic"]
+    expected_indexes = ["by-section", "by-date", "by-type", "by-form", "by-media-type", "by-topic", "collection-journal"]
     for idx in expected_indexes:
         check(f"{idx}/index.html exists", (wiki / idx / "index.html").is_file())
 
@@ -329,6 +361,17 @@ def verify_wiki(lib: Path, items: list[dict]):
     check_contains("section page: active item listed", fiction_section, "The Dispossessed")
     check_contains("section page: removed item listed", fiction_section, "Outdated Reference")
     check_contains("section page: removed marker on removed item", fiction_section, "removed-tag")
+
+    # --- Collection journal ---
+    journal = (wiki / "collection-journal" / "index.html").read_text()
+    check_contains("journal: has timeline intro", journal, "timeline of your collection")
+    check_contains("journal: first entry headline", journal, "Added 3 physical items")
+    check_contains("journal: second entry headline", journal, "Imported 2 research PDFs")
+    check_contains("journal: month grouping 2026-04", journal, "2026-04")
+    check_contains("journal: decisions rendered", journal, "Used hardcover as the default")
+    check_contains("journal: open questions rendered", journal, "nutrition section")
+    # REGRESSION: sentinel should NOT appear in rendered output
+    check_not_contains("journal: no sentinel in output", journal, "SESSION_NOTES_CHECKPOINT")
 
 
 # --- Main ---

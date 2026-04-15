@@ -295,7 +295,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     check("homepage exists", (wiki / "index.html").is_file())
     check("stylesheet exists", (wiki / "_assets" / "style.css").is_file())
 
-    expected_indexes = ["by-section", "by-date", "by-type", "by-media-type", "by-topic", "collection-journal"]
+    expected_indexes = ["by-section", "by-date", "by-type", "by-media-type", "by-topic", "collection-journal", "search"]
     for idx in expected_indexes:
         check(f"{idx}/index.html exists", (wiki / idx / "index.html").is_file())
 
@@ -390,6 +390,13 @@ def verify_wiki(lib: Path, items: list[dict]):
     check_contains("journal: open questions rendered", journal, "nutrition section")
     # REGRESSION: sentinel should NOT appear in rendered output
     check_not_contains("journal: no sentinel in output", journal, "SESSION_NOTES_CHECKPOINT")
+
+    # --- Search page ---
+    search = (wiki / "search" / "index.html").read_text()
+    check_contains("search: has search form", search, 'name="q"')
+    check_contains("search: lists active items", search, "The Dispossessed")
+    check_contains("search: lists author", search, "Ursula K. Le Guin")
+    check_not_contains("search: excludes removed items", search, "Outdated Reference")
 
 
 # --- Main ---

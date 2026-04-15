@@ -238,6 +238,92 @@ blockquote.user-notes {
   font-size: 0.92em;
 }
 
+/* Search page */
+
+.search-form {
+  margin: 0.6em 0;
+}
+
+.search-form input {
+  width: 100%;
+  padding: 0.4em 0.6em;
+  font-family: Georgia, serif;
+  font-size: 0.95em;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--card-bg);
+  color: var(--text);
+  outline: none;
+}
+
+.search-form input:focus {
+  border-color: var(--accent);
+}
+
+.search-form input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.search-prompt {
+  padding: 0.4em 0;
+  font-size: 0.85em;
+  color: var(--text-mid);
+  margin-bottom: 0.6em;
+}
+
+.search-prompt kbd {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+.search-listing {
+  margin-top: 0.4em;
+}
+
+.search-item {
+  border-bottom: 1px solid var(--border);
+  padding: 0.35em 0;
+}
+
+.search-item:last-child { border-bottom: none; }
+
+.search-title {
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+.search-title a { color: var(--text); }
+.search-title a:hover { color: var(--link); }
+
+.search-meta {
+  font-size: 0.78em;
+  color: var(--muted);
+}
+
+.search-desc {
+  font-size: 0.85em;
+  color: var(--text-mid);
+  margin: 0.1em 0;
+}
+
+.search-detail {
+  font-size: 0.72em;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+.search-notes {
+  font-size: 0.8em;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.1em;
+}
+
 /* Collection journal */
 
 .journal-intro {

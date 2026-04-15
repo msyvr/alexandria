@@ -86,6 +86,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
         ("by-media-type", "By media type"),
         ("by-topic", "By topic"),
         ("collection-journal", "Journal"),
+        ("search", "Search"),
     ]
     prefix = "../" if from_subdir else ""
     links = []
@@ -373,6 +374,72 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
 """
     breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / Journal'
     return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
+
+
+def search_page(library: dict, all_items: list[dict]) -> str:
+    """Render the search page: a flat listing of all items with a search prompt.
+
+    The page includes a form that reloads with ?q=term, and minimal JS that
+    reads the query parameter and displays it as a prompt to use Cmd+F.
+    """
+    collection_name = library.get("collection_name", "alexandria")
+
+    # Build the flat listing — every active item with all searchable fields visible
+    item_entries = []
+    active = [b for b in all_items if b.get("status", "active") != "removed"]
+    for item in sorted(active, key=lambda b: b.get("title", "").lower()):
+        title = escape(item.get("title", "Untitled"))
+        author = escape(item.get("author", ""))
+        description = escape(item.get("description", ""))
+        section = escape(item.get("section", ""))
+        media_type = escape(item.get("media_type", ""))
+        slug = item.get("slug", "")
+        user_notes = escape(item.get("user_notes", ""))
+
+        parts = [f'<div class="search-item">']
+        parts.append(f'<div class="search-title"><a href="../items/{slug}.html">{title}</a></div>')
+        if author:
+            parts.append(f'<div class="search-meta">{author}</div>')
+        if description:
+            parts.append(f'<div class="search-desc">{description}</div>')
+        detail_parts = []
+        if section:
+            detail_parts.append(section)
+        if media_type:
+            detail_parts.append(media_type)
+        if detail_parts:
+            parts.append(f'<div class="search-detail">{" · ".join(detail_parts)}</div>')
+        if user_notes:
+            parts.append(f'<div class="search-notes">{user_notes}</div>')
+        parts.append('</div>')
+        item_entries.append("\n".join(parts))
+
+    listing = "\n".join(item_entries) if item_entries else "<p>No items in the collection yet.</p>"
+
+    body = f"""{_axes_nav("search", from_subdir=True)}
+
+<form class="search-form" action="index.html" method="get">
+<input type="text" name="q" placeholder="Search the collection…" id="search-input" autocomplete="off">
+</form>
+
+<div id="search-prompt" class="search-prompt" style="display:none;"></div>
+
+<div class="search-listing">
+{listing}
+</div>
+
+<script>
+const q = new URLSearchParams(location.search).get('q');
+if (q) {{
+  const el = document.getElementById('search-prompt');
+  el.style.display = 'block';
+  el.innerHTML = 'Searching for: <strong>' + q.replace(/</g, '&lt;') + '</strong> — press <kbd>Cmd+F</kbd> (or <kbd>Ctrl+F</kbd>) to find matches on this page';
+  document.getElementById('search-input').value = q;
+}}
+</script>
+"""
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / Search'
+    return _page(f"{collection_name} — search", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
 def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: list[dict] | None = None, collection_name: str = "collection") -> str:

@@ -268,6 +268,7 @@ def generate_wiki(library_path: Path) -> None:
         "by-type",
         "by-media-type",
         "by-topic",
+        "search",
     ]
     for sub in subdirs:
         (wiki_dir / sub).mkdir(exist_ok=True)
@@ -327,6 +328,11 @@ def generate_wiki(library_path: Path) -> None:
     # --- By topic (Pass 2 placeholder) ---
     (wiki_dir / "by-topic" / "index.html").write_text(
         templates.topic_placeholder(library)
+    )
+
+    # --- Search page ---
+    (wiki_dir / "search" / "index.html").write_text(
+        templates.search_page(library, all_items)
     )
 
     # --- Collection journal ---

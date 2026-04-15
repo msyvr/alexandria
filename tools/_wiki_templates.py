@@ -52,21 +52,21 @@ def _item_card(item: dict, item_page_rel: str) -> str:
     media_type = escape(item.get("media_type", ""))
     status = item.get("status", "active")
 
-    meta_parts = []
-    if author:
-        meta_parts.append(escape(author))
-    meta_parts.append(book_type)
+    author_line = f'<div class="meta">{escape(author)}</div>' if author else ""
+
+    detail_parts = [book_type]
     if media_type:
-        meta_parts.append(media_type)
-    meta = " · ".join(meta_parts)
+        detail_parts.append(media_type)
+    detail = " · ".join(detail_parts)
 
     removed_class = " removed" if status == "removed" else ""
     removed_tag = '<span class="removed-tag">removed</span>' if status == "removed" else ""
 
     return f"""<article class="item-card{removed_class}">
 <h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>
-<div class="meta">{meta}</div>
+{author_line}
 <p class="description">{description}</p>
+<div class="detail">{detail}</div>
 </article>"""
 
 

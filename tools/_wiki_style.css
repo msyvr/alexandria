@@ -119,6 +119,17 @@ article.item-card .description {
   margin: 0.1em 0 0 0;
   font-size: 0.85em;
   color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+article.item-card .detail {
+  font-size: 0.72em;
+  color: var(--muted);
+  margin-top: 0.15em;
+  letter-spacing: 0.03em;
 }
 
 article.item-card.removed { opacity: 0.45; }

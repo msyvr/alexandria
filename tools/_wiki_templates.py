@@ -556,14 +556,14 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: 
     path = item.get("path", "")
 
     # Metadata block
-    metadata_rows = [
-        f"<dt>Book type</dt><dd>{book_type}</dd>",
-        f"<dt>Form</dt><dd>{form}</dd>",
-    ]
+    metadata_rows = []
+    # Combine form and media_type into one readable line
     if media_type:
-        metadata_rows.append(f"<dt>Media type</dt><dd>{media_type}</dd>")
+        metadata_rows.append(f"<dt>Format</dt><dd>{media_type} ({form})</dd>")
+    else:
+        metadata_rows.append(f"<dt>Form</dt><dd>{form}</dd>")
     metadata_rows.append(f"<dt>Section</dt><dd><a href=\"../by-section/{section.lower().replace(' ', '-')}.html\">{section}</a></dd>")
-    metadata_rows.append(f"<dt>Date added</dt><dd>{date_added}</dd>")
+    metadata_rows.append(f"<dt>Added</dt><dd>{date_added}</dd>")
     if author:
         metadata_rows.insert(0, f"<dt>Author</dt><dd>{escape(author)}</dd>")
 

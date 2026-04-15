@@ -69,8 +69,13 @@ def _item_card(item: dict, item_page_rel: str) -> str:
 </article>"""
 
 
-def _axes_nav(current: str | None = None) -> str:
-    """Navigation bar linking to all index pages."""
+def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
+    """Navigation bar linking to all index pages.
+
+    `from_subdir`: True when rendering from inside a subdirectory (by-section/,
+    by-date/, etc.) — links need ../ prefix to reach sibling directories.
+    False when rendering from the wiki root (homepage).
+    """
     axes = [
         ("by-section", "By section"),
         ("by-date", "By date"),
@@ -80,12 +85,14 @@ def _axes_nav(current: str | None = None) -> str:
         ("collection-journal", "Journal"),
         ("by-topic", "By topic"),
     ]
+    prefix = "../" if from_subdir else ""
     links = []
     for slug, label in axes:
+        href = f"{prefix}{slug}/index.html"
         if slug == current:
-            links.append(f'<a href="{slug}/index.html" aria-current="page"><strong>{label}</strong></a>')
+            links.append(f'<a href="{href}" aria-current="page"><strong>{label}</strong></a>')
         else:
-            links.append(f'<a href="{slug}/index.html">{label}</a>')
+            links.append(f'<a href="{href}">{label}</a>')
     return '<div class="axes-nav">' + "\n".join(links) + "</div>"
 
 
@@ -123,7 +130,7 @@ def homepage(library: dict, all_items: list[dict]) -> str:
 <p>No items yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first item.</p>"""
 
     body = f"""<p class="library-intro">
-Welcome to <strong>{escape(collection_name)}</strong> — your personal curated collection.
+Welcome to {escape(collection_name)} — your curated Private Collection.
 </p>
 
 <div class="summary">
@@ -159,7 +166,7 @@ def by_section_index(library: dict, items_by_section: dict[str, list[dict]]) -> 
         + "</tbody></table>"
     )
 
-    body = f"""{_axes_nav("by-section")}
+    body = f"""{_axes_nav("by-section", from_subdir=True)}
 
 {table}
 """
@@ -205,7 +212,7 @@ def by_date_index(library: dict, all_items: list[dict]) -> str:
             f'<div class="section-group"><h2>{label}</h2><div class="index-grid">\n{cards}\n</div></div>'
         )
 
-    body = f"""{_axes_nav("by-date")}
+    body = f"""{_axes_nav("by-date", from_subdir=True)}
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
@@ -230,7 +237,7 @@ def by_type_index(library: dict, all_items: list[dict]) -> str:
             f'<div class="index-grid">\n{cards}\n</div></div>'
         )
 
-    body = f"""{_axes_nav("by-type")}
+    body = f"""{_axes_nav("by-type", from_subdir=True)}
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
@@ -258,7 +265,7 @@ def by_form_index(library: dict, all_items: list[dict]) -> str:
             f'<div class="index-grid">\n{cards}\n</div></div>'
         )
 
-    body = f"""{_axes_nav("by-form")}
+    body = f"""{_axes_nav("by-form", from_subdir=True)}
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
@@ -305,7 +312,7 @@ def by_media_type_index(library: dict, all_items: list[dict]) -> str:
             + "</div>"
         )
 
-    body = f"""{_axes_nav("by-media-type")}
+    body = f"""{_axes_nav("by-media-type", from_subdir=True)}
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
@@ -340,7 +347,7 @@ def collection_journal(library: dict, entries: list[dict]) -> str:
     collection_name = library.get("collection_name", "alexandria")
 
     if not entries:
-        body = f"""{_axes_nav("collection-journal")}
+        body = f"""{_axes_nav("collection-journal", from_subdir=True)}
 
 <p>No journal entries yet. After adding items or making changes to your collection,
 run <code>/coll-notes</code> to record what was done. You can also add personal
@@ -393,7 +400,7 @@ notes about your collection — thoughts, plans, or anything you want to remembe
             + "\n</div>"
         )
 
-    body = f"""{_axes_nav("collection-journal")}
+    body = f"""{_axes_nav("collection-journal", from_subdir=True)}
 
 <p class="journal-intro">A timeline of your collection — what was added, changed, and decided,
 in chronological order. Run <code>/coll-notes</code> to add entries with personal details.</p>

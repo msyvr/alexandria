@@ -117,6 +117,8 @@ Claude Code determines the appropriate item type and guides you through building
 - [/coll-scout](.claude/skills/coll-scout/SKILL.md) — import an existing scout into the collection
 - [/coll-notes](.claude/skills/coll-notes/SKILL.md) — save notes about an item or the collection
 - [/coll-add-item-notes](.claude/skills/coll-add-item-notes/SKILL.md) — add personal notes to an item (from a .md, .txt, or .pdf file)
+- [/coll-rename](.claude/skills/coll-rename/SKILL.md) — rename the collection (display name and optionally directory)
+- [/coll-import-collection](.claude/skills/coll-import-collection/SKILL.md) — import all items from another collection into this one
 - [/coll-update-from-latest-alexandria](.claude/skills/coll-update-from-latest-alexandria/SKILL.md) — update skills to the latest version from the alexandria repo
 
 ### Guides

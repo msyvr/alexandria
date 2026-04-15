@@ -244,18 +244,18 @@ Do you want to create .collection-index.yaml?
 
 Say **Yes** (or choose option 2 to allow all edits in the collection without being asked for each one — recommended if you don't want to approve every file individually). These are the collection's catalog and skill files being set up. The skill copies the collection skills into your new collection's `.claude/skills/` directory.
 
-### 8. Work from your collection
+### 8. Switch to your collection
 
-For all future sessions, start Claude Code from your collection directory:
+**Close the current Claude Code session** — type `/exit` or press `Ctrl+C`. You need to start a fresh session from your collection directory for the skills to work there.
+
+Open a new terminal (or a new tab with `Cmd+T` on macOS), then:
 
 ```
 cd ~/my-collection
 claude
 ```
 
-Type `/coll-` and hit tab to see all available commands. Or type `/coll-menu` for a guided menu.
-
-All `/coll-*` commands are available here. Type `/coll` and hit tab to see the full list.
+You're now working from your collection. Type `/coll-` and hit tab to see all available commands, or type `/coll-menu` for a guided menu.
 
 ### 9. Add your first item (from your collection directory)
 

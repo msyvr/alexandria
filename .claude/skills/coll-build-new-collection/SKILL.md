@@ -84,14 +84,22 @@ work with the existing one? If it doesn't exist, proceed with creation.
 
 6. **Tell the user what to do next:**
 
-   > Your collection is ready at `{path}`. To start using it:
+   > Your collection is ready at `{path}`.
+   >
+   > To start using it, **close this Claude Code session first** (type `/exit`
+   > or press `Ctrl+C`), then open a new terminal session from your collection
+   > directory:
    >
    > ```
    > cd {path}
    > claude
    > ```
    >
-   > Then type `/coll-menu` for guided options, or invoke skills directly:
+   > (Or open a new terminal tab with `Cmd+T` on macOS, then run those two
+   > commands there.)
+   >
+   > From your collection directory, type `/coll-menu` for guided options, or
+   > invoke skills directly:
    > - `/coll-physical` — catalog a physical item
    > - `/coll-digital` — add digital content (files, URLs, text)
    > - `/coll-new-scout` — create a living knowledge base on a topic

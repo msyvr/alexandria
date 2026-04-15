@@ -19,26 +19,26 @@ Every item directory contains these files at acquisition time:
 {item-slug}/
 ├── README.md           # the spine: what this item is, readable standalone
 ├── metadata.yaml       # the catalog entry (universal + type-specific fields)
-├── CLAUDE.md           # operational context for Claude Code (item-type-specific)
 └── ... type-specific content files ...
 ```
 
-One more file is created on first use but isn't required at acquisition:
+Files created on first use or only for certain item types:
 
 ```
 {item-slug}/
+├── CLAUDE.md           # operational context (scouts only — see below)
 └── context.md          # interaction history, written by /coll-notes
 ```
 
-**README.md**: the item's spine. A reader should be able to open it and understand what this item is, what's in it, and how to navigate its contents, without any other context. Each item type provides its own README template; scouts generate a rich overview, physical items show metadata and (if present) a photo, digital items show provenance and content.
+**README.md** (required): the item's spine. A reader should be able to open it and understand what this item is, what's in it, and how to navigate its contents, without any other context. Each item type provides its own README template; scouts generate a rich overview, physical items show metadata and (if present) a photo, digital items show provenance and content.
 
-**metadata.yaml**: the catalog entry (see schema below).
+**metadata.yaml** (required): the catalog entry (see schema below).
 
-**CLAUDE.md**: operational context for Claude Code when the user returns to the item in a future session. Item-type-specific content: scouts describe their schema and update commands, physical items describe their source and any online enrichment policy, etc. Kept lean (~40-60 lines). See `.claude/skills/coll-new-scout/SKILL.md` for the scout creation template.
+**CLAUDE.md** (optional — required for scouts, omitted for simple items): operational context for Claude Code when the user returns to the item in a future session. Scouts need this because they have complex operational context (schema, scripts, update commands, lens definitions). Physical and digital items don't need it — their metadata.yaml is self-documenting and Claude can derive everything it needs from there. See `.claude/skills/coll-new-scout/SKILL.md` for the scout CLAUDE.md template.
 
-**context.md**: interaction history written by `/coll-notes`. Created on first invocation. Contains decisions, user preferences, session log, open questions, and useful Q&A. Universal format across all item types.
+**context.md** (optional): interaction history written by `/coll-notes`. Created on first invocation. Contains decisions, user preferences, session log, open questions, and useful Q&A. Universal format across all item types.
 
-**Type-specific content files**: whatever the item type needs. Scouts have `data/entries.yaml`, `scripts/`, `docs/`, and a generated `README.md`. Physical items might have a `photo.jpg`. Imports might have an `original.pdf` plus a markdown extraction. Author items might have multiple markdown files for different sections of the user's writing.
+**Type-specific content files**: whatever the item type needs. Scouts have `data/entries.yaml`, `scripts/`, `docs/`, and a generated `README.md`. Physical items might have a `photo.jpg`. Digital items might have an `original.pdf` plus a markdown extraction.
 
 ## metadata.yaml universal schema
 

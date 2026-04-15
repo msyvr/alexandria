@@ -149,7 +149,6 @@ The original is preserved exactly as received. Alexandria does not modify the so
 
 - `metadata.yaml` — catalog entry (template below)
 - `README.md` — the item's spine (template below)
-- `CLAUDE.md` — operational context for return sessions (template below)
 - `content.md` — **only** for HTML sources: a one-time markdown extraction via html2text.
   Not regenerated automatically. User hand-edits persist across re-runs. Not created
   for PDF, plain text, markdown, or other formats.
@@ -241,40 +240,8 @@ Content is preserved in its original format. Open `{original_path}` to view.
 See `metadata.yaml` for the full catalog entry.
 ```
 
-## CLAUDE.md template
-
-```markdown
-# {title}
-
-A digital content entry — {media_type} from {source}. The collection holds a preserved
-copy of the original.
-
-## Details
-
-- **Title**: {title}
-- **Author**: {author or "—"}
-- **Media type**: {media_type}
-- **Source**: {source URL or local path}
-- **Imported**: {date_added}
-
-## Files
-- `metadata.yaml` — catalog entry
-- `README.md` — the item's spine
-- `original.{ext}` — the preserved original
-- `content.md` — markdown extraction (HTML sources only; one-time, hand-edits preserved)
-- `context.md` — interaction history (written by /coll-notes)
-
-## Updating
-
-- Edit `metadata.yaml` for metadata changes
-- `original.{ext}` is preserved verbatim — re-import to replace
-- `content.md` is a one-time extraction; your edits persist across re-runs
-- Use `/coll` to move or re-classify
-
-## Recent context
-
-(updated automatically by /coll-notes after significant work sessions)
-```
+No CLAUDE.md is generated for digital items. The metadata.yaml is self-documenting
+and Claude can derive operational context from it directly.
 
 ## Dependencies
 

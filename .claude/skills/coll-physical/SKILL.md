@@ -125,9 +125,11 @@ against existing slugs in the collection; suffix with `-2`, `-3` if needed.
 
 - `metadata.yaml` — the catalog entry (template below)
 - `README.md` — the item's spine (template below)
-- `CLAUDE.md` — operational context for return sessions (template below)
 - `photo.{ext}` — the source photo, preserved by default. If the user opted out of
   preservation, omit this file and remove the `photo:` field from metadata.yaml.
+
+No CLAUDE.md is generated for physical items. The metadata.yaml is self-documenting
+and Claude can derive operational context from it directly.
 
 **Update `.collection-index.yaml`** with the item's universal fields (one entry under its
 section). For shelf batches, update once at the end rather than per item.
@@ -203,37 +205,6 @@ publication_date: "{if known}"
 {include publisher, edition, ISBN, publication_date lines if known}
 
 See `metadata.yaml` for the full catalog entry.
-```
-
-## CLAUDE.md template (operational context for return sessions)
-
-```markdown
-# {title}
-
-A physical item record. The item itself is on a shelf; this directory is the collection's
-catalog entry for it.
-
-## Details
-
-- **Title**: {title}
-- **Author**: {author or "—"}
-- **Shelf location**: {shelf_location or "not recorded"}
-
-## Files
-- `metadata.yaml` — catalog entry
-- `README.md` — the item's spine (what's displayed in views)
-- `photo.jpg` — visual record (if present)
-- `context.md` — interaction history (written by /coll-notes on first use)
-
-## Updating this record
-
-- Edit `metadata.yaml` to change metadata fields
-- Replace `photo.jpg` to update the visual record
-- Use `/coll` to move or re-classify
-
-## Recent context
-
-(updated automatically by /coll-notes after significant work sessions)
 ```
 
 ## Adapting to the user

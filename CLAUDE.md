@@ -3,11 +3,34 @@
 ## Quick start
 
 - **Building a new collection from scratch?** Type `/coll-build-new-collection`
-- **Working on an existing collection?** Type `/coll-menu` for guided options, or type `/coll-` and press tab for direct access to all collection skills
+- **Already have a collection?** Close this session, navigate to your collection
+  directory, and start Claude Code there. The collection skills only work correctly
+  from inside a collection directory.
 
 If you need help at any point, just describe what you're trying to do in plain
 language. See the [guides](docs/guides/) for reference on terminals, YAML,
 item structure, scouts, and troubleshooting.
+
+## Important: this is the alexandria repo, not a collection
+
+This directory is the source code for alexandria — it's where skills are developed
+and where new collections are created from. It is NOT a collection itself.
+
+**The only skill that should be used here is `/coll-build-new-collection`.**
+
+If a user invokes any other `/coll-*` skill from this directory (e.g., `/coll-digital`,
+`/coll-physical`, `/coll-menu`), do NOT proceed with the skill. Instead, explain:
+
+> That command is for use inside your collection directory, not here. If you've
+> already created a collection, close this session and start Claude Code from
+> your collection directory:
+>
+> ```
+> cd ~/my-collection
+> claude
+> ```
+>
+> If you haven't created a collection yet, type `/coll-build-new-collection`.
 
 ## A note about permissions
 

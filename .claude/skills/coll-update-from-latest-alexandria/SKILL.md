@@ -18,13 +18,27 @@ Then start Claude Code from the alexandria repo and run this skill.
 
 ## The workflow
 
-1. **Ask which collection to update.** The user provides the path to their
-   collection directory (e.g., `~/my-collection`). There's no stored default —
-   ask every time, since the user may have multiple collections.
+1. **Find and offer known collections.** Before asking for a path, scan for
+   directories containing `.collection-index.yaml` in likely locations:
+   - `~/` (direct children only — e.g., `~/my-collection`)
+   - `~/Documents/` (direct children)
+   - The parent directory of the current project (siblings of the repo)
 
-2. **Verify the collection exists.** Check that the path contains a
-   `.collection-index.yaml`. If not, explain that the path doesn't appear
-   to be a collection and ask for the correct path.
+   For each found, read the `collection_name` from the index file.
+
+   If collections are found, present them as numbered options plus a manual
+   entry option:
+
+   > Found these collections:
+   > 1. my-collection (~/my-collection)
+   > 2. work-references (~/Documents/work-references)
+   > 3. Enter a different path
+
+   If no collections are found, ask for the path directly.
+
+2. **Verify the collection.** Whether selected from the list or entered
+   manually, check that the path contains a `.collection-index.yaml`. If
+   not, explain and ask again.
 
 3. **Copy skills.** Copy every directory from this repo's `.claude/skills/`
    into the collection's `.claude/skills/`, replacing existing files.

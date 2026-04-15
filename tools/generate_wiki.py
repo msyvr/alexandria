@@ -307,7 +307,7 @@ def generate_wiki(library_path: Path) -> None:
             ),
         )
         (wiki_dir / "by-section" / f"{section_slug}.html").write_text(
-            templates.section_page(section, sorted_books)
+            templates.section_page(section, sorted_books, library.get("collection_name", "collection"))
         )
 
     # --- By date ---
@@ -371,7 +371,7 @@ def generate_wiki(library_path: Path) -> None:
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated, item_notes)
+            templates.item_page(item, readme_html, readme_truncated, item_notes, library.get("collection_name", "collection"))
         )
 
     n_books = len(all_items)

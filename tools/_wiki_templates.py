@@ -129,23 +129,18 @@ def homepage(library: dict, all_items: list[dict]) -> str:
         recent_section = """<h2>Recent additions</h2>
 <p>No items yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first item.</p>"""
 
-    body = f"""<p class="library-intro">
-Welcome to {escape(collection_name)} — your curated Private Collection.
-</p>
-
-<div class="summary">
+    body = f"""<div class="summary">
 <span class="stat"><strong>{total}</strong> item{'s' if total != 1 else ''}</span>
 <span class="stat"><strong>{n_sections}</strong> section{'s' if n_sections != 1 else ''}</span>
 <span class="stat"><strong>{form_counts.get('physical', 0)}</strong> physical</span>
 <span class="stat"><strong>{form_counts.get('digital', 0)}</strong> digital</span>
 </div>
 
-<h2>Browse</h2>
 {_axes_nav()}
 
 {recent_section}
 """
-    return _page(collection_name, '<a href="index.html">Home</a>', body, STYLESHEET_REL)
+    return _page(collection_name, escape(collection_name), body, STYLESHEET_REL)
 
 
 def by_section_index(library: dict, items_by_section: dict[str, list[dict]]) -> str:
@@ -170,11 +165,11 @@ def by_section_index(library: dict, items_by_section: dict[str, list[dict]]) -> 
 
 {table}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By section'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By section'
     return _page(f"{collection_name} — by section", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
-def section_page(section: str, items: list[dict]) -> str:
+def section_page(section: str, items: list[dict], collection_name: str = "collection") -> str:
     """Render a single section page: all items in that section."""
     if not items:
         body_main = '<p>No items in this section yet.</p>'
@@ -186,7 +181,7 @@ def section_page(section: str, items: list[dict]) -> str:
 
 {body_main}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / <a href="index.html">By section</a> / ' + escape(section)
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / <a href="index.html">By section</a> / ' + escape(section)
     return _page(f"Section: {section}", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -216,7 +211,7 @@ def by_date_index(library: dict, all_items: list[dict]) -> str:
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By date'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By date'
     return _page(f"{collection_name} — by date", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -241,7 +236,7 @@ def by_type_index(library: dict, all_items: list[dict]) -> str:
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By type'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By type'
     return _page(f"{collection_name} — by type", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -269,7 +264,7 @@ def by_form_index(library: dict, all_items: list[dict]) -> str:
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By form'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By form'
     return _page(f"{collection_name} — by form", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -316,7 +311,7 @@ def by_media_type_index(library: dict, all_items: list[dict]) -> str:
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By media type'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By media type'
     return _page(f"{collection_name} — by media type", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -329,9 +324,9 @@ def topic_placeholder(library: dict) -> str:
 cross-references between them. It's an optional enhancement — the wiki works fully
 without it.</p>
 
-<p><a href="../index.html">← Back to home</a></p>
+<p><a href="../index.html">← Back</a></p>
 """
-    breadcrumb = '<a href="../index.html">Home</a> / By topic'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / By topic'
     return _page(f"{collection_name} — by topic", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
@@ -355,7 +350,7 @@ notes about your collection — thoughts, plans, or anything you want to remembe
 
 <p>Journal entries appear here as a timeline, grouped by month.</p>
 """
-        breadcrumb = '<a href="../index.html">Home</a> / Journal'
+        breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / Journal'
         return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
     # Group entries by year-month (newest first)
@@ -407,11 +402,11 @@ in chronological order. Run <code>/coll-notes</code> to add entries with persona
 
 {''.join(month_sections)}
 """
-    breadcrumb = '<a href="../index.html">Home</a> / Journal'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / Journal'
     return _page(f"{collection_name} — journal", breadcrumb, body, "../" + STYLESHEET_REL)
 
 
-def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: list[dict] | None = None) -> str:
+def item_page(item: dict, readme_html: str, readme_truncated: bool, item_notes: list[dict] | None = None, collection_name: str = "collection") -> str:
     """Render a single item page.
 
     `readme_html` is the item's README content rendered to HTML (may be empty).
@@ -526,8 +521,8 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 
 {notes_section}
 
-<p><a href="../index.html">← Back to library</a></p>
+<p><a href="../index.html">← Back</a></p>
 """
 
-    breadcrumb = f'<a href="../index.html">Home</a> / <a href="../by-section/{section.lower().replace(" ", "-")}.html">{section}</a> / {title}'
+    breadcrumb = f'<a href="../index.html">{escape(collection_name)}</a> / <a href="../by-section/{section.lower().replace(" ", "-")}.html">{section}</a> / {title}'
     return _page(title, breadcrumb, body, "../" + STYLESHEET_REL)

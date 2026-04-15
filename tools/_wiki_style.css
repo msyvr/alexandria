@@ -1,265 +1,253 @@
-/* alexandria wiki stylesheet
- * Shared by all generated wiki pages. Copied to wiki/_assets/style.css
- * on each regeneration. No JavaScript, responsive, dark-mode aware.
- */
+/* alexandria wiki stylesheet */
 
 :root {
   --bg: #fafaf7;
   --text: #1a1a1a;
-  --muted: #666;
-  --border: #ddd;
-  --link: #1a5276;
-  --link-hover: #0b3954;
-  --accent: #8b4513;
+  --muted: #777;
+  --border: #e0ddd8;
+  --link: #2c5f7c;
+  --link-hover: #1a3d52;
+  --accent: #8b6914;
   --card-bg: #ffffff;
-  --removed: #a04040;
+  --removed: #9c4040;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1a1a1a;
-    --text: #e8e8e8;
-    --muted: #999;
-    --border: #333;
-    --link: #7ab3d4;
-    --link-hover: #a8cfe3;
-    --accent: #c89c6a;
-    --card-bg: #222;
-    --removed: #d46666;
+    --bg: #191917;
+    --text: #ddd8d0;
+    --muted: #8a8580;
+    --border: #2e2c28;
+    --link: #8fb8d0;
+    --link-hover: #b0d0e4;
+    --accent: #c4a050;
+    --card-bg: #211f1c;
+    --removed: #c46060;
   }
 }
 
 * { box-sizing: border-box; }
-
-html { font-size: 17px; }
+html { font-size: 16px; }
 
 body {
   font-family: Georgia, 'Times New Roman', serif;
-  max-width: 48em;
-  margin: 2em auto;
-  padding: 0 1em;
-  line-height: 1.6;
+  max-width: 46em;
+  margin: 1.5em auto;
+  padding: 0 1.25em;
+  line-height: 1.55;
   color: var(--text);
   background: var(--bg);
 }
 
+/* Header */
+
 header.page-header {
-  margin-bottom: 2em;
-  padding-bottom: 1em;
+  margin-bottom: 1.2em;
+  padding-bottom: 0.6em;
   border-bottom: 1px solid var(--border);
 }
 
 header.page-header h1 {
-  margin: 0 0 0.3em 0;
-  font-size: 1.9em;
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: normal;
+  letter-spacing: 0.01em;
 }
+
+/* Breadcrumb */
 
 nav.breadcrumb {
-  font-size: 0.9em;
+  font-size: 0.82em;
   color: var(--muted);
-  margin-bottom: 1em;
+  margin-bottom: 0.6em;
+  letter-spacing: 0.02em;
 }
 
-nav.breadcrumb a {
-  color: var(--muted);
-  text-decoration: none;
-}
+nav.breadcrumb a { color: var(--muted); text-decoration: none; }
+nav.breadcrumb a:hover { color: var(--link); }
 
-nav.breadcrumb a:hover {
-  color: var(--link);
-}
+/* Links */
 
 a { color: var(--link); text-decoration: none; }
 a:hover { color: var(--link-hover); text-decoration: underline; }
 
-h1, h2, h3 { font-family: Georgia, serif; line-height: 1.3; }
-h2 { margin-top: 2em; font-size: 1.4em; border-bottom: 1px solid var(--border); padding-bottom: 0.2em; }
-h3 { margin-top: 1.5em; font-size: 1.15em; }
+/* Headings */
+
+h1, h2, h3 { font-family: Georgia, serif; line-height: 1.25; }
+h2 { margin-top: 1.4em; margin-bottom: 0.4em; font-size: 1.2em; font-weight: normal; border-bottom: 1px solid var(--border); padding-bottom: 0.15em; }
+h3 { margin-top: 1em; margin-bottom: 0.3em; font-size: 1.05em; font-weight: 600; }
+
+/* Summary stats */
 
 .summary {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 1em 1.5em;
-  margin: 1.5em 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6em 0;
+  margin: 0.8em 0 1.2em 0;
+  font-size: 0.9em;
+  color: var(--muted);
 }
 
 .summary .stat {
   display: inline-block;
-  margin-right: 1.5em;
+  margin-right: 1.2em;
 }
 
 .summary .stat strong {
-  font-size: 1.3em;
-  color: var(--accent);
+  font-size: 1.1em;
+  color: var(--text);
+  font-weight: 600;
 }
+
+/* Item card grid */
 
 .index-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22em, 1fr));
-  gap: 1em;
-  margin: 1em 0;
+  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+  gap: 0.6em;
+  margin: 0.6em 0;
 }
 
 article.item-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 1em 1.2em;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5em 0;
   transition: border-color 0.15s;
 }
 
-article.item-card:hover {
-  border-color: var(--link);
-}
+article.item-card:last-child { border-bottom: none; }
+article.item-card:hover { border-bottom-color: var(--link); }
 
 article.item-card h3 {
-  margin: 0 0 0.3em 0;
-  font-size: 1.1em;
+  margin: 0 0 0.15em 0;
+  font-size: 1em;
+  font-weight: 600;
 }
 
 article.item-card h3 a { color: var(--text); }
 article.item-card h3 a:hover { color: var(--link); text-decoration: none; }
 
 article.item-card .meta {
-  font-size: 0.85em;
+  font-size: 0.78em;
   color: var(--muted);
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 article.item-card .description {
   margin: 0;
-  font-size: 0.95em;
+  font-size: 0.88em;
+  color: var(--text);
 }
 
-article.item-card.removed {
-  opacity: 0.6;
-}
+article.item-card.removed { opacity: 0.5; }
 
 article.item-card .removed-tag {
   color: var(--removed);
-  font-weight: bold;
+  font-size: 0.7em;
+  font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.75em;
-  margin-left: 0.5em;
+  letter-spacing: 0.05em;
+  margin-left: 0.4em;
 }
 
+/* Axes navigation */
+
 .axes-nav {
-  margin: 1.5em 0;
+  margin: 0.8em 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75em;
+  gap: 0.3em;
 }
 
 .axes-nav a {
   display: inline-block;
-  padding: 0.4em 0.9em;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-family: system-ui, sans-serif;
+  padding: 0.25em 0.6em;
+  border-bottom: 1px solid transparent;
+  font-size: 0.82em;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--muted);
 }
 
 .axes-nav a:hover {
-  border-color: var(--link);
+  color: var(--link);
+  border-bottom-color: var(--link);
   text-decoration: none;
 }
 
-.section-group {
-  margin: 2em 0;
+.axes-nav a[aria-current="page"] {
+  color: var(--text);
+  border-bottom-color: var(--accent);
 }
 
-.section-group h2 {
-  margin-top: 0.5em;
-}
+/* Section groups */
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1em 0;
-}
+.section-group { margin: 1.2em 0; }
+.section-group h2 { margin-top: 0.3em; }
 
-th, td {
-  text-align: left;
-  padding: 0.5em 0.8em;
-  border-bottom: 1px solid var(--border);
-}
+/* Tables */
 
-th {
-  font-weight: bold;
-  border-bottom: 2px solid var(--muted);
-}
+table { border-collapse: collapse; width: 100%; margin: 0.6em 0; }
+th, td { text-align: left; padding: 0.35em 0.6em; border-bottom: 1px solid var(--border); font-size: 0.92em; }
+th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; border-bottom-color: var(--muted); }
+
+/* Item metadata */
 
 .item-metadata {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 1em 1.5em;
-  margin: 1.5em 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6em 0;
+  margin: 0.8em 0;
 }
 
-.item-metadata dl { margin: 0; }
-.item-metadata dt { font-weight: bold; color: var(--muted); font-size: 0.85em; text-transform: uppercase; margin-top: 0.7em; }
-.item-metadata dt:first-child { margin-top: 0; }
-.item-metadata dd { margin: 0.1em 0 0 0; }
+.item-metadata dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.15em 0.8em; font-size: 0.88em; }
+.item-metadata dt { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.04em; align-self: baseline; }
+.item-metadata dd { margin: 0; align-self: baseline; }
 
-.item-content {
-  margin: 2em 0;
-}
+/* Item content */
 
-.item-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
+.item-content { margin: 1em 0; }
+.item-content img { max-width: 100%; height: auto; }
+
+/* User notes (metadata field) */
 
 blockquote.user-notes {
-  border-left: 3px solid var(--accent);
-  margin: 1em 0;
-  padding: 0.5em 1em;
+  border-left: 2px solid var(--accent);
+  margin: 0.6em 0;
+  padding: 0.3em 0.8em;
   color: var(--text);
   font-style: italic;
-  background: var(--card-bg);
-  border-radius: 0 4px 4px 0;
+  font-size: 0.92em;
 }
+
+/* Removed notice */
 
 .removed-notice {
-  background: #fef4f4;
-  border-left: 4px solid var(--removed);
-  padding: 1em 1.2em;
-  margin: 1.5em 0;
+  border-left: 2px solid var(--removed);
+  padding: 0.6em 0.8em;
+  margin: 0.8em 0;
   color: var(--removed);
+  font-size: 0.9em;
 }
 
-@media (prefers-color-scheme: dark) {
-  .removed-notice {
-    background: #2a1a1a;
-  }
-}
+/* Item notes (notes/ directory) */
 
-/* Item notes (notes.md) */
+.item-notes { margin: 1.2em 0; }
+.item-notes h2 { font-size: 1.15em; }
 
-.item-notes {
-  margin: 2em 0;
-  padding: 1.5em;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-}
-
-.item-notes h2 {
-  margin-top: 0;
-  font-size: 1.3em;
+.note-entry {
   border-bottom: 1px solid var(--border);
-  padding-bottom: 0.3em;
+  padding: 0.5em 0;
+  margin: 0;
 }
+
+.note-entry:last-child { border-bottom: none; }
+.note-entry h3 { margin: 0 0 0.3em 0; font-size: 0.95em; }
 
 .item-notes blockquote {
-  border-left: 3px solid var(--accent);
-  margin: 1em 0;
-  padding: 0.3em 1em;
+  border-left: 2px solid var(--accent);
+  margin: 0.4em 0;
+  padding: 0.2em 0.8em;
   color: var(--muted);
+  font-size: 0.92em;
 }
 
 /* Collection journal */
@@ -267,50 +255,39 @@ blockquote.user-notes {
 .journal-intro {
   color: var(--muted);
   font-style: italic;
-  margin-bottom: 1.5em;
+  font-size: 0.9em;
+  margin-bottom: 1em;
 }
 
 article.journal-entry {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 4px 4px 0;
-  padding: 1em 1.2em;
-  margin: 1em 0;
+  border-left: 2px solid var(--accent);
+  padding: 0.4em 0 0.4em 0.8em;
+  margin: 0.6em 0;
 }
 
 .journal-date {
-  font-size: 0.85em;
+  font-size: 0.78em;
   color: var(--muted);
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 h3.journal-headline {
-  margin: 0.3em 0 0.5em 0;
-  font-size: 1.1em;
-  color: var(--text);
-}
-
-.journal-detail {
+  margin: 0.1em 0 0.3em 0;
   font-size: 0.95em;
-  line-height: 1.5;
+  font-weight: 600;
 }
 
-.journal-detail strong {
-  color: var(--muted);
-  font-size: 0.85em;
-  text-transform: uppercase;
-}
+.journal-detail { font-size: 0.88em; line-height: 1.45; }
+.journal-detail strong { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.03em; }
+.journal-detail p { margin: 0.2em 0; }
 
-.journal-detail p {
-  margin: 0.3em 0;
-}
+/* Footer */
 
 footer.page-footer {
-  margin-top: 3em;
-  padding-top: 1em;
+  margin-top: 2em;
+  padding-top: 0.6em;
   border-top: 1px solid var(--border);
-  font-size: 0.85em;
+  font-size: 0.78em;
   color: var(--muted);
   text-align: center;
 }

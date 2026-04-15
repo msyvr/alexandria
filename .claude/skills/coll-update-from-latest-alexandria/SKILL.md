@@ -1,7 +1,8 @@
 # /coll-update-from-latest-alexandria
 
-Update an existing collection's skills to match the current alexandria repo.
-Run this from the alexandria repo directory after pulling the latest changes.
+Update an existing collection to match the current alexandria repo — skills,
+wiki styling, and generated views. Run this from the alexandria repo directory
+after pulling the latest changes.
 
 ## When to use this
 
@@ -13,8 +14,7 @@ git pull
 uv sync
 ```
 
-Then start Claude Code from the alexandria repo and run this skill to push
-the updated skills to your collection.
+Then start Claude Code from the alexandria repo and run this skill.
 
 ## The workflow
 
@@ -30,15 +30,26 @@ the updated skills to your collection.
    `.claude/skills/` into the collection's `.claude/skills/`, replacing
    existing files.
 
-4. **Report what was updated.** List the skill directories that were copied.
-   Note any new skills that weren't in the collection before (these are
-   additions from the latest alexandria version).
+4. **Regenerate the wiki.** Run the wiki generator from this repo against
+   the collection. This updates the stylesheet, templates, and all generated
+   HTML to reflect any changes in the tools:
 
-5. **Remind the user.** The updated skills take effect when they start a
-   new Claude Code session from the collection directory:
+   ```
+   uv run python {this_repo}/tools/generate_wiki.py {collection_path}
+   ```
 
-   > Skills updated in your collection at `{path}`. To use the latest
-   > versions, start a new Claude Code session from there:
+5. **Report what was updated:**
+   - List skill directories that were copied (note any new ones)
+   - Confirm the wiki was regenerated with the latest styling and templates
+
+6. **Remind the user.** Updated skills take effect in the next Claude Code
+   session from the collection directory:
+
+   > Collection at `{path}` updated:
+   > - Skills: latest versions copied
+   > - Wiki: regenerated with current styling
+   >
+   > To use the updated skills, start a new Claude Code session:
    >
    > ```
    > cd {path}
@@ -47,13 +58,13 @@ the updated skills to your collection.
 
 ## What this updates
 
-- Skill instruction files (`.claude/skills/coll-*/SKILL.md`) — the
-  instructions Claude reads when `/coll-*` commands are invoked from
-  the collection
+- Skill instruction files (`.claude/skills/coll-*/SKILL.md`)
+- Wiki HTML, stylesheet, and all generated views (homepage, index pages,
+  item pages, journal)
 
-## What this does NOT update or modify
+## What this does NOT modify
 
-- The collection's data (items, metadata, sections, wiki, journal)
-- Python tools (`tools/generate_wiki.py`, etc.) — these are invoked
-  from the alexandria repo directly, so pulling already updated them
+- The collection's data (items, metadata, sections, journal content)
+- Item directories or their contents (README, metadata.yaml, notes/)
+- The `.collection-index.yaml` catalog (it's read, not written)
 - Python dependencies — `uv sync` (done before this skill) handles that

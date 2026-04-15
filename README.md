@@ -222,7 +222,9 @@ You should still be in the alexandria directory from the previous step. Start Cl
 claude
 ```
 
-At the Claude Code prompt, type:
+You'll see a prompt that looks like `❯`. This is where you type messages to Claude. Claude has already read the project's instructions — it knows about your collection skills, but it won't say anything until you type first.
+
+Type:
 
 ```
 /coll-build-new-collection

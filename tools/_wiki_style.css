@@ -79,14 +79,6 @@ h1, h2, h3 { font-family: Georgia, serif; line-height: 1.25; }
 h2 { margin-top: 1.4em; margin-bottom: 0.4em; font-size: 1.2em; font-weight: normal; border-bottom: 1px solid var(--border); padding-bottom: 0.15em; }
 h3 { margin-top: 1em; margin-bottom: 0.3em; font-size: 1.05em; font-weight: 600; }
 
-/* Summary stats */
-
-p.summary {
-  font-size: 0.82em;
-  color: var(--muted);
-  margin: 0 0 0.8em 0;
-  letter-spacing: 0.02em;
-}
 
 /* Item cards */
 
@@ -286,4 +278,9 @@ footer.page-footer {
   font-size: 0.78em;
   color: var(--muted);
   text-align: center;
+  line-height: 1.8;
+}
+
+.footer-stats {
+  letter-spacing: 0.02em;
 }

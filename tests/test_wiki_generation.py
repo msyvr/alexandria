@@ -307,7 +307,7 @@ def verify_wiki(lib: Path, items: list[dict]):
     homepage = (wiki / "index.html").read_text()
     check_contains("homepage: library name", homepage, "test-library")
     # 6 items total, but active count is 5 (1 removed)
-    check_contains("homepage: item count", homepage, "<strong>5</strong>")
+    check_contains("homepage: item count", homepage, "5 items")
 
     # --- By-section index ---
     by_section = (wiki / "by-section" / "index.html").read_text()

@@ -18,6 +18,7 @@ STYLESHEET_REL = "_assets/style.css"
 
 def _page(title: str, breadcrumb_html: str, body: str, css_rel: str = STYLESHEET_REL) -> str:
     """Wrap body content in the full HTML page shell."""
+    breadcrumb_block = f'<nav class="breadcrumb">{breadcrumb_html}</nav>' if breadcrumb_html else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +28,7 @@ def _page(title: str, breadcrumb_html: str, body: str, css_rel: str = STYLESHEET
 <link rel="stylesheet" href="{css_rel}">
 </head>
 <body>
-<nav class="breadcrumb">{breadcrumb_html}</nav>
+{breadcrumb_block}
 <header class="page-header">
 <h1>{escape(title)}</h1>
 </header>
@@ -129,18 +130,15 @@ def homepage(library: dict, all_items: list[dict]) -> str:
         recent_section = """<h2>Recent additions</h2>
 <p>No items yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first item.</p>"""
 
-    body = f"""<div class="summary">
-<span class="stat"><strong>{total}</strong> item{'s' if total != 1 else ''}</span>
-<span class="stat"><strong>{n_sections}</strong> section{'s' if n_sections != 1 else ''}</span>
-<span class="stat"><strong>{form_counts.get('physical', 0)}</strong> physical</span>
-<span class="stat"><strong>{form_counts.get('digital', 0)}</strong> digital</span>
-</div>
+    stats = f"{total} item{'s' if total != 1 else ''} · {n_sections} section{'s' if n_sections != 1 else ''} · {form_counts.get('physical', 0)} physical · {form_counts.get('digital', 0)} digital"
 
-{_axes_nav()}
+    body = f"""{_axes_nav()}
 
 {recent_section}
+
+<p class="summary">{stats}</p>
 """
-    return _page(collection_name, escape(collection_name), body, STYLESHEET_REL)
+    return _page(collection_name, "", body, STYLESHEET_REL)
 
 
 def by_section_index(library: dict, items_by_section: dict[str, list[dict]]) -> str:

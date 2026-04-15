@@ -42,14 +42,14 @@ body {
 /* Header */
 
 header.page-header {
-  margin-bottom: 1.2em;
-  padding-bottom: 0.6em;
+  margin-bottom: 0.6em;
+  padding-bottom: 0.4em;
   border-bottom: 1px solid var(--border);
 }
 
 header.page-header h1 {
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.35em;
   font-weight: normal;
   letter-spacing: 0.01em;
 }
@@ -79,74 +79,57 @@ h3 { margin-top: 1em; margin-bottom: 0.3em; font-size: 1.05em; font-weight: 600;
 
 /* Summary stats */
 
-.summary {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0.6em 0;
-  margin: 0.8em 0 1.2em 0;
-  font-size: 0.9em;
+p.summary {
+  font-size: 0.82em;
   color: var(--muted);
+  margin: 0 0 0.8em 0;
+  letter-spacing: 0.02em;
 }
 
-.summary .stat {
-  display: inline-block;
-  margin-right: 1.2em;
-}
-
-.summary .stat strong {
-  font-size: 1.1em;
-  color: var(--text);
-  font-weight: 600;
-}
-
-/* Item card grid */
+/* Item cards */
 
 .index-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
-  gap: 0.6em;
-  margin: 0.6em 0;
+  margin: 0.4em 0;
 }
 
 article.item-card {
   border-bottom: 1px solid var(--border);
-  padding: 0.5em 0;
-  transition: border-color 0.15s;
+  padding: 0.45em 0;
 }
 
 article.item-card:last-child { border-bottom: none; }
-article.item-card:hover { border-bottom-color: var(--link); }
 
 article.item-card h3 {
-  margin: 0 0 0.15em 0;
-  font-size: 1em;
+  margin: 0;
+  font-size: 0.95em;
   font-weight: 600;
+  display: inline;
 }
 
 article.item-card h3 a { color: var(--text); }
 article.item-card h3 a:hover { color: var(--link); text-decoration: none; }
 
 article.item-card .meta {
-  font-size: 0.78em;
+  font-size: 0.75em;
   color: var(--muted);
-  margin-bottom: 0.2em;
+  margin: 0.1em 0;
 }
 
 article.item-card .description {
-  margin: 0;
-  font-size: 0.88em;
-  color: var(--text);
+  margin: 0.1em 0 0 0;
+  font-size: 0.85em;
+  color: var(--muted);
 }
 
-article.item-card.removed { opacity: 0.5; }
+article.item-card.removed { opacity: 0.45; }
 
 article.item-card .removed-tag {
   color: var(--removed);
-  font-size: 0.7em;
+  font-size: 0.68em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-left: 0.4em;
+  margin-left: 0.3em;
 }
 
 /* Axes navigation */
@@ -284,8 +267,8 @@ h3.journal-headline {
 /* Footer */
 
 footer.page-footer {
-  margin-top: 2em;
-  padding-top: 0.6em;
+  margin-top: 1.5em;
+  padding-top: 0.5em;
   border-top: 1px solid var(--border);
   font-size: 0.78em;
   color: var(--muted);

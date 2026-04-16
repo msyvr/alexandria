@@ -296,20 +296,23 @@ without it.</p>
     return _page("By topic", body, library, all_items, axes_current="by-topic", from_subdir=True)
 
 
-def _journal_entry_html(entry: dict) -> str:
-    """Render a single journal entry as an <article> card."""
+def _journal_entry_html(entry: dict, show_detail: bool = True) -> str:
+    """Render a single journal entry as an <article> card.
+
+    `show_detail`: when False, omits the full_html body — useful for the
+    landing page where only date + headline are shown.
+    """
     date = escape(entry.get("date", ""))
     time = escape(entry.get("time", ""))
     accomplished = escape(entry.get("accomplished", ""))
     full_html = entry.get("full_html", "")
     timestamp = date + (f" at {time}" if time else "")
     headline = accomplished if accomplished else "Checkpoint"
+    detail_block = f'<div class="journal-detail">\n{full_html}\n</div>' if show_detail else ""
     return f"""<article class="journal-entry">
 <div class="journal-date">{timestamp}</div>
 <h3 class="journal-headline">{headline}</h3>
-<div class="journal-detail">
-{full_html}
-</div>
+{detail_block}
 </article>"""
 
 
@@ -340,7 +343,7 @@ notes about your collection — thoughts, plans, or anything you want to remembe
         key=lambda e: e.get("date", "") + e.get("time", ""),
         reverse=True,
     )
-    recent_html = "\n".join(_journal_entry_html(e) for e in sorted_entries[:3])
+    recent_html = "\n".join(_journal_entry_html(e, show_detail=False) for e in sorted_entries[:3])
 
     months = _group_entries_by_month(entries)
     rows = []

@@ -34,12 +34,17 @@ html { font-size: 16px; }
 body {
   font-family: Georgia, 'Times New Roman', serif;
   max-width: 46em;
-  margin: 1.5em auto;
-  padding: 0 1.25em;
+  margin: 0 auto;
+  padding: 1.5em 1.25em;
   line-height: 1.55;
   color: var(--text);
   background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+main { flex: 1 0 auto; }
 
 /* Header */
 

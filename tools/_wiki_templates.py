@@ -202,13 +202,9 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         count = len(items)
         section_slug = section.replace("/", "-").replace(" ", "-").lower()
         rows.append(
-            f'<tr><td><a href="{section_slug}.html">{escape(section)}</a></td><td>{count}</td></tr>'
+            f'<tr><td><a href="{section_slug}.html">{escape(section)}</a> ({count})</td></tr>'
         )
-    body = (
-        '<table><thead><tr><th>Section</th><th>Items</th></tr></thead><tbody>'
-        + "\n".join(rows)
-        + "</tbody></table>"
-    )
+    body = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
     return _page("By section", body, library, all_items, axes_current="by-section", from_subdir=True)
 
 
@@ -365,15 +361,11 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
                 continue
             slug = _format_slug(form, fmt)
             rows.append(
-                f'<tr><td><a href="{slug}.html">{escape(fmt)}</a></td><td>{count}</td></tr>'
+                f'<tr><td><a href="{slug}.html">{escape(fmt)}</a> ({count})</td></tr>'
             )
         if not rows:
             continue
-        table = (
-            '<table><thead><tr><th>Format</th><th>Items</th></tr></thead><tbody>'
-            + "\n".join(rows)
-            + "</tbody></table>"
-        )
+        table = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
         sections.append(
             f'<div class="section-group"><h2>{escape(form.capitalize())} '
             f'<small>({active_total})</small></h2>\n{table}</div>'

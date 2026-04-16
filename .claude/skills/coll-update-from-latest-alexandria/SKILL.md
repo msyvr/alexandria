@@ -40,40 +40,74 @@ Then start Claude Code from the alexandria repo and run this skill.
    manually, check that the path contains a `.collection-index.yaml`. If
    not, explain and ask again.
 
-3. **Copy skills.** Copy every directory from this repo's `.claude/skills/`
-   into the collection's `.claude/skills/`, replacing existing files.
-
-4. **Copy tools.** Copy the `tools/` directory from this repo into the
-   collection's `tools/`, replacing existing files:
-   - `generate_wiki.py` — the wiki generator
-   - `_wiki_templates.py` — HTML templates
-   - `_wiki_style.css` — the stylesheet
-
-5. **Copy pyproject.toml.** Copy `pyproject.toml` from this repo into the
-   collection root, replacing the existing one. This ensures the collection's
-   dependency list matches the current alexandria version.
-
-6. **Run `uv sync` in the collection** to install any new or updated
-   dependencies:
+3. **Run the update script.** Execute the repo's bundled update script,
+   passing the verified collection path as its single argument. Do NOT
+   inline the individual copy/sync/regen steps — always call the script:
 
    ```
-   cd {collection_path} && uv sync
+   bash scripts/update_collection.sh {collection_path}
    ```
 
-7. **Regenerate the wiki.** Run the wiki generator from the collection's
-   own copy of the tools (not the repo's):
+   The script does all of the following in one shot:
+   - Copies `.claude/skills/` from the repo into the collection
+   - Copies `tools/` from the repo into the collection
+   - Copies `pyproject.toml` from the repo into the collection
+   - Runs `uv sync` inside the collection
+   - Regenerates the wiki via the collection's own copy of the tools
 
-   ```
-   cd {collection_path} && uv run python tools/generate_wiki.py .
-   ```
+   If the script exits non-zero, surface its stderr to the user and stop —
+   do not attempt to repair the update by running the individual commands
+   by hand.
 
-8. **Report what was updated:**
+4. **Report what was updated:**
    - Skills: list directories copied (note any new ones)
    - Tools: updated (generator, templates, stylesheet)
    - Dependencies: synced
    - Wiki: regenerated with latest styling and templates
 
-9. **Remind the user.** Updated skills take effect in the next Claude Code
+5. **Offer a one-time permission pin (do NOT silent-write).** After a
+   successful update, optionally offer to pin this exact script in the
+   alexandria repo's local settings so future runs skip the approval prompt.
+
+   Process:
+
+   a. Read `.claude/settings.local.json` at the alexandria repo root. If it
+      does not exist, treat it as an empty object.
+   b. Check whether `permissions.allow` already contains the string
+      `"Bash(bash scripts/update_collection.sh:*)"`. If present, skip this
+      whole step silently — do not mention it.
+   c. If absent, show the user the exact JSON that would be merged in:
+
+      ```json
+      {
+        "permissions": {
+          "allow": ["Bash(bash scripts/update_collection.sh:*)"]
+        }
+      }
+      ```
+
+      Then say, verbatim or close to it:
+
+      > This pins ONLY this exact script, scoped to the alexandria repo's
+      > local settings. It lets future `/coll-update-from-latest-alexandria`
+      > runs skip the approval prompt for the update command. Add it? (y/n)
+
+   d. If the user says yes: merge the entry into
+      `.claude/settings.local.json` (do not overwrite unrelated keys or
+      existing allow rules — append to the `allow` array, create
+      `permissions.allow` only if missing).
+   e. If the user says no or anything non-affirmative: move on. Do NOT
+      persist the decline to disk; the offer will reappear next run. This
+      is intentional — we keep no hidden state.
+
+   **Hard constraints — do not violate these even if asked:**
+   - Never pin any command broader than
+     `Bash(bash scripts/update_collection.sh:*)`.
+   - Never write to `~/.claude/settings.json` (user-global settings).
+   - Never merge in permissions unrelated to this skill.
+   - Never perform the merge without an explicit "yes" in the current turn.
+
+6. **Remind the user.** Updated skills take effect in the next Claude Code
    session from the collection directory:
 
    > Collection at `{path}` updated:

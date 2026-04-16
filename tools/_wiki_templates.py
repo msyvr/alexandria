@@ -94,11 +94,13 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
     author = item.get("author")
+    author_escaped = escape(author) if author else ""
     book_type = escape(item.get("book_type", "unknown"))
     media_type = escape(item.get("media_type", ""))
+    date_added = escape(item.get("date_added", ""))
     status = item.get("status", "active")
 
-    author_line = f'<div class="meta">{escape(author)}</div>' if author else ""
+    author_line = f'<div class="meta">{author_escaped}</div>' if author else ""
 
     detail_parts = [book_type]
     if media_type:
@@ -110,7 +112,14 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
 
     description_line = f'<p class="description">{description}</p>' if show_description else ""
 
-    return f"""<article class="item-card{removed_class}">
+    # Data attributes power client-side sorting on the All view. Harmless elsewhere.
+    data_attrs = (
+        f' data-date="{date_added}"'
+        f' data-author="{author_escaped.lower()}"'
+        f' data-title="{title.lower()}"'
+    )
+
+    return f"""<article class="item-card{removed_class}"{data_attrs}>
 <h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>
 {author_line}
 {description_line}
@@ -122,11 +131,11 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     """Navigation bar linking to all index pages.
 
     `from_subdir`: True when rendering from inside a subdirectory (by-section/,
-    by-date/, etc.) — links need ../ prefix to reach sibling directories.
+    all/, etc.) — links need ../ prefix to reach sibling directories.
     False when rendering from the wiki root (homepage).
     """
     axes = [
-        ("by-date", "All - by date added"),
+        ("all", "All"),
         ("by-section", "By section"),
         ("by-medium-format", "By medium & format"),
         ("by-topic", "Let the LLM decide"),
@@ -196,28 +205,62 @@ def section_page(section: str, items: list[dict], library: dict, all_items: list
     return _page(f"Section: {section}", body, library, all_items, axes_current="by-section", from_subdir=True)
 
 
-def by_date_index(library: dict, all_items: list[dict]) -> str:
-    """Render the by-date index: items newest first, grouped by year-month."""
-    groups: dict[str, list[dict]] = {}
-    for item in all_items:
-        date_added = item.get("date_added", "")
-        if not date_added or len(date_added) < 7:
-            group_key = "unknown"
-        else:
-            group_key = date_added[:7]
-        groups.setdefault(group_key, []).append(item)
+def all_index(library: dict, all_items: list[dict]) -> str:
+    """Render the All view: flat list of items sorted by date added (newest
+    first) by default, with a client-side sort selector."""
+    active = [b for b in all_items if b.get("status", "active") != "removed"]
+    sorted_items = sorted(active, key=lambda b: b.get("date_added", ""), reverse=True)
 
-    sections = []
-    for group_key in sorted(groups.keys(), reverse=True):
-        items = sorted(groups[group_key], key=lambda b: b.get("date_added", ""), reverse=True)
-        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
-        label = escape(group_key) if group_key != "unknown" else "Date unknown"
-        sections.append(
-            f'<div class="section-group"><h2>{label}</h2><div class="index-grid">\n{cards}\n</div></div>'
-        )
+    cards = "\n".join(
+        _item_card(b, f"../items/{b['slug']}.html", show_description=False)
+        for b in sorted_items
+    )
+    listing = cards if cards else "<p>No items to display.</p>"
 
-    body = ''.join(sections) if sections else '<p>No items to display.</p>'
-    return _page("All - by date added", body, library, all_items, axes_current="by-date", from_subdir=True)
+    sort_control = """<div class="sort-control">
+<label for="sort-select">Sort by</label>
+<select id="sort-select">
+<option value="date-desc" selected>Date added — newest first</option>
+<option value="date-asc">Date added — oldest first</option>
+<option value="author-asc">Author / artist</option>
+<option value="title-asc">Title</option>
+</select>
+</div>"""
+
+    sort_script = """<script>
+(function() {
+  var select = document.getElementById('sort-select');
+  var container = document.getElementById('all-listing');
+  if (!select || !container) return;
+  select.addEventListener('change', function() {
+    var value = select.value;
+    var items = Array.prototype.slice.call(container.querySelectorAll('.item-card'));
+    var key, dir;
+    if (value === 'date-desc') { key = 'date'; dir = -1; }
+    else if (value === 'date-asc') { key = 'date'; dir = 1; }
+    else if (value === 'author-asc') { key = 'author'; dir = 1; }
+    else if (value === 'title-asc') { key = 'title'; dir = 1; }
+    else return;
+    items.sort(function(a, b) {
+      var av = a.dataset[key] || '', bv = b.dataset[key] || '';
+      if (av < bv) return -1 * dir;
+      if (av > bv) return 1 * dir;
+      return 0;
+    });
+    items.forEach(function(el) { container.appendChild(el); });
+  });
+})();
+</script>"""
+
+    body = f"""{sort_control}
+
+<div id="all-listing" class="index-grid">
+{listing}
+</div>
+
+{sort_script}
+"""
+    return _page("All", body, library, all_items, axes_current="all", from_subdir=True)
 
 
 def _format_slug(form: str, fmt: str) -> str:

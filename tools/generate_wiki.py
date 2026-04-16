@@ -319,7 +319,7 @@ def generate_wiki(library_path: Path) -> None:
         "_assets",
         "items",
         "by-section",
-        "by-date",
+        "all",
         "by-medium-format",
         "by-topic",
         "search",
@@ -364,9 +364,9 @@ def generate_wiki(library_path: Path) -> None:
             templates.section_page(section, sorted_books, library, all_items)
         )
 
-    # --- By date ---
-    (wiki_dir / "by-date" / "index.html").write_text(
-        templates.by_date_index(library, all_items)
+    # --- All ---
+    (wiki_dir / "all" / "index.html").write_text(
+        templates.all_index(library, all_items)
     )
 
     # --- By medium & format ---

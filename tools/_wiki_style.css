@@ -217,6 +217,39 @@ article.item-card .removed-tag {
 .section-group { margin: 1.2em 0; }
 .section-group h2 { margin-top: 0.3em; }
 
+/* Sort control (All view) */
+
+.sort-control {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin: 0.8em 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82em;
+}
+
+.sort-control label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85em;
+}
+
+.sort-control select {
+  font-family: Georgia, serif;
+  font-size: 0.95em;
+  padding: 0.15em 0.3em;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 0;
+}
+
+.sort-control select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* Tables */
 
 table { border-collapse: collapse; width: 100%; margin: 0.6em 0; }

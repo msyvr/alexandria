@@ -10,10 +10,26 @@ Design constraints:
 - Dark mode handled by CSS media query, not by template logic
 """
 
+import re
 from datetime import date
 from html import escape
 
 STYLESHEET_REL = "_assets/style.css"
+
+
+def _author_sort_key(author: str | None) -> str:
+    """Sort key for author: last name of the first author, lowercased.
+
+    Strips parenthetical annotations (e.g., "(edited by ...)"), takes the
+    first comma-separated author, and uses its last whitespace-separated
+    token. Returns an empty string when no author is provided.
+    """
+    if not author:
+        return ""
+    stripped = re.sub(r"\s*\([^)]*\)", "", author).strip()
+    first = stripped.split(",", 1)[0].strip()
+    parts = first.split()
+    return parts[-1].lower() if parts else ""
 
 
 def _stats_html(library: dict, all_items: list[dict], from_subdir: bool = False) -> str:
@@ -113,9 +129,10 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
     description_line = f'<p class="description">{description}</p>' if show_description else ""
 
     # Data attributes power client-side sorting on the All view. Harmless elsewhere.
+    # data-author uses last name of the first author so sorting matches catalog convention.
     data_attrs = (
         f' data-date="{date_added}"'
-        f' data-author="{author_escaped.lower()}"'
+        f' data-author="{_author_sort_key(author)}"'
         f' data-title="{title.lower()}"'
     )
 

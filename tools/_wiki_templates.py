@@ -759,7 +759,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
             f'from the <a href="../../{path}/">item directory</a></p>'
         )
 
-    body = f"""<p><a href="../index.html">← Back</a></p>
+    body = f"""<p><a href="../index.html" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
 
 {description_html}
 

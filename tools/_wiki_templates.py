@@ -97,8 +97,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     axes = [
         ("by-section", "By section"),
         ("by-date", "By date"),
-        ("by-media-type", "By format"),
-        ("by-type", "Physical / Digital"),
+        ("by-medium-format", "By medium & format"),
         ("by-topic", "By topic"),
     ]
     prefix = "../" if from_subdir else ""
@@ -223,74 +222,74 @@ def by_date_index(library: dict, all_items: list[dict]) -> str:
     return _page("By date", body, "../" + STYLESHEET_REL, from_subdir=True, collection_name=collection_name)
 
 
-def by_type_index(library: dict, all_items: list[dict]) -> str:
-    """Render the by-type index: books grouped by book_type."""
+def _format_slug(form: str, fmt: str) -> str:
+    """URL-safe slug for a (form, media_type) pair: e.g. 'physical-text-hardcover'."""
+    return f"{form}-{fmt}".replace(":", "-").replace("/", "-").replace(" ", "-").lower()
+
+
+def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
+    """Render the by-medium-format index: two tables (Physical, Digital),
+    each listing media_type values with active-item counts.
+    """
     collection_name = library.get("collection_name", "alexandria")
-    groups: dict[str, list[dict]] = {}
+
+    form_groups: dict[str, dict[str, list[dict]]] = {"physical": {}, "digital": {}}
     for item in all_items:
-        groups.setdefault(item.get("book_type", "unknown"), []).append(item)
+        form = item.get("form", "digital")
+        media_type = item.get("media_type", "unknown") or "unknown"
+        form_groups.setdefault(form, {}).setdefault(media_type, []).append(item)
 
     sections = []
-    for type_name in sorted(groups.keys()):
-        items = sorted(groups[type_name], key=lambda b: b.get("title", "").lower())
-        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
-        count = len([b for b in items if b.get("status", "active") != "removed"])
-        sections.append(
-            f'<div class="section-group"><h2>{escape(type_name)} <small>({count})</small></h2>'
-            f'<div class="index-grid">\n{cards}\n</div></div>'
-        )
-
-    body = f"""{_axes_nav("by-type", from_subdir=True)}
-
-{''.join(sections) if sections else '<p>No items to display.</p>'}
-"""
-    return _page("By type", body, "../" + STYLESHEET_REL, from_subdir=True, collection_name=collection_name)
-
-
-def by_media_type_index(library: dict, all_items: list[dict]) -> str:
-    """Render the by-media-type index: grouped by content_type then format."""
-    collection_name = library.get("collection_name", "alexandria")
-    # Two-level grouping: content_type -> format -> [items]
-    content_groups: dict[str, dict[str, list[dict]]] = {}
-    for item in all_items:
-        media_type = item.get("media_type", "")
-        if ":" in media_type:
-            content_type, fmt = media_type.split(":", 1)
-        else:
-            content_type, fmt = "other", media_type or "unknown"
-        content_groups.setdefault(content_type, {}).setdefault(fmt, []).append(item)
-
-    sections = []
-    for content_type in sorted(content_groups.keys()):
-        format_groups = content_groups[content_type]
-        total_for_type = sum(
+    for form in ["physical", "digital"]:
+        formats = form_groups.get(form, {})
+        active_total = sum(
             len([b for b in items if b.get("status", "active") != "removed"])
-            for items in format_groups.values()
+            for items in formats.values()
         )
-        if total_for_type == 0:
+        if active_total == 0:
             continue
-        format_sections = []
-        for fmt in sorted(format_groups.keys()):
-            items = sorted(format_groups[fmt], key=lambda b: b.get("title", "").lower())
-            cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
-            active_count = len([b for b in items if b.get("status", "active") != "removed"])
-            if active_count == 0:
+        rows = []
+        for fmt in sorted(formats.keys()):
+            count = len([b for b in formats[fmt] if b.get("status", "active") != "removed"])
+            if count == 0:
                 continue
-            format_sections.append(
-                f'<h3>{escape(fmt)} <small>({active_count})</small></h3>'
-                f'<div class="index-grid">\n{cards}\n</div>'
+            slug = _format_slug(form, fmt)
+            rows.append(
+                f'<tr><td><a href="{slug}.html">{escape(fmt)}</a></td><td>{count}</td></tr>'
             )
+        if not rows:
+            continue
+        table = (
+            '<table><thead><tr><th>Format</th><th>Items</th></tr></thead><tbody>'
+            + "\n".join(rows)
+            + "</tbody></table>"
+        )
         sections.append(
-            f'<div class="section-group"><h2>{escape(content_type)}</h2>'
-            + "\n".join(format_sections)
-            + "</div>"
+            f'<div class="section-group"><h2>{escape(form.capitalize())} '
+            f'<small>({active_total})</small></h2>\n{table}</div>'
         )
 
-    body = f"""{_axes_nav("by-media-type", from_subdir=True)}
+    body = f"""{_axes_nav("by-medium-format", from_subdir=True)}
 
 {''.join(sections) if sections else '<p>No items to display.</p>'}
 """
-    return _page("By media type", body, "../" + STYLESHEET_REL, from_subdir=True, collection_name=collection_name)
+    return _page("By medium & format", body, "../" + STYLESHEET_REL, from_subdir=True, collection_name=collection_name)
+
+
+def format_page(form: str, fmt: str, items: list[dict], collection_name: str = "collection") -> str:
+    """Render a single (form, media_type) page: all items matching that pair."""
+    if not items:
+        body_main = '<p>No items in this format yet.</p>'
+    else:
+        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
+        body_main = f'<div class="index-grid">\n{cards}\n</div>'
+
+    body = f"""<p><a href="index.html">← All formats</a></p>
+
+{body_main}
+"""
+    title = f"{form.capitalize()}: {fmt}"
+    return _page(title, body, "../" + STYLESHEET_REL, from_subdir=True, collection_name=collection_name)
 
 
 def topic_placeholder(library: dict) -> str:

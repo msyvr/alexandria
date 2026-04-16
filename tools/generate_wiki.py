@@ -312,8 +312,7 @@ def generate_wiki(library_path: Path) -> None:
         "items",
         "by-section",
         "by-date",
-        "by-type",
-        "by-media-type",
+        "by-medium-format",
         "by-topic",
         "search",
     ]
@@ -362,15 +361,29 @@ def generate_wiki(library_path: Path) -> None:
         templates.by_date_index(library, all_items)
     )
 
-    # --- By type ---
-    (wiki_dir / "by-type" / "index.html").write_text(
-        templates.by_type_index(library, all_items)
+    # --- By medium & format ---
+    (wiki_dir / "by-medium-format" / "index.html").write_text(
+        templates.by_medium_format_index(library, all_items)
     )
-
-    # --- By media type ---
-    (wiki_dir / "by-media-type" / "index.html").write_text(
-        templates.by_media_type_index(library, all_items)
-    )
+    collection_name = library.get("collection_name", "collection")
+    form_fmt_groups: dict[tuple[str, str], list[dict]] = {}
+    for item in all_items:
+        form = item.get("form", "digital")
+        fmt = item.get("media_type", "unknown") or "unknown"
+        form_fmt_groups.setdefault((form, fmt), []).append(item)
+    for (form, fmt), items in form_fmt_groups.items():
+        # Include removed items sorted after active items, matching section pages.
+        sorted_items = sorted(
+            items,
+            key=lambda b: (
+                b.get("status", "active") == "removed",
+                b.get("title", "").lower(),
+            ),
+        )
+        slug = templates._format_slug(form, fmt)
+        (wiki_dir / "by-medium-format" / f"{slug}.html").write_text(
+            templates.format_page(form, fmt, sorted_items, collection_name)
+        )
 
     # --- By topic (Pass 2 placeholder) ---
     (wiki_dir / "by-topic" / "index.html").write_text(

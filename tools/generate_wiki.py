@@ -408,6 +408,16 @@ def generate_wiki(library_path: Path) -> None:
     (wiki_dir / "collection-journal" / "index.html").write_text(
         templates.collection_journal(library, all_items, journal_entries)
     )
+    # Per-month filtered pages
+    journal_months: dict[str, list[dict]] = {}
+    for entry in journal_entries:
+        date = entry.get("date", "")
+        month_key = date[:7] if len(date) >= 7 else "undated"
+        journal_months.setdefault(month_key, []).append(entry)
+    for month_key, month_entries in journal_months.items():
+        (wiki_dir / "collection-journal" / f"{month_key}.html").write_text(
+            templates.collection_journal_month(library, all_items, month_key, month_entries)
+        )
 
     # --- Individual item pages ---
     for item in all_items:

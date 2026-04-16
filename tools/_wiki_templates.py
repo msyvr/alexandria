@@ -296,15 +296,36 @@ without it.</p>
     return _page("By topic", body, library, all_items, axes_current="by-topic", from_subdir=True)
 
 
-def collection_journal(library: dict, all_items: list[dict], entries: list[dict]) -> str:
-    """Render the collection journal as a timeline page.
+def _journal_entry_html(entry: dict) -> str:
+    """Render a single journal entry as an <article> card."""
+    date = escape(entry.get("date", ""))
+    time = escape(entry.get("time", ""))
+    accomplished = escape(entry.get("accomplished", ""))
+    full_html = entry.get("full_html", "")
+    timestamp = date + (f" at {time}" if time else "")
+    headline = accomplished if accomplished else "Checkpoint"
+    return f"""<article class="journal-entry">
+<div class="journal-date">{timestamp}</div>
+<h3 class="journal-headline">{headline}</h3>
+<div class="journal-detail">
+{full_html}
+</div>
+</article>"""
 
-    Each entry is a dict with:
-      - date: str (YYYY-MM-DD)
-      - time: str (HH:MM)
-      - accomplished: str (the headline)
-      - full_html: str (the full checkpoint content rendered as HTML)
-    """
+
+def _group_entries_by_month(entries: list[dict]) -> dict[str, list[dict]]:
+    """Group entries by YYYY-MM (or "undated" if date is too short)."""
+    months: dict[str, list[dict]] = {}
+    for entry in entries:
+        date = entry.get("date", "")
+        month_key = date[:7] if len(date) >= 7 else "undated"
+        months.setdefault(month_key, []).append(entry)
+    return months
+
+
+def collection_journal(library: dict, all_items: list[dict], entries: list[dict]) -> str:
+    """Render the journal landing: the 3 most recent entries, then a table
+    of months linking to per-month pages."""
     if not entries:
         body = """<p>No journal entries yet. After adding items or making changes to your collection,
 run <code>/coll-notes</code> to record what was done. You can also add personal
@@ -314,54 +335,51 @@ notes about your collection — thoughts, plans, or anything you want to remembe
 """
         return _page("Journal", body, library, all_items, axes_current=None, from_subdir=True)
 
-    # Group entries by year-month (newest first)
-    months: dict[str, list[dict]] = {}
-    for entry in entries:
-        date = entry.get("date", "")
-        if len(date) >= 7:
-            month_key = date[:7]
-        else:
-            month_key = "undated"
-        months.setdefault(month_key, []).append(entry)
+    sorted_entries = sorted(
+        entries,
+        key=lambda e: e.get("date", "") + e.get("time", ""),
+        reverse=True,
+    )
+    recent_html = "\n".join(_journal_entry_html(e) for e in sorted_entries[:3])
 
-    month_sections = []
+    months = _group_entries_by_month(entries)
+    rows = []
     for month_key in sorted(months.keys(), reverse=True):
-        month_entries = sorted(months[month_key], key=lambda e: e.get("date", "") + e.get("time", ""), reverse=True)
-
-        entry_cards = []
-        for entry in month_entries:
-            date = escape(entry.get("date", ""))
-            time = escape(entry.get("time", ""))
-            accomplished = escape(entry.get("accomplished", ""))
-            full_html = entry.get("full_html", "")
-
-            timestamp = f"{date}"
-            if time:
-                timestamp += f" at {time}"
-
-            headline = accomplished if accomplished else "Checkpoint"
-
-            entry_cards.append(f"""<article class="journal-entry">
-<div class="journal-date">{timestamp}</div>
-<h3 class="journal-headline">{headline}</h3>
-<div class="journal-detail">
-{full_html}
-</div>
-</article>""")
-
         label = escape(month_key) if month_key != "undated" else "Undated"
-        month_sections.append(
-            f'<div class="section-group"><h2>{label}</h2>\n'
-            + "\n".join(entry_cards)
-            + "\n</div>"
-        )
+        rows.append(f'<tr><td><a href="{month_key}.html">{label}</a></td></tr>')
+    months_table = (
+        '<table><thead><tr><th>Month</th></tr></thead><tbody>'
+        + "\n".join(rows)
+        + "</tbody></table>"
+    )
 
     body = f"""<p class="journal-intro">A timeline of your collection — what was added, changed, and decided,
 in chronological order. Run <code>/coll-notes</code> to add entries with personal details.</p>
 
-{''.join(month_sections)}
+<h2>Recent</h2>
+{recent_html}
+
+<h2>Browse by month</h2>
+{months_table}
 """
     return _page("Journal", body, library, all_items, axes_current=None, from_subdir=True)
+
+
+def collection_journal_month(library: dict, all_items: list[dict], month_key: str, month_entries: list[dict]) -> str:
+    """Render a single-month journal page: all entries for that month."""
+    sorted_entries = sorted(
+        month_entries,
+        key=lambda e: e.get("date", "") + e.get("time", ""),
+        reverse=True,
+    )
+    entries_html = "\n".join(_journal_entry_html(e) for e in sorted_entries)
+    label = escape(month_key) if month_key != "undated" else "Undated"
+    body = f"""<p><a href="index.html">← All months</a></p>
+
+<h2>{label}</h2>
+{entries_html}
+"""
+    return _page(f"Journal: {label}", body, library, all_items, axes_current=None, from_subdir=True)
 
 
 def search_page(library: dict, all_items: list[dict]) -> str:

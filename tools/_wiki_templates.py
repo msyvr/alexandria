@@ -129,7 +129,7 @@ def homepage(library: dict, all_items: list[dict]) -> str:
 
     # Recent additions (most recent 10, excluding removed)
     active = [b for b in all_items if b.get("status", "active") != "removed"]
-    recent = sorted(active, key=lambda b: b.get("date_added", ""), reverse=True)[:10]
+    recent = sorted(active, key=lambda b: b.get("date_added", ""), reverse=True)[:3]
     if recent:
         recent_cards = "\n".join(
             _item_card(b, f"items/{b['slug']}.html") for b in recent

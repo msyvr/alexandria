@@ -778,9 +778,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
   if (!link) return;
   var ref = document.referrer || '';
   if (ref.indexOf('/by-author/') !== -1) {{
-    link.href = '../by-author/index.html';
     link.textContent = '← All authors/artists';
-    link.onclick = null;
   }}
 }})();
 </script>

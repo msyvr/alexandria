@@ -38,7 +38,21 @@ marker that we're inside an alexandria collection):
    - If found: scope notes to what happened AFTER that point
    - If not found: scope notes from the start of the current session
 
-3. Decide what to record under each category, using best judgment:
+3. **Invite a personal note.** Offer the user a chance to add free-form
+   text to this checkpoint — this is how they add personal details to
+   the journal timeline rendered in the wiki. Ask, verbatim or close
+   to it:
+
+   > Anything you want to add to this checkpoint as a personal note?
+   > Thoughts, plans, reactions, reminders — anything you want to see
+   > in the journal later. (Press Enter to skip, or type / paste your
+   > note.)
+
+   Record exactly what the user types, preserving line breaks. If the
+   user presses Enter with no input, treat this as "no personal note"
+   and omit the **Personal notes** field from the checkpoint below.
+
+4. Decide what to record under each category, using best judgment:
    - **Accomplished**: what was done in this session (concrete, brief)
    - **Decisions**: choices made with their rationale (or "none")
    - **User preferences**: patterns observed about how this user thinks about this domain
@@ -50,13 +64,17 @@ marker that we're inside an alexandria collection):
    Only record what's actually useful for future sessions. Don't pad. "None" is a fine
    answer for any section.
 
-4. Append to the target file:
+5. Append to the target file. Include the **Personal notes** field only
+   if the user provided text in step 3 — otherwise omit that line
+   entirely:
 
    ```markdown
 
    ## [YYYY-MM-DD HH:MM] Checkpoint
 
    **Accomplished:** {what was done}
+
+   **Personal notes:** {user's text from step 3 — include only if provided}
 
    **Decisions:** {decisions with rationale, or "none"}
 
@@ -69,7 +87,7 @@ marker that we're inside an alexandria collection):
    SESSION_NOTES_CHECKPOINT
    ```
 
-5. Update the "Recent context" section in the same directory's CLAUDE.md (if a CLAUDE.md
+6. Update the "Recent context" section in the same directory's CLAUDE.md (if a CLAUDE.md
    exists). Replace its contents with a 3-5 line summary of the checkpoint just appended:
    the most important accomplishment, the most important decision (if any), and the most
    important user preference (if any). Keep it terse — this section is auto-loaded into
@@ -78,6 +96,6 @@ marker that we're inside an alexandria collection):
    If CLAUDE.md exists but has no "Recent context" section, add one immediately before
    the final "For full decision history..." pointer.
 
-6. End your response with exactly:
+7. End your response with exactly:
 
 SESSION_NOTES_CHECKPOINT

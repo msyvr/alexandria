@@ -645,13 +645,16 @@ def search_page(library: dict, all_items: list[dict]) -> str:
     return _page("Search", body, library, all_items, axes_current=None, from_subdir=True)
 
 
-def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dict, all_items: list[dict], item_notes: list[dict] | None = None) -> str:
+def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dict, all_items: list[dict], item_notes: list[dict] | None = None, thumb_filename: str | None = None) -> str:
     """Render a single item page.
 
     `readme_html` is the item's README content rendered to HTML (may be empty).
     `readme_truncated` is True if the content was truncated to the word limit.
     `item_notes` is a list of note dicts from the notes/ directory, each with:
       filename, title, html, is_pdf.
+    `thumb_filename` is the name of an image file in the item's directory to
+      render as a right-justified thumbnail beside the metadata grid; None
+      renders no thumbnail.
     """
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
@@ -692,26 +695,19 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
 
     metadata_block = f'<div class="item-metadata"><dl>{"".join(metadata_rows)}</dl></div>'
 
-    # Thumbnail: use the original for image items, else a `photo` field (physical
-    # items sometimes preserve a cover photo). Wrapped in a flex row with the
-    # metadata grid so the two sit side-by-side; the header-row itself renders
-    # even without a thumbnail, keeping the metadata at 50% width.
-    provenance = item.get("provenance", {}) if isinstance(item.get("provenance"), dict) else {}
-    original_path_field = provenance.get("original_path", "")
-    thumb_src = ""
-    raw_media_type = item.get("media_type", "") or ""
-    if path and status != "removed":
-        if raw_media_type.startswith("image:") and original_path_field:
-            thumb_src = f"../../{path}/{original_path_field}"
-        elif item.get("photo"):
-            thumb_src = f"../../{path}/{escape(item.get('photo'))}"
-    thumb_html = (
-        f'<img class="item-thumb" src="{thumb_src}" alt="{title}">'
-        if thumb_src else ""
-    )
+    # Thumbnail comes from any image file found in the item's directory
+    # (the generator scanned for one and passed it in as `thumb_filename`).
+    # Wrapped with the metadata grid in a flex row so the two sit side-by-side;
+    # the header-row still renders without a thumbnail, keeping metadata at 50%.
+    thumb_html = ""
+    if thumb_filename and path and status != "removed":
+        thumb_src = f"../../{path}/{escape(thumb_filename)}"
+        thumb_html = f'<img class="item-thumb" src="{thumb_src}" alt="{title}">'
     header_row = f'<div class="item-header-row">{metadata_block}{thumb_html}</div>'
 
     # File link for digital items with original files
+    provenance = item.get("provenance", {}) if isinstance(item.get("provenance"), dict) else {}
+    original_path_field = provenance.get("original_path", "")
     file_link = ""
     if form == "digital" and status != "removed" and item.get("book_type") != "scout":
         if original_path_field:

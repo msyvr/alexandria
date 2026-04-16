@@ -286,7 +286,7 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
 }
 
 .item-thumb {
-  width: 30%;
+  width: 40%;
   margin-left: auto;
   height: auto;
   display: block;

@@ -34,6 +34,26 @@ import _wiki_templates as templates
 
 # Configuration
 README_WORD_LIMIT = 2000
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".heic", ".webp", ".gif"}
+
+
+def find_item_thumbnail(library_path: Path, book_path: str) -> str | None:
+    """Return the filename (relative to the item directory) of the first image
+    file found in the item's directory, or None if there are no images.
+
+    Filename match is case-insensitive on the extension; alphabetical order
+    decides when multiple images exist.
+    """
+    if not book_path:
+        return None
+    item_dir = library_path / book_path
+    if not item_dir.is_dir():
+        return None
+    images = [
+        entry.name for entry in item_dir.iterdir()
+        if entry.is_file() and entry.suffix.lower() in IMAGE_EXTENSIONS
+    ]
+    return sorted(images)[0] if images else None
 
 
 def narrative_enrich(book_data: dict) -> dict:
@@ -450,11 +470,16 @@ def generate_wiki(library_path: Path) -> None:
         if status != "removed":
             item_notes = load_item_notes(library_path, book_path, md_renderer)
 
+        # Find an image file in the item directory for the thumbnail (if any)
+        thumb_filename = None
+        if status != "removed":
+            thumb_filename = find_item_thumbnail(library_path, book_path)
+
         # Pass 2 hook (currently a no-op)
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated, library, all_items, item_notes)
+            templates.item_page(item, readme_html, readme_truncated, library, all_items, item_notes, thumb_filename)
         )
 
     n_books = len(all_items)

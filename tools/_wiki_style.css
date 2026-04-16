@@ -47,9 +47,10 @@ header.page-header {
   margin-bottom: 0.6em;
   padding-bottom: 0.4em;
   border-bottom: 1px solid var(--border);
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: baseline;
-  justify-content: space-between;
+  column-gap: 0.6em;
 }
 
 header.page-header h1 {
@@ -69,15 +70,43 @@ header.page-header h1 {
   text-decoration: none;
 }
 
-.header-search {
-  font-size: 0.78em;
-  color: var(--muted);
-  text-decoration: none;
-  font-family: system-ui, -apple-system, sans-serif;
+.header-search-form {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  width: 75%;
+  justify-self: end;
+  margin: 0;
 }
 
-.header-search:hover {
-  color: var(--link);
+.header-search-icon {
+  font-size: 0.9em;
+  color: var(--muted);
+  cursor: text;
+  user-select: none;
+  line-height: 1;
+}
+
+.header-search-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.2em 0.45em;
+  font-family: Georgia, serif;
+  font-size: 0.85em;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--card-bg);
+  color: var(--text);
+  outline: none;
+}
+
+.header-search-form input:focus {
+  border-color: var(--accent);
+}
+
+.header-search-form input::placeholder {
+  color: var(--muted);
+  font-style: italic;
 }
 
 /* Links */

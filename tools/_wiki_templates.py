@@ -41,7 +41,10 @@ def _page(title: str, body: str, css_rel: str = STYLESHEET_REL, stats: str = "",
 <body>
 <header class="page-header">
 <h1>{name_html}</h1>
-<a href="{search_prefix}search/index.html" class="header-search">Search</a>
+<form class="header-search-form" action="{search_prefix}search/index.html" method="get" role="search">
+<label for="header-q" class="header-search-icon" aria-label="Search">&#x1F50D;</label>
+<input id="header-q" type="text" name="q" placeholder="Search…" autocomplete="off">
+</form>
 </header>
 <main>
 {body}

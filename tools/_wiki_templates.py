@@ -126,7 +126,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     False when rendering from the wiki root (homepage).
     """
     axes = [
-        ("by-date", "All by date added"),
+        ("by-date", "All - by date added"),
         ("by-section", "By section"),
         ("by-medium-format", "By medium & format"),
         ("by-topic", "Let the LLM decide"),
@@ -217,7 +217,7 @@ def by_date_index(library: dict, all_items: list[dict]) -> str:
         )
 
     body = ''.join(sections) if sections else '<p>No items to display.</p>'
-    return _page("All by date added", body, library, all_items, axes_current="by-date", from_subdir=True)
+    return _page("All - by date added", body, library, all_items, axes_current="by-date", from_subdir=True)
 
 
 def _format_slug(form: str, fmt: str) -> str:

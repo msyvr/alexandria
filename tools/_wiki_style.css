@@ -445,6 +445,12 @@ h3.journal-headline {
   font-weight: 600;
 }
 
+.journal-entry-compact .journal-headline {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .journal-detail { font-size: 0.88em; line-height: 1.45; }
 .journal-detail strong { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.03em; }
 .journal-detail p { margin: 0.2em 0; }

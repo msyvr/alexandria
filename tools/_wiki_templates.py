@@ -309,7 +309,8 @@ def _journal_entry_html(entry: dict, show_detail: bool = True) -> str:
     timestamp = date + (f" at {time}" if time else "")
     headline = accomplished if accomplished else "Checkpoint"
     detail_block = f'<div class="journal-detail">\n{full_html}\n</div>' if show_detail else ""
-    return f"""<article class="journal-entry">
+    entry_class = "journal-entry" if show_detail else "journal-entry journal-entry-compact"
+    return f"""<article class="{entry_class}">
 <div class="journal-date">{timestamp}</div>
 <h3 class="journal-headline">{headline}</h3>
 {detail_block}

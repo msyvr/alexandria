@@ -224,6 +224,24 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
 .item-content li { margin: 0.15em 0; }
 .item-content p { margin: 0.4em 0; }
 
+.item-content dl.kv-grid {
+  margin: 0.4em 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.1em 0.6em;
+}
+.item-content dl.kv-grid dt {
+  color: var(--muted);
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  align-self: baseline;
+}
+.item-content dl.kv-grid dd {
+  margin: 0;
+  align-self: baseline;
+}
+
 /* User notes (metadata field) */
 
 blockquote.user-notes {

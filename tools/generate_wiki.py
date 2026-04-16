@@ -145,6 +145,37 @@ def truncate_by_words(text: str, limit: int) -> tuple[str, bool]:
     return truncated, True
 
 
+def _convert_kv_lists_to_dl(html: str) -> str:
+    """Convert bullet lists of "**Label**: value" pairs to a <dl> grid.
+
+    Markdown renders `- **Label**: value` as <li><strong>Label</strong>: value</li>.
+    When every <li> in a <ul> matches that shape, rewrite the list as a <dl> so
+    the stylesheet can render it as an aligned label/value grid matching the
+    page's main metadata block. Lists that don't uniformly match are untouched.
+    """
+    import re
+
+    UL_RE = re.compile(r'<ul>\s*(.*?)\s*</ul>', re.DOTALL)
+    LI_RE = re.compile(r'<li>(.*?)</li>', re.DOTALL)
+    KV_RE = re.compile(r'^\s*<strong>(.*?)</strong>\s*:\s*(.*?)\s*$', re.DOTALL)
+
+    def replace_ul(match: "re.Match[str]") -> str:
+        inner = match.group(1)
+        lis = LI_RE.findall(inner)
+        if not lis:
+            return match.group(0)
+        pairs = []
+        for li in lis:
+            kv = KV_RE.match(li)
+            if not kv:
+                return match.group(0)
+            pairs.append((kv.group(1), kv.group(2)))
+        dl_items = "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in pairs)
+        return f'<dl class="kv-grid">{dl_items}</dl>'
+
+    return UL_RE.sub(replace_ul, html)
+
+
 def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bool]:
     """Render README markdown to HTML, truncating to the word limit.
 
@@ -162,6 +193,8 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
 
     # Strip first <p><em>by ...</em></p> (author line duplicates template author)
     html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
+
+    html = _convert_kv_lists_to_dl(html)
 
     return html, was_truncated
 

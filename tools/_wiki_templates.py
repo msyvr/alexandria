@@ -129,7 +129,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
         ("by-date", "All by date added"),
         ("by-section", "By section"),
         ("by-medium-format", "By medium & format"),
-        ("by-topic", "By topic"),
+        ("by-topic", "Let the LLM decide"),
     ]
     prefix = "../" if from_subdir else ""
     links = []
@@ -293,7 +293,7 @@ def topic_placeholder(library: dict, all_items: list[dict]) -> str:
 cross-references between them. It's an optional enhancement — the wiki works fully
 without it.</p>
 """
-    return _page("By topic", body, library, all_items, axes_current="by-topic", from_subdir=True)
+    return _page("Let the LLM decide", body, library, all_items, axes_current="by-topic", from_subdir=True)
 
 
 def _journal_entry_html(entry: dict, show_detail: bool = True) -> str:

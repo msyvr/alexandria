@@ -346,7 +346,7 @@ def generate_wiki(library_path: Path) -> None:
 
     # --- By section ---
     (wiki_dir / "by-section" / "index.html").write_text(
-        templates.by_section_index(library, items_by_section)
+        templates.by_section_index(library, all_items, items_by_section)
     )
     for section, items in items_by_section.items():
         section_slug = slugify_section(section)
@@ -361,7 +361,7 @@ def generate_wiki(library_path: Path) -> None:
             ),
         )
         (wiki_dir / "by-section" / f"{section_slug}.html").write_text(
-            templates.section_page(section, sorted_books, library.get("collection_name", "collection"))
+            templates.section_page(section, sorted_books, library, all_items)
         )
 
     # --- By date ---
@@ -373,7 +373,6 @@ def generate_wiki(library_path: Path) -> None:
     (wiki_dir / "by-medium-format" / "index.html").write_text(
         templates.by_medium_format_index(library, all_items)
     )
-    collection_name = library.get("collection_name", "collection")
     form_fmt_groups: dict[tuple[str, str], list[dict]] = {}
     for item in all_items:
         form = item.get("form", "digital")
@@ -390,12 +389,12 @@ def generate_wiki(library_path: Path) -> None:
         )
         slug = templates._format_slug(form, fmt)
         (wiki_dir / "by-medium-format" / f"{slug}.html").write_text(
-            templates.format_page(form, fmt, sorted_items, collection_name)
+            templates.format_page(form, fmt, sorted_items, library, all_items)
         )
 
     # --- By topic (Pass 2 placeholder) ---
     (wiki_dir / "by-topic" / "index.html").write_text(
-        templates.topic_placeholder(library)
+        templates.topic_placeholder(library, all_items)
     )
 
     # --- Search page ---
@@ -407,7 +406,7 @@ def generate_wiki(library_path: Path) -> None:
     (wiki_dir / "collection-journal").mkdir(exist_ok=True)
     journal_entries = parse_collection_context(library_path, md_renderer)
     (wiki_dir / "collection-journal" / "index.html").write_text(
-        templates.collection_journal(library, journal_entries)
+        templates.collection_journal(library, all_items, journal_entries)
     )
 
     # --- Individual item pages ---
@@ -439,7 +438,7 @@ def generate_wiki(library_path: Path) -> None:
         narrative_enrich(item)
 
         (wiki_dir / "items" / f"{slug}.html").write_text(
-            templates.item_page(item, readme_html, readme_truncated, item_notes, library.get("collection_name", "collection"))
+            templates.item_page(item, readme_html, readme_truncated, library, all_items, item_notes)
         )
 
     n_books = len(all_items)

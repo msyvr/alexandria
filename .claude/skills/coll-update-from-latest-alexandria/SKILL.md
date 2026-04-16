@@ -18,29 +18,65 @@ Then start Claude Code from the alexandria repo and run this skill.
 
 ## The workflow
 
-1. **Find and offer known collections.** Before asking for a path, scan for
-   directories containing `.collection-index.yaml` in likely locations:
+1. **Check for a stored default collection.** Read
+   `.claude/state/default-collection` (relative to the alexandria repo
+   root). If the file exists and the path it contains still has a
+   `.collection-index.yaml`, treat it as the current default; read its
+   `collection_name` from that index file. If the file is missing or
+   the path is no longer valid, there is no default.
+
+2. **Offer the default first (if one exists).** This avoids the scan
+   latency when the user wants what they had last time:
+
+   > Default collection: **{name}** at `{path}`. Use this? [Y/n]
+
+   - If the user accepts (yes / Y / empty): skip to step 4.
+   - If the user declines: continue to step 3. Do NOT delete the
+     stored default yet — it will be reassigned by the scan if
+     appropriate.
+
+3. **Scan for collections and reassign the default.** Look for
+   directories containing `.collection-index.yaml` in:
    - `~/` (direct children only — e.g., `~/my-collection`)
    - `~/Documents/` (direct children)
    - The parent directory of the current project (siblings of the repo)
 
    For each found, read the `collection_name` from the index file.
 
-   If collections are found, present them as numbered options plus a manual
-   entry option:
+   **Reassign the stored default** based on the scan results, writing the
+   new value to `.claude/state/default-collection` (create the directory
+   if needed, overwrite the file if present):
+
+   - If any found collection's path is different from the current stored
+     default, the first such "different" collection becomes the new
+     default.
+   - Otherwise, if there is no stored default and the scan found at least
+     one collection, the first found becomes the default.
+   - Otherwise, the stored default is unchanged.
+
+   The default is reassigned even if the user just declined it in step 2.
+   That is intentional: the old default still appears in the list below,
+   so picking it is a single keystroke (forgiveness for accidental
+   rejection), and the new default gives the user a fresh option on the
+   next invocation without forcing the scan.
+
+   **Present the numbered list** of all found collections plus a manual
+   entry option, in discovery order (the old default is shown if it was
+   found, because it remains easy to pick):
 
    > Found these collections:
    > 1. my-collection (~/my-collection)
    > 2. work-references (~/Documents/work-references)
    > 3. Enter a different path
 
-   If no collections are found, ask for the path directly.
+   If no collections are found and no default exists, ask for the path
+   directly.
 
-2. **Verify the collection.** Whether selected from the list or entered
-   manually, check that the path contains a `.collection-index.yaml`. If
-   not, explain and ask again.
+4. **Verify the collection.** Whether accepted as the default, selected
+   from the list, or entered manually, check that the path contains a
+   `.collection-index.yaml`. If not, explain and ask again.
 
-3. **Run the update script.** Execute the repo's bundled update script,
+5. **Run the update script.** Execute the repo's bundled update script,
    passing the verified collection path as its single argument. Do NOT
    inline the individual copy/sync/regen steps — always call the script:
 
@@ -59,13 +95,13 @@ Then start Claude Code from the alexandria repo and run this skill.
    do not attempt to repair the update by running the individual commands
    by hand.
 
-4. **Report what was updated:**
+6. **Report what was updated:**
    - Skills: list directories copied (note any new ones)
    - Tools: updated (generator, templates, stylesheet)
    - Dependencies: synced
    - Wiki: regenerated with latest styling and templates
 
-5. **Offer a one-time permission pin (do NOT silent-write).** After a
+7. **Offer a one-time permission pin (do NOT silent-write).** After a
    successful update, optionally offer to pin this exact script in the
    alexandria repo's local settings so future runs skip the approval prompt.
 
@@ -107,7 +143,7 @@ Then start Claude Code from the alexandria repo and run this skill.
    - Never merge in permissions unrelated to this skill.
    - Never perform the merge without an explicit "yes" in the current turn.
 
-6. **Remind the user.** Updated skills take effect in the next Claude Code
+8. **Remind the user.** Updated skills take effect in the next Claude Code
    session from the collection directory:
 
    > Collection at `{path}` updated:

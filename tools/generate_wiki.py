@@ -320,6 +320,7 @@ def generate_wiki(library_path: Path) -> None:
         "items",
         "by-section",
         "all",
+        "by-author",
         "by-medium-format",
         "by-topic",
         "search",
@@ -367,6 +368,11 @@ def generate_wiki(library_path: Path) -> None:
     # --- All ---
     (wiki_dir / "all" / "index.html").write_text(
         templates.all_index(library, all_items)
+    )
+
+    # --- By author/artist ---
+    (wiki_dir / "by-author" / "index.html").write_text(
+        templates.by_author_index(library, all_items)
     )
 
     # --- By medium & format ---

@@ -128,11 +128,15 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
 
     description_line = f'<p class="description">{description}</p>' if show_description else ""
 
-    # Data attributes power client-side sorting on the All view. Harmless elsewhere.
-    # data-author uses last name of the first author so sorting matches catalog convention.
+    # Data attributes power client-side sort (All view) and filter (By
+    # author/artist view). Harmless on other views.
+    #   data-author      — sort key: last name of the first author
+    #   data-author-full — match target for the author filter (full string, lowercased)
+    author_raw = (author or "").lower()
     data_attrs = (
         f' data-date="{date_added}"'
-        f' data-author="{_author_sort_key(author)}"'
+        f' data-author="{escape(_author_sort_key(author))}"'
+        f' data-author-full="{escape(author_raw)}"'
         f' data-title="{title.lower()}"'
     )
 
@@ -154,6 +158,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     axes = [
         ("all", "All"),
         ("by-section", "By section"),
+        ("by-author", "By author/artist"),
         ("by-medium-format", "By medium & format"),
         ("by-topic", "Let the LLM decide"),
     ]
@@ -278,6 +283,55 @@ def all_index(library: dict, all_items: list[dict]) -> str:
 {sort_script}
 """
     return _page("All", body, library, all_items, axes_current="all", from_subdir=True)
+
+
+def by_author_index(library: dict, all_items: list[dict]) -> str:
+    """Render the By author/artist view: items sorted by author last name,
+    with a live filter input at the top."""
+    active = [b for b in all_items if b.get("status", "active") != "removed"]
+    # Items without an author sort to the very end via the \uffff sentinel;
+    # secondary sort is by title within the same last-name key.
+    sorted_items = sorted(
+        active,
+        key=lambda b: (
+            _author_sort_key(b.get("author")) or "\uffff",
+            b.get("title", "").lower(),
+        ),
+    )
+    cards = "\n".join(
+        _item_card(b, f"../items/{b['slug']}.html", show_description=False)
+        for b in sorted_items
+    )
+    listing = cards if cards else "<p>No items to display.</p>"
+
+    filter_script = """<script>
+(function() {
+  var input = document.getElementById('author-filter-input');
+  var container = document.getElementById('by-author-listing');
+  if (!input || !container) return;
+  var cards = container.querySelectorAll('.item-card');
+  input.addEventListener('input', function() {
+    var q = input.value.trim().toLowerCase();
+    cards.forEach(function(el) {
+      if (!q) { el.style.display = ''; return; }
+      var name = el.dataset.authorFull || '';
+      el.style.display = (name.indexOf(q) !== -1) ? '' : 'none';
+    });
+  });
+})();
+</script>"""
+
+    body = f"""<form class="search-form" role="search" onsubmit="return false;">
+<input type="text" id="author-filter-input" placeholder="Filter by author/artist — type to narrow, clear to see all" autocomplete="off">
+</form>
+
+<div id="by-author-listing" class="index-grid">
+{listing}
+</div>
+
+{filter_script}
+"""
+    return _page("By author/artist", body, library, all_items, axes_current="by-author", from_subdir=True)
 
 
 def _format_slug(form: str, fmt: str) -> str:

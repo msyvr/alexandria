@@ -272,6 +272,27 @@ th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: u
 .item-metadata dd a { color: var(--text); }
 .item-metadata dd a:hover { color: var(--link); }
 
+/* Header row: metadata grid left-half, optional thumbnail right-justified */
+
+.item-header-row {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.5em 0;
+}
+
+.item-header-row .item-metadata {
+  flex: 0 0 50%;
+  margin: 0;
+}
+
+.item-thumb {
+  width: 30%;
+  margin-left: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 /* File link */
 
 .file-link {

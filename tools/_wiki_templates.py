@@ -692,12 +692,28 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
 
     metadata_block = f'<div class="item-metadata"><dl>{"".join(metadata_rows)}</dl></div>'
 
+    # Thumbnail: use the original for image items, else a `photo` field (physical
+    # items sometimes preserve a cover photo). Wrapped in a flex row with the
+    # metadata grid so the two sit side-by-side; the header-row itself renders
+    # even without a thumbnail, keeping the metadata at 50% width.
+    provenance = item.get("provenance", {}) if isinstance(item.get("provenance"), dict) else {}
+    original_path_field = provenance.get("original_path", "")
+    thumb_src = ""
+    raw_media_type = item.get("media_type", "") or ""
+    if path and status != "removed":
+        if raw_media_type.startswith("image:") and original_path_field:
+            thumb_src = f"../../{path}/{original_path_field}"
+        elif item.get("photo"):
+            thumb_src = f"../../{path}/{escape(item.get('photo'))}"
+    thumb_html = (
+        f'<img class="item-thumb" src="{thumb_src}" alt="{title}">'
+        if thumb_src else ""
+    )
+    header_row = f'<div class="item-header-row">{metadata_block}{thumb_html}</div>'
+
     # File link for digital items with original files
     file_link = ""
     if form == "digital" and status != "removed" and item.get("book_type") != "scout":
-        # Check common original file extensions
-        provenance = item.get("provenance", {}) if isinstance(item.get("provenance"), dict) else {}
-        original_path_field = provenance.get("original_path", "")
         if original_path_field:
             file_link = f'<p class="file-link">Open <a href="../../{path}/{original_path_field}">{escape(original_path_field)}</a> from the <a href="../../{path}/">item directory</a></p>'
         else:
@@ -765,7 +781,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 
 {user_notes_html}
 
-{metadata_block}
+{header_row}
 
 {file_link}
 

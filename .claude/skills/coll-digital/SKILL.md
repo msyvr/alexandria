@@ -137,11 +137,20 @@ uniqueness; suffix with `-2`, `-3` if needed.
 
 **Create the item directory** at `{library}/{section}/{slug}/`.
 
-**Copy or save the content**:
-- Local files: copy as `original.{ext}` preserving the original bytes
-- URL-fetched HTML: save as `original.html`
-- URL-fetched PDFs: save as `original.pdf`
-- Pasted text: save as `original.txt`
+**Copy or save the content** using the filename convention
+`{slug}-{original-stem}.{ext}` — the item slug, a hyphen, the original filename
+stem (basename without extension), then a dot and the original extension preserved
+with its original case. The original bytes are preserved exactly.
+
+- Local files: e.g., `Oxford_canal_boat_church_20200701.JPEG` imported for an item
+  titled "Oxford canal boat & church" becomes
+  `oxford-canal-boat-church-Oxford_canal_boat_church_20200701.JPEG`
+- URL-fetched content: use the URL's basename stem when present, otherwise fall back
+  to the slug alone. Extensions by content type:
+  - HTML → `.html` (e.g., `my-item.html` or `my-item-<url-stem>.html`)
+  - PDF → `.pdf`
+  - Other → extension from the response content type
+- Pasted text: `{slug}.txt`
 
 The original is preserved exactly as received. Alexandria does not modify the source.
 
@@ -152,7 +161,7 @@ The original is preserved exactly as received. Alexandria does not modify the so
 - `content.md` — **only** for HTML sources: a one-time markdown extraction via html2text.
   Not regenerated automatically. User hand-edits persist across re-runs. Not created
   for PDF, plain text, markdown, or other formats.
-- `original.{ext}` — the preserved source
+- `{slug}-{original-stem}.{ext}` — the preserved source (see naming convention above)
 
 **PDFs are preserved as-is with no `content.md`.** The README links to `original.pdf`
 and tells the user to open it in their PDF viewer. Full-text extraction is intentionally
@@ -187,7 +196,7 @@ provenance:
   notes: "{user-provided context, or omit}"
   imported_from: "local-file"         # local-file, url, or pasted-text
   fetched_at: "2026-04-10T14:23:00Z"  # only for url source
-  original_path: "original.pdf"
+  original_path: "{slug}-{original-stem}.{ext}"  # e.g., "oxford-canal-boat-church-Oxford_canal_boat_church_20200701.JPEG"
   extracted_path: "content.md"        # only if HTML extraction was created
 ```
 

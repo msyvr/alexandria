@@ -644,6 +644,13 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 {''.join(note_blocks)}
 </div>"""
 
+    metadata_link = ""
+    if status != "removed" and path:
+        metadata_link = (
+            f'<p class="file-link">Open <a href="../../{path}/metadata.yaml">metadata.yaml</a> '
+            f'from the <a href="../../{path}/">item directory</a></p>'
+        )
+
     body = f"""{description_html}
 
 {user_notes_html}
@@ -655,6 +662,8 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 {content_block}
 
 {notes_section}
+
+{metadata_link}
 
 <p><a href="../index.html">← Back</a></p>
 """

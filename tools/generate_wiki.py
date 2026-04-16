@@ -194,6 +194,14 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
     # Strip first <p><em>by ...</em></p> (author line duplicates template author)
     html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
 
+    # Strip the trailing "See `metadata.yaml` ..." paragraph — the wiki template
+    # renders a styled metadata link near the bottom of the page instead.
+    html = re.sub(
+        r'<p>See\s*<code>metadata\.yaml</code>\s*for the full catalog entry\.?</p>\n?',
+        '',
+        html,
+    )
+
     html = _convert_kv_lists_to_dl(html)
 
     return html, was_truncated

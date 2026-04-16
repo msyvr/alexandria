@@ -771,7 +771,19 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
             f'from the <a href="../../{path}/">item directory</a></p>'
         )
 
-    body = f"""<p><a href="../index.html" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
+    body = f"""<p><a href="../index.html" id="item-back" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
+<script>
+(function() {{
+  var link = document.getElementById('item-back');
+  if (!link) return;
+  var ref = document.referrer || '';
+  if (ref.indexOf('/by-author/') !== -1) {{
+    link.href = '../by-author/index.html';
+    link.textContent = '← All authors/artists';
+    link.onclick = null;
+  }}
+}})();
+</script>
 
 {description_html}
 

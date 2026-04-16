@@ -55,7 +55,7 @@ def _page(title: str, body: str, css_rel: str = STYLESHEET_REL, stats: str = "",
 """
 
 
-def _item_card(item: dict, item_page_rel: str) -> str:
+def _item_card(item: dict, item_page_rel: str, show_description: bool = True) -> str:
     """Render a single item as a card for an index page."""
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
@@ -74,10 +74,12 @@ def _item_card(item: dict, item_page_rel: str) -> str:
     removed_class = " removed" if status == "removed" else ""
     removed_tag = '<span class="removed-tag">removed</span>' if status == "removed" else ""
 
+    description_line = f'<p class="description">{description}</p>' if show_description else ""
+
     return f"""<article class="item-card{removed_class}">
 <h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>
 {author_line}
-<p class="description">{description}</p>
+{description_line}
 <div class="detail">{detail}</div>
 </article>"""
 
@@ -205,7 +207,7 @@ def by_date_index(library: dict, all_items: list[dict]) -> str:
     sections = []
     for group_key in sorted(groups.keys(), reverse=True):
         items = sorted(groups[group_key], key=lambda b: b.get("date_added", ""), reverse=True)
-        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
+        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
         label = escape(group_key) if group_key != "unknown" else "Date unknown"
         sections.append(
             f'<div class="section-group"><h2>{label}</h2><div class="index-grid">\n{cards}\n</div></div>'
@@ -228,7 +230,7 @@ def by_type_index(library: dict, all_items: list[dict]) -> str:
     sections = []
     for type_name in sorted(groups.keys()):
         items = sorted(groups[type_name], key=lambda b: b.get("title", "").lower())
-        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
+        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
         count = len([b for b in items if b.get("status", "active") != "removed"])
         sections.append(
             f'<div class="section-group"><h2>{escape(type_name)} <small>({count})</small></h2>'
@@ -267,7 +269,7 @@ def by_media_type_index(library: dict, all_items: list[dict]) -> str:
         format_sections = []
         for fmt in sorted(format_groups.keys()):
             items = sorted(format_groups[fmt], key=lambda b: b.get("title", "").lower())
-            cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
+            cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html", show_description=False) for b in items)
             active_count = len([b for b in items if b.get("status", "active") != "removed"])
             if active_count == 0:
                 continue

@@ -178,6 +178,8 @@ article.item-card {
   display: flex;
   align-items: flex-start;
   gap: 0.8em;
+  container-type: inline-size;
+  min-height: 12cqw;
 }
 
 article.item-card:last-child { border-bottom: none; }

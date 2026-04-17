@@ -185,7 +185,7 @@ article.item-card {
 article.item-card:last-child { border-bottom: none; }
 
 .item-card-left {
-  flex: 1 1 auto;
+  flex: 0 0 85%;
   min-width: 0;
 }
 

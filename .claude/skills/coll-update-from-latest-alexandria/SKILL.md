@@ -18,14 +18,23 @@ Then start Claude Code from the alexandria repo and run this skill.
 
 ## The workflow
 
-1. **Check for a stored default collection.** Read
-   `.claude/state/default-collection` (relative to the alexandria repo
-   root). If the file exists and the path it contains still has a
-   `.collection-index.yaml`, treat it as the current default; read its
-   `collection_name` from that index file. If the file is missing or
-   the path is no longer valid, there is no default. **Skip step 2 if
-   there is no default — do not prompt the user about "choosing a
-   default".**
+1. **Check for a stored default collection.** Run the helper script —
+   it does the state-file read, path check, and `collection_name`
+   lookup in one shot:
+
+   ```
+   bash scripts/get_default_collection.sh
+   ```
+
+   - **Exit 0**: stdout is two lines — line 1 is the collection path,
+     line 2 is the `collection_name`. Use those values as the current
+     default and continue to step 2.
+   - **Exit 1/2/3**: no valid stored default. **Skip step 2 — do not
+     prompt the user about "choosing a default"** — and go to step 3.
+
+   (The fallback of reading `.claude/state/default-collection` directly
+   still works if the helper script isn't available; the skill may do
+   that instead when the script is missing.)
 
 2. **Offer the stored default first (only if one exists).** This avoids
    the scan latency when the user wants what they had last time:
@@ -115,33 +124,50 @@ Then start Claude Code from the alexandria repo and run this skill.
    - Wiki: regenerated with latest styling and templates
 
 7. **Offer a one-time permission pin (do NOT silent-write).** After a
-   successful update, optionally offer to pin this exact script in the
-   alexandria repo's local settings so future runs skip the approval prompt.
+   successful update, optionally offer to pin the two exact scripts this
+   skill uses in the alexandria repo's local settings so future runs
+   skip the approval prompts.
+
+   The two scripts are:
+   - `scripts/update_collection.sh` — the main update (copies skills,
+     tools, deps; runs uv sync; regenerates the wiki)
+   - `scripts/get_default_collection.sh` — read-only helper that returns
+     the stored default collection path and name
 
    Process:
 
-   a. Read `.claude/settings.local.json` at the alexandria repo root. If it
-      does not exist, treat it as an empty object.
-   b. Check whether `permissions.allow` already contains the string
-      `"Bash(bash scripts/update_collection.sh:*)"`. If present, skip this
-      whole step silently — do not mention it.
-   c. If absent, show the user the exact JSON that would be merged in:
+   a. Read `.claude/settings.local.json` at the alexandria repo root. If
+      it does not exist, treat it as an empty object.
+   b. Determine which of the two exact rules are missing from
+      `permissions.allow`:
+      - `"Bash(bash scripts/update_collection.sh:*)"`
+      - `"Bash(bash scripts/get_default_collection.sh:*)"`
+
+      If both are already present, skip this whole step silently — do
+      not mention it.
+   c. If one or both are absent, show the user the exact JSON that would
+      be merged in (include only the missing rules):
 
       ```json
       {
         "permissions": {
-          "allow": ["Bash(bash scripts/update_collection.sh:*)"]
+          "allow": [
+            "Bash(bash scripts/update_collection.sh:*)",
+            "Bash(bash scripts/get_default_collection.sh:*)"
+          ]
         }
       }
       ```
 
       Then say, verbatim or close to it:
 
-      > This pins ONLY this exact script, scoped to the alexandria repo's
-      > local settings. It lets future `/coll-update-from-latest-alexandria`
-      > runs skip the approval prompt for the update command. Add it? (y/n)
+      > This pins ONLY these two exact scripts, scoped to the alexandria
+      > repo's local settings. It lets future
+      > `/coll-update-from-latest-alexandria` runs skip the approval
+      > prompts for reading the stored default and running the update.
+      > Add them? (y/n)
 
-   d. If the user says yes: merge the entry into
+   d. If the user says yes: merge the missing entries into
       `.claude/settings.local.json` (do not overwrite unrelated keys or
       existing allow rules — append to the `allow` array, create
       `permissions.allow` only if missing).
@@ -150,8 +176,8 @@ Then start Claude Code from the alexandria repo and run this skill.
       is intentional — we keep no hidden state.
 
    **Hard constraints — do not violate these even if asked:**
-   - Never pin any command broader than
-     `Bash(bash scripts/update_collection.sh:*)`.
+   - Never pin any command broader than the two exact strings listed
+     above.
    - Never write to `~/.claude/settings.json` (user-global settings).
    - Never merge in permissions unrelated to this skill.
    - Never perform the merge without an explicit "yes" in the current turn.

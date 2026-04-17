@@ -355,9 +355,16 @@ h1.item-title {
   margin: 0;
 }
 
-.item-thumb {
+.item-thumb-link {
   width: 60%;
   margin-left: auto;
+  display: block;
+  line-height: 0;
+}
+.item-thumb-link:hover { text-decoration: none; }
+
+.item-thumb {
+  width: 100%;
   height: auto;
   display: block;
   object-fit: contain;

@@ -742,7 +742,12 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
     thumb_html = ""
     if thumb_filename and path and status != "removed":
         thumb_src = f"../../{path}/{escape(thumb_filename)}"
-        thumb_html = f'<img class="item-thumb" src="{thumb_src}" alt="{title}">'
+        thumb_html = (
+            f'<a class="item-thumb-link" href="{thumb_src}" '
+            f'target="_blank" rel="noopener noreferrer">'
+            f'<img class="item-thumb" src="{thumb_src}" alt="{title}">'
+            f'</a>'
+        )
     header_row = f'<div class="item-header-row">{metadata_block}{thumb_html}</div>'
 
     # File link for digital items with original files

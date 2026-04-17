@@ -409,6 +409,17 @@ def generate_wiki(library_path: Path) -> None:
             templates.section_page(section, sorted_books, library, all_items)
         )
 
+    # Major-section pages (one per unique major_section value)
+    major_groups: dict[str, list[dict]] = {}
+    for item in all_items:
+        major = item.get("major_section") or "Etc"
+        major_groups.setdefault(major, []).append(item)
+    for major, items in major_groups.items():
+        major_slug = major.replace("/", "-").replace(" ", "-").lower()
+        (wiki_dir / "by-section" / f"{major_slug}.html").write_text(
+            templates.major_section_page(major, items, library, all_items)
+        )
+
     # --- All ---
     (wiki_dir / "all" / "index.html").write_text(
         templates.all_index(library, all_items)
@@ -440,6 +451,16 @@ def generate_wiki(library_path: Path) -> None:
         slug = templates._format_slug(form, fmt)
         (wiki_dir / "by-medium-format" / f"{slug}.html").write_text(
             templates.format_page(form, fmt, sorted_items, library, all_items)
+        )
+
+    # Form-level pages (all items of a form — physical / digital)
+    form_groups_all: dict[str, list[dict]] = {}
+    for item in all_items:
+        form_all = item.get("form", "digital")
+        form_groups_all.setdefault(form_all, []).append(item)
+    for form_all, items in form_groups_all.items():
+        (wiki_dir / "by-medium-format" / f"{form_all}.html").write_text(
+            templates.form_page_all(form_all, items, library, all_items)
         )
 
     # --- By topic (Pass 2 placeholder) ---

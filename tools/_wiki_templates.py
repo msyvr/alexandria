@@ -239,8 +239,10 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
             for name, slug, count in rows_data
         )
         table = f'<table><tbody>{rows}</tbody></table>'
+        major_slug = major.replace("/", "-").replace(" ", "-").lower()
         blocks.append(
-            f'<div class="section-group"><h2 class="major-heading">{escape(major)} '
+            f'<div class="section-group"><h2 class="major-heading">'
+            f'<a href="{major_slug}.html">{escape(major)}</a> '
             f'<small>({group_total})</small></h2>\n{table}</div>'
         )
 
@@ -261,6 +263,30 @@ def section_page(section: str, items: list[dict], library: dict, all_items: list
 {body_main}
 """
     return _page(f"Section: {section}", body, library, all_items, axes_current="by-section", from_subdir=True)
+
+
+def major_section_page(major: str, items: list[dict], library: dict, all_items: list[dict]) -> str:
+    """Render a single major-section page: every item in that major group,
+    regardless of which subsection it belongs to."""
+    sorted_items = sorted(
+        items,
+        key=lambda b: (
+            b.get("status", "active") == "removed",
+            b.get("section", "").lower(),
+            b.get("title", "").lower(),
+        ),
+    )
+    if not sorted_items:
+        body_main = '<p>No items in this group yet.</p>'
+    else:
+        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in sorted_items)
+        body_main = f'<div class="index-grid">\n{cards}\n</div>'
+
+    body = f"""<p><a href="index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
+
+{body_main}
+"""
+    return _page(major, body, library, all_items, axes_current="by-section", from_subdir=True)
 
 
 def all_index(library: dict, all_items: list[dict]) -> str:
@@ -407,7 +433,8 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
             continue
         table = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
         sections.append(
-            f'<div class="section-group"><h2 class="major-heading">{escape(form.capitalize())} '
+            f'<div class="section-group"><h2 class="major-heading">'
+            f'<a href="{form}.html">{escape(form.capitalize())}</a> '
             f'<small>({active_total})</small></h2>\n{table}</div>'
         )
 
@@ -429,6 +456,29 @@ def format_page(form: str, fmt: str, items: list[dict], library: dict, all_items
 """
     title = f"{form.capitalize()}: {fmt}"
     return _page(title, body, library, all_items, axes_current="by-medium-format", from_subdir=True)
+
+
+def form_page_all(form: str, items: list[dict], library: dict, all_items: list[dict]) -> str:
+    """Render a single form page: every item in that form across all formats."""
+    sorted_items = sorted(
+        items,
+        key=lambda b: (
+            b.get("status", "active") == "removed",
+            b.get("media_type", "").lower(),
+            b.get("title", "").lower(),
+        ),
+    )
+    if not sorted_items:
+        body_main = f'<p>No {form} items yet.</p>'
+    else:
+        cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in sorted_items)
+        body_main = f'<div class="index-grid">\n{cards}\n</div>'
+
+    body = f"""<p><a href="index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
+
+{body_main}
+"""
+    return _page(form.capitalize(), body, library, all_items, axes_current="by-medium-format", from_subdir=True)
 
 
 def topic_placeholder(library: dict, all_items: list[dict]) -> str:

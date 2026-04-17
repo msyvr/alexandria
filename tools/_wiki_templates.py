@@ -192,17 +192,82 @@ def homepage(library: dict, all_items: list[dict]) -> str:
     return _page(collection_name, body, library, all_items, axes_current=None, from_subdir=False)
 
 
+# Heuristic mapping of section names to major groups, used only by the
+# By section index page. A concept test: sections not matching a keyword
+# fall into "Other". When a real grouping need emerges we can promote this
+# to a per-collection config (e.g., a `section_groups` field in the index
+# yaml) instead of a hardcoded map.
+_SECTION_GROUPS: dict[str, str] = {
+    # Reading (written works)
+    "fiction": "Reading",
+    "nonfiction": "Reading",
+    "non-fiction": "Reading",
+    "books": "Reading",
+    "papers": "Reading",
+    "essays": "Reading",
+    "poetry": "Reading",
+    "reference": "Reading",
+    "technical": "Reading",
+    "textbooks": "Reading",
+    "magazines": "Reading",
+    # Media (photos, art, audio, video)
+    "photographs": "Media",
+    "photos": "Media",
+    "images": "Media",
+    "art": "Media",
+    "audio": "Media",
+    "music": "Media",
+    "video": "Media",
+    "videos": "Media",
+    # Personal (journals, correspondence, travel)
+    "journal": "Personal",
+    "journals": "Personal",
+    "diaries": "Personal",
+    "letters": "Personal",
+    "correspondence": "Personal",
+    "travel": "Personal",
+    "notes": "Personal",
+    "personal": "Personal",
+}
+_SECTION_GROUP_ORDER = ["Reading", "Media", "Personal", "Other"]
+
+
+def _section_group(section: str) -> str:
+    return _SECTION_GROUPS.get(section.lower(), "Other")
+
+
 def by_section_index(library: dict, all_items: list[dict], items_by_section: dict[str, list[dict]]) -> str:
-    """Render the by-section index: list of sections with counts."""
-    rows = []
+    """Render the By section index grouped by major category (Reading, Media,
+    Personal, Other). Same two-level visual pattern as By medium & format."""
+    # Group sections by their major category
+    grouped: dict[str, list[tuple[str, str, int]]] = {}
     for section in sorted(items_by_section.keys()):
-        items = [b for b in items_by_section[section] if b.get("status", "active") != "removed"]
-        count = len(items)
+        active_items = [b for b in items_by_section[section] if b.get("status", "active") != "removed"]
+        count = len(active_items)
+        if count == 0:
+            continue
         section_slug = section.replace("/", "-").replace(" ", "-").lower()
-        rows.append(
-            f'<tr><td><a href="{section_slug}.html">{escape(section)}</a> ({count})</td></tr>'
+        group = _section_group(section)
+        grouped.setdefault(group, []).append((section, section_slug, count))
+
+    # Render each group as a heading with small total + a table of sections
+    blocks = []
+    for group_name in _SECTION_GROUP_ORDER:
+        rows_data = grouped.get(group_name, [])
+        if not rows_data:
+            continue
+        group_total = sum(c for _, _, c in rows_data)
+        rows = "\n".join(
+            f'<tr><td><a href="{slug}.html">{escape(name)}</a> ({count})</td></tr>'
+            for name, slug, count in rows_data
         )
-    body = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
+        table = f'<table><tbody>{rows}</tbody></table>'
+        blocks.append(
+            f'<div class="section-group"><h2>{escape(group_name)} '
+            f'<small>({group_total})</small></h2>\n{table}</div>'
+        )
+
+    body = "".join(blocks) if blocks else '<p>No sections to display.</p>'
     return _page("By section", body, library, all_items, axes_current="by-section", from_subdir=True)
 
 

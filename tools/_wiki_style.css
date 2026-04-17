@@ -281,6 +281,11 @@ article.item-card .removed-tag {
 .section-group { margin: 1.2em 0; }
 .section-group h2 { margin-top: 0.3em; }
 
+/* Extra breathing room after each major group on By section / By m&f.
+   :has() scopes this to groups led by a major-heading h2 so journal
+   month groups are unaffected. */
+.section-group:has(> h2.major-heading) { margin-bottom: 2.2em; }
+
 h2.major-heading {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1.05em;

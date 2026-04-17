@@ -225,7 +225,7 @@ article.item-card:last-child {
 img.item-card-thumb {
   display: block;
   width: 12cqw;
-  max-height: 12cqw;
+  height: 12cqw;
   object-fit: cover;
   object-position: center;
   margin-left: auto;
@@ -254,7 +254,7 @@ article.item-card h3 a:hover {
 article.item-card .meta {
   font-size: 0.85em;
   color: var(--muted);
-  margin: 0.1em 0 0 0;
+  margin: 0 0 0 0;
 }
 
 article.item-card .description {

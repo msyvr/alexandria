@@ -331,9 +331,9 @@ def all_index(library: dict, all_items: list[dict]) -> str:
     sort_control = """<div class="sort-control">
 <label for="sort-field">Sort by</label>
 <select id="sort-field">
-<option value="date" selected>Date added</option>
-<option value="acquired">Date acquired</option>
 <option value="author">Author / artist</option>
+<option value="acquired">Date acquired</option>
+<option value="date" selected>Date added</option>
 <option value="title">Title</option>
 </select>
 <select id="sort-dir">

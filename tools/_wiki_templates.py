@@ -70,10 +70,8 @@ def _page(title: str, body: str, library: dict, all_items: list[dict],
     css_rel = ("../" if from_subdir else "") + STYLESHEET_REL
     search_prefix = "../" if from_subdir else ""
     display_name = escape(collection_name)
-    if from_subdir:
-        name_html = f'<a href="../index.html" class="header-home">{display_name}</a>'
-    else:
-        name_html = display_name
+    home_href = "../index.html" if from_subdir else "index.html"
+    name_html = f'<a href="{home_href}" class="header-home">{display_name}</a>'
     axes_nav_html = _axes_nav(current=axes_current, from_subdir=from_subdir)
     stats = _stats_html(library, all_items, from_subdir=from_subdir)
     return f"""<!DOCTYPE html>

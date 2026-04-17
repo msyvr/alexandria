@@ -66,12 +66,12 @@ header.page-header h1 {
 }
 
 .header-home {
-  color: var(--text);
+  color: var(--link);
   text-decoration: none;
 }
 
 .header-home:hover {
-  color: var(--link);
+  color: var(--link-hover);
   text-decoration: none;
 }
 
@@ -198,12 +198,12 @@ article.item-card .removed-tag {
   border-bottom: 1px solid transparent;
   font-size: 0.82em;
   font-family: system-ui, -apple-system, sans-serif;
-  color: var(--muted);
+  color: var(--link);
 }
 
 .axes-nav a:hover {
-  color: var(--link);
-  border-bottom-color: var(--link);
+  color: var(--link-hover);
+  border-bottom-color: var(--link-hover);
   text-decoration: none;
 }
 

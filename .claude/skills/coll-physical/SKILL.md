@@ -110,10 +110,16 @@ from open book databases.
 
 For each confirmed (and possibly enriched) item:
 
-**Propose a section**. Base the proposal on existing collection sections, the item's
-subject if known from enrichment, and recent placements of similar items. If the batch
-came from a single shelf photo, propose one section as the shelf-level default and let
-the user accept it or override per item. If the user wants a new section, create it.
+**Propose a major section and section**. Major section is the top-level grouping on
+the By section wiki view (`Books`, `Research papers`, `Visual`, `Audio`, `Personal`,
+`Etc` — user can supply a custom name). Section is the specific subsection (e.g.,
+`fiction`, `photographs`). The same subsection name can live under different majors,
+so both must be captured.
+
+Base the proposals on existing collection sections, the item's subject if known from
+enrichment, and recent placements of similar items. If the batch came from a single
+shelf photo, propose one major + section as the shelf-level default and let the user
+accept it or override per item. If the user wants a new section, create it.
 
 **Generate a slug** from the title per the rules in docs/coll/book-shape.md
 (lowercase, non-alphanumeric to hyphens, truncate to ~50 chars). Check uniqueness
@@ -145,6 +151,7 @@ any notable user preferences observed (e.g., "user prefers no online enrichment"
 slug: "{generated-slug}"
 title: "{confirmed title}"
 book_type: "physical"
+major_section: "{selected major section}"
 section: "{selected section}"
 description: "{generated from available fields — see below}"
 date_added: "{today's date, YYYY-MM-DD}"

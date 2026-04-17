@@ -122,7 +122,15 @@ an item or paper) doesn't get enrichment; the source URL is its provenance.
 
 ### 4. Classify, create, record
 
-**Propose a section** for each confirmed candidate:
+**Propose a major section and section** for each confirmed candidate.
+Major section is the top-level grouping on the By section wiki view
+(`Books`, `Research papers`, `Visual`, `Audio`, `Personal`, `Etc` —
+user can supply a custom name). Section is the specific subsection
+(e.g., `ai safety`, `fiction`, `photographs`). The same subsection
+name can live under different majors (e.g., `Books / ai safety`
+vs. `Research papers / ai safety`), so both must be captured.
+
+For section:
 
 - **Local file batch from a single directory**: propose one section as the batch
   default (based on directory name, content subjects, and recent placements). Let the
@@ -182,6 +190,7 @@ observed (e.g., "user declined online enrichment").
 slug: "{generated-slug}"
 title: "{confirmed title}"
 book_type: "digital"
+major_section: "{selected major section}"
 section: "{selected section}"
 description: "{generated — see below}"
 date_added: "{today's date, YYYY-MM-DD}"

@@ -192,65 +192,27 @@ def homepage(library: dict, all_items: list[dict]) -> str:
     return _page(collection_name, body, library, all_items, axes_current=None, from_subdir=False)
 
 
-# Heuristic mapping of section names to major groups, used only by the
-# By section index page. A concept test: sections not matching a keyword
-# fall into "Etc". When a real grouping need emerges we can promote this
-# to a per-collection config (e.g., a `section_groups` field in the index
-# yaml) instead of a hardcoded map.
-_SECTION_GROUPS: dict[str, str] = {
-    # Books
-    "fiction": "Books",
-    "nonfiction": "Books",
-    "non-fiction": "Books",
-    "books": "Books",
-    "poetry": "Books",
-    "reference": "Books",
-    "technical": "Books",
-    "textbooks": "Books",
-    "essays": "Books",
-    "magazines": "Books",
-    # Research papers
-    "papers": "Research papers",
-    "research": "Research papers",
-    "preprints": "Research papers",
-    "theses": "Research papers",
-    "dissertations": "Research papers",
-    # Visual
-    "photographs": "Visual",
-    "photos": "Visual",
-    "images": "Visual",
-    "art": "Visual",
-    "illustrations": "Visual",
-    "drawings": "Visual",
-    "video": "Visual",
-    "videos": "Visual",
-    "films": "Visual",
-    # Audio
-    "audio": "Audio",
-    "music": "Audio",
-    "podcasts": "Audio",
-    "recordings": "Audio",
-    # Personal
-    "journal": "Personal",
-    "journals": "Personal",
-    "diaries": "Personal",
-    "letters": "Personal",
-    "correspondence": "Personal",
-    "travel": "Personal",
-    "notes": "Personal",
-    "personal": "Personal",
-}
-_SECTION_GROUP_ORDER = ["Books", "Research papers", "Visual", "Audio", "Personal", "Etc"]
-
-
-def _section_group(section: str) -> str:
-    return _SECTION_GROUPS.get(section.lower(), "Etc")
+# Default display order for the major_section groupings on the By section
+# view. Values not in this list appear alphabetically after these.
+_MAJOR_SECTION_DEFAULT_ORDER = [
+    "Books",
+    "Research papers",
+    "Visual",
+    "Audio",
+    "Personal",
+    "Etc",
+]
 
 
 def by_section_index(library: dict, all_items: list[dict], items_by_section: dict[str, list[dict]]) -> str:
-    """Render the By section index grouped by major category (Reading, Media,
-    Personal, Other). Same two-level visual pattern as By medium & format."""
-    # Group sections by their major category
+    """Render the By section index grouped by each item's major_section.
+
+    Items must carry `major_section` in their metadata; items missing the
+    field land in "Etc". Within a section, the group is taken from the
+    first active item (sections should be homogeneous — the skills prompt
+    for major + section together so items in the same section share a
+    major).
+    """
     grouped: dict[str, list[tuple[str, str, int]]] = {}
     for section in sorted(items_by_section.keys()):
         active_items = [b for b in items_by_section[section] if b.get("status", "active") != "removed"]
@@ -258,13 +220,17 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         if count == 0:
             continue
         section_slug = section.replace("/", "-").replace(" ", "-").lower()
-        group = _section_group(section)
-        grouped.setdefault(group, []).append((section, section_slug, count))
+        major = active_items[0].get("major_section") or "Etc"
+        grouped.setdefault(major, []).append((section, section_slug, count))
 
-    # Render each group as a heading with small total + a table of sections
+    # Render default-ordered groups first, then any custom majors alphabetically
+    seen_defaults = set(_MAJOR_SECTION_DEFAULT_ORDER)
+    custom_majors = sorted(m for m in grouped if m not in seen_defaults)
+    group_order = _MAJOR_SECTION_DEFAULT_ORDER + custom_majors
+
     blocks = []
-    for group_name in _SECTION_GROUP_ORDER:
-        rows_data = grouped.get(group_name, [])
+    for major in group_order:
+        rows_data = grouped.get(major, [])
         if not rows_data:
             continue
         group_total = sum(c for _, _, c in rows_data)
@@ -274,7 +240,7 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         )
         table = f'<table><tbody>{rows}</tbody></table>'
         blocks.append(
-            f'<div class="section-group"><h2>{escape(group_name)} '
+            f'<div class="section-group"><h2>{escape(major)} '
             f'<small>({group_total})</small></h2>\n{table}</div>'
         )
 

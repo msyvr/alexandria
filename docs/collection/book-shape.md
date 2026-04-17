@@ -48,7 +48,8 @@ Files created on first use or only for certain item types:
 slug: "condition-x-treatments"        # unique within library; matches directory name
 title: "Condition X Treatments"       # display name, any characters
 book_type: "scout"                    # physical, digital, or scout
-section: "health"                     # top-level library section
+major_section: "Research papers"      # top-level grouping (user-customizable)
+section: "ai safety"                  # specific subsection within the major
 description: "Living knowledge base tracking treatment options."  # one line
 date_added: "2026-04-10"              # ISO 8601 date
 form: "digital"                       # digital or physical
@@ -106,9 +107,25 @@ One of:
 
 This determines which creation skill was used and what type-specific fields to expect.
 
+### `major_section` (required, string)
+
+The top-level grouping this item belongs to. Used on the By section wiki view to organize sections into broader categories.
+
+**Default set** (user-customizable):
+- `Books` — fiction, nonfiction, poetry, reference, technical, textbooks, essays, magazines
+- `Research papers` — peer-reviewed and preprint academic work, theses
+- `Visual` — photographs, images, art, illustrations, drawings, video, films, dvds, blu-ray
+- `Audio` — music, podcasts, recordings, cds, vinyl, tapes
+- `Personal` — journals, diaries, letters, correspondence, travel, notes
+- `Etc` — anything that doesn't fit the above
+
+The user can pick from this set or supply a custom name. Skills offer the default options at acquisition time but accept any string. The wiki generator renders known majors in the default order above, then any custom majors alphabetically.
+
+Note: `major_section` is stored on the item because the same topic name (e.g., "ai safety") can live under multiple majors (`Books / ai safety` vs. `Research papers / ai safety`). Storing the major explicitly removes the ambiguity.
+
 ### `section` (required, string)
 
-The top-level library section where this item lives. Matches a directory at the collection root (e.g., `health`, `professional`, `reference`). Required.
+The specific subsection within the major. Matches a directory at the collection root (e.g., `fiction`, `ai safety`, `photographs`). Required.
 
 If the acquisition process can't determine a section, it defaults to `"unsorted"` and the user can move it later.
 
@@ -247,30 +264,32 @@ The collection-level index is a regenerable cache of universal fields from every
 collection_name: "alexandria"
 created: "2026-04-07"
 sections:
-  health:
+  ai safety:
     items:
       - slug: "condition-x-treatments"
         title: "Condition X Treatments"
         book_type: "scout"
+        major_section: "Research papers"
         description: "Living knowledge base tracking treatment options."
         date_added: "2026-04-10"
         form: "digital"
         media_type: "text:markdown"
         status: "active"
         author: null
-        path: "health/condition-x-treatments"
-  professional:
+        path: "ai safety/condition-x-treatments"
+  causal inference:
     items:
       - slug: "causal-inference-methods"
         title: "Causal Inference Methods"
         book_type: "scout"
+        major_section: "Research papers"
         description: "Methods for policy evaluation, with applicability notes."
         date_added: "2026-04-08"
         form: "digital"
         media_type: "text:markdown"
         status: "active"
         author: null
-        path: "professional/causal-inference-methods"
+        path: "causal inference/causal-inference-methods"
 ```
 
 ### Regeneration

@@ -250,6 +250,16 @@ article.item-card .removed-tag {
   border-color: var(--accent);
 }
 
+/* Back link: same font/size treatment as the Sort-by label,
+   keeps the link color. */
+
+.back-link {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* Tables */
 
 table { border-collapse: collapse; width: 100%; margin: 0.6em 0; }

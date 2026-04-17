@@ -105,13 +105,8 @@ def _page(title: str, body: str, library: dict, all_items: list[dict],
 """
 
 
-def _item_card(item: dict, item_page_rel: str, show_description: bool = True, from_view: str | None = None) -> str:
-    """Render a single item as a card for an index page.
-
-    `from_view`: when set, appends a `?from={from_view}` query param to the
-    link so the item page can tailor its back-link text. Document.referrer
-    is unreliable over file://, so we carry the context in the URL.
-    """
+def _item_card(item: dict, item_page_rel: str, show_description: bool = True) -> str:
+    """Render a single item as a card for an index page."""
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
     author = item.get("author")
@@ -145,10 +140,8 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True, fr
         f' data-title="{title.lower()}"'
     )
 
-    href = f"{item_page_rel}?from={from_view}" if from_view else item_page_rel
-
     return f"""<article class="item-card{removed_class}"{data_attrs}>
-<h3><a href="{href}">{title}</a>{removed_tag}</h3>
+<h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>
 {author_line}
 {description_line}
 <div class="detail">{detail}</div>
@@ -223,7 +216,7 @@ def section_page(section: str, items: list[dict], library: dict, all_items: list
         cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
         body_main = f'<div class="index-grid">\n{cards}\n</div>'
 
-    body = f"""<p><a href="index.html">← All sections</a></p>
+    body = f"""<p><a href="index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
 
 {body_main}
 """
@@ -302,7 +295,7 @@ def by_author_index(library: dict, all_items: list[dict]) -> str:
         ),
     )
     cards = "\n".join(
-        _item_card(b, f"../items/{b['slug']}.html", show_description=False, from_view="by-author")
+        _item_card(b, f"../items/{b['slug']}.html", show_description=False)
         for b in sorted_items
     )
     listing = cards if cards else "<p>No items to display.</p>"
@@ -390,7 +383,7 @@ def format_page(form: str, fmt: str, items: list[dict], library: dict, all_items
         cards = "\n".join(_item_card(b, f"../items/{b['slug']}.html") for b in items)
         body_main = f'<div class="index-grid">\n{cards}\n</div>'
 
-    body = f"""<p><a href="index.html">← All formats</a></p>
+    body = f"""<p><a href="index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
 
 {body_main}
 """
@@ -778,17 +771,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
             f'from the <a href="../../{path}/">item directory</a></p>'
         )
 
-    body = f"""<p><a href="../index.html" id="item-back" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
-<script>
-(function() {{
-  var link = document.getElementById('item-back');
-  if (!link) return;
-  var params = new URLSearchParams(location.search || '');
-  if (params.get('from') === 'by-author') {{
-    link.textContent = '← All authors/artists';
-  }}
-}})();
-</script>
+    body = f"""<p><a href="../index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
 
 {description_html}
 

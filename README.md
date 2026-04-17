@@ -4,6 +4,8 @@ Lightweight private collection infrastructure for items and other content/items 
 
 Alexandria provides minimal structure to make a collection browseable at scale: a catalog, consistent item shape, classification conventions, and generated views. The structure is lightweight enough that you can browse it without invoking any AI at all.
 
+![Example alexandria collection landing page](docs/images/wiki-landing-example.png)
+
 > **Getting started?** You'll work in two windows: this page (for reference) and a terminal (where you type commands). If you're new to the terminal, start with the [detailed walkthrough](#detailed-setup-walkthrough) — it shows every step. If you're comfortable in the terminal, jump to the [quick start](#create-your-collection).
 
 Alexandria borrows heavily from the real-world library: a curated collection where items are stored in predictable places, findable by catalog or by walking the stacks. The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent shape. Most items are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves (see [scout](#scout-available-now--the-exception-not-the-rule)). The collection's job is to hold them, organize them, and make them browseable — with or without an agent-librarian's help.

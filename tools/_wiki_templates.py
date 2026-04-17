@@ -180,13 +180,13 @@ def homepage(library: dict, all_items: list[dict]) -> str:
         recent_cards = "\n".join(
             _item_card(b, f"items/{b['slug']}.html") for b in recent
         )
-        body = f"""<h2>Recent additions</h2>
+        body = f"""<h2 class="major-heading">Recent additions</h2>
 <div class="index-grid">
 {recent_cards}
 </div>
 """
     else:
-        body = """<h2>Recent additions</h2>
+        body = """<h2 class="major-heading">Recent additions</h2>
 <p>No items yet. Use <code>/coll</code> or <code>/coll-physical</code>, <code>/coll-digital</code>, or <code>/coll-scout</code> to add your first item.</p>
 """
     return _page(collection_name, body, library, all_items, axes_current=None, from_subdir=False)

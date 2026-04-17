@@ -10,7 +10,7 @@ Alexandria provides minimal structure to make a collection browseable at scale: 
 
 Alexandria borrows heavily from the real-world library: a curated collection where items are stored in predictable places, findable by catalog or by walking the stacks. The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent shape. Most items are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves (see [scout](#scout-available-now--the-exception-not-the-rule)). The collection's job is to hold them, organize them, and make them browseable — with or without an agent-librarian's help.
 
-See [ASPIRATIONS.md](ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).
+See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).
 
 ## Who is this for?
 
@@ -18,7 +18,7 @@ Anyone who wants to organize a private collection independently — to own the r
 
 ### An optional side benefit: technical upskilling
 
-For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: knowing how to direct AI tools effectively without needing to become a programmer. Building real things you actually need — opening a terminal, reading structured data, running scripts, understanding what "you own this data" means technically — teaches you what matters and what doesn't. The skills transfer well beyond this tool. See [ASPIRATIONS.md](ASPIRATIONS.md) for more on the technical minimalism philosophy.
+For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: knowing how to direct AI tools effectively without needing to become a programmer. Building real things you actually need — opening a terminal, reading structured data, running scripts, understanding what "you own this data" means technically — teaches you what matters and what doesn't. The skills transfer well beyond this tool. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the technical minimalism philosophy.
 
 If that's not your goal, clear instructions are provided for building and extending your collection. After that, exploring it as as easy as using Wikipedia.
 
@@ -50,7 +50,7 @@ Scout is useful when a topic is complex enough to warrant careful organization, 
 
 - **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that creates items and manages the collection. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Runs in your terminal, [in a browser](https://claude.ai/code), or via the phone app ([iOS](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), [Android](https://play.google.com/store/apps/details?id=com.anthropic-claude)). Browser and phone require a GitHub-hosted library.
 - **Python 3.10+** — for scripts within built scouts. Check with `python3 --version`.
-- No coding experience required. You guide the process by answering questions; Claude Code generates all scripts and data files. See [ASPIRATIONS.md](ASPIRATIONS.md) for more on the skills you'll pick up along the way.
+- No coding experience required. You guide the process by answering questions; Claude Code generates all scripts and data files. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the skills you'll pick up along the way.
 
 ### Create your collection
 
@@ -140,8 +140,7 @@ Claude Code determines the appropriate item type and guides you through building
 
 ### Project direction
 
-- [ASPIRATIONS.md](ASPIRATIONS.md) — project vision, collection architecture, technical minimalism, planned item types
-- [TODO.md](TODO.md) — planned additions and improvements
+- [ASPIRATIONS.md](docs/ASPIRATIONS.md) — project vision, collection architecture, technical minimalism, planned item types
 
 ---
 

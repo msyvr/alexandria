@@ -250,7 +250,6 @@ article.item-card .removed-tag {
 
 .axes-nav a[aria-current="page"] {
   color: var(--text-mid);
-  border-bottom-color: var(--accent);
 }
 
 /* Section groups */

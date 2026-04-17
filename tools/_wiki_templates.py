@@ -165,7 +165,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     for slug, label in axes:
         href = f"{prefix}{slug}/index.html"
         if slug == current:
-            links.append(f'<a href="{href}" aria-current="page"><strong>{label}</strong></a>')
+            links.append(f'<a href="{href}" aria-current="page">{label}</a>')
         else:
             links.append(f'<a href="{href}">{label}</a>')
     return '<div class="axes-nav">' + "\n".join(links) + "</div>"

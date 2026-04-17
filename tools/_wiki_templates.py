@@ -182,10 +182,10 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     """
     axes = [
         ("all", "All"),
-        ("by-author", "By author/artist"),
-        ("by-section", "By section"),
-        ("by-medium-format", "By medium & format"),
-        ("by-topic", "Let the LLM decide"),
+        ("by-author", "Author/artist/producer"),
+        ("by-section", "Section"),
+        ("by-medium-format", "Format"),
+        ("by-topic", "Inference"),
     ]
     prefix = "../" if from_subdir else ""
     links = []

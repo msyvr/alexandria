@@ -354,6 +354,15 @@ def generate_wiki(library_path: Path) -> None:
     css_dst = wiki_dir / "_assets" / "style.css"
     shutil.copy(css_src, css_dst)
 
+    # Copy bundled fonts into wiki/_assets/fonts/ so @font-face URLs resolve
+    fonts_src_dir = tools_dir / "fonts"
+    fonts_dst_dir = wiki_dir / "_assets" / "fonts"
+    fonts_dst_dir.mkdir(exist_ok=True)
+    if fonts_src_dir.is_dir():
+        for font_file in fonts_src_dir.iterdir():
+            if font_file.is_file() and font_file.suffix.lower() == ".woff2":
+                shutil.copy(font_file, fonts_dst_dir / font_file.name)
+
     md_renderer = MarkdownIt("commonmark", {"breaks": True, "html": False})
 
     # Group items by section (used by homepage and by-section pages)

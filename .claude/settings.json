@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/update_collection.sh:*)",
+      "Bash(bash scripts/get_default_collection.sh:*)"
+    ]
+  }
+}

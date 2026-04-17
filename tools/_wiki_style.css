@@ -144,6 +144,7 @@ article.item-card h3 {
   font-size: 0.95em;
   font-weight: 600;
   display: inline;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 article.item-card h3 a { color: var(--text); }
@@ -442,6 +443,7 @@ blockquote.user-notes {
 .search-title {
   font-size: 0.95em;
   font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 .search-title a { color: var(--text); }

@@ -372,9 +372,20 @@ def all_index(library: dict, all_items: list[dict]) -> str:
     return _page("All", body, library, all_items, axes_current="all", from_subdir=True)
 
 
+def _author_display(author: str | None) -> str:
+    """Display name for an author-filter dropdown option — first author,
+    parenthetical annotations stripped (e.g., '(edited by ...)')."""
+    if not author:
+        return ""
+    stripped = re.sub(r"\s*\([^)]*\)", "", author).strip()
+    return stripped.split(",", 1)[0].strip()
+
+
 def by_author_index(library: dict, all_items: list[dict]) -> str:
     """Render the By author/artist view: items sorted by author last name,
-    with a live filter input at the top."""
+    with a Sort-by dropdown at the top listing every author alphabetically
+    by last name. Selecting an author shows only their items; the default
+    "All" option shows everyone."""
     active = [b for b in all_items if b.get("status", "active") != "removed"]
     # Items without an author sort to the very end via the \uffff sentinel;
     # secondary sort is by title within the same last-name key.
@@ -391,27 +402,45 @@ def by_author_index(library: dict, all_items: list[dict]) -> str:
     )
     listing = cards if cards else "<p>No items to display.</p>"
 
+    # Unique authors keyed by last-name sort key so multi-author items collapse
+    # to their first author — one option per key, alphabetical by last name.
+    unique_authors: dict[str, str] = {}
+    for item in active:
+        author = item.get("author")
+        if not author:
+            continue
+        key = _author_sort_key(author)
+        if key and key not in unique_authors:
+            unique_authors[key] = _author_display(author)
+    options = ['<option value="">All</option>']
+    for key in sorted(unique_authors.keys()):
+        options.append(
+            f'<option value="{escape(key)}">{escape(unique_authors[key])}</option>'
+        )
+    options_html = "\n".join(options)
+
     filter_script = """<script>
 (function() {
-  var input = document.getElementById('author-filter-input');
+  var select = document.getElementById('author-filter-select');
   var container = document.getElementById('by-author-listing');
-  if (!input || !container) return;
+  if (!select || !container) return;
   var cards = container.querySelectorAll('.item-card');
-  input.addEventListener('input', function() {
-    var q = input.value.trim().toLowerCase();
+  select.addEventListener('change', function() {
+    var v = select.value;
     cards.forEach(function(el) {
-      if (!q) { el.style.display = ''; return; }
-      var name = el.dataset.authorFull || '';
-      el.style.display = (name.indexOf(q) !== -1) ? '' : 'none';
+      if (!v) { el.style.display = ''; return; }
+      el.style.display = (el.dataset.author === v) ? '' : 'none';
     });
   });
 })();
 </script>"""
 
-    body = f"""<form class="search-form" role="search" onsubmit="return false;">
-<label for="author-filter-input" class="header-search-icon" aria-label="Filter">&#x1F50D;</label>
-<input type="text" id="author-filter-input" placeholder="Filter by author/artist — type to narrow, clear to see all" autocomplete="off">
-</form>
+    body = f"""<div class="sort-control">
+<label for="author-filter-select">Sort by</label>
+<select id="author-filter-select">
+{options_html}
+</select>
+</div>
 
 <div id="by-author-listing" class="index-grid">
 {listing}

@@ -359,7 +359,7 @@ details.subsections > summary {
   list-style: none;
   cursor: pointer;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
-  font-size: 0.7em;
+  font-size: 0.6em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--muted);

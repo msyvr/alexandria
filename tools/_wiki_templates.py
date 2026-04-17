@@ -326,7 +326,8 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
             f'<a href="{major_slug}.html">{escape(major)}</a> '
             f'<small>({group_total})</small></h2>\n'
             f'<details class="subsections" data-major-id="{major_slug}">'
-            f'<summary>subsections</summary>{table}</details></div>'
+            f'<summary>View all {escape(major)}</summary>'
+            f'{table}</details></div>'
         )
 
     if blocks:
@@ -567,7 +568,8 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
             f'<a href="{form}.html">{escape(form.capitalize())}</a> '
             f'<small>({active_total})</small></h2>\n'
             f'<details class="subsections" data-major-id="{form}">'
-            f'<summary>subsections</summary>{table}</details></div>'
+            f'<summary>View all {escape(form.capitalize())}</summary>'
+            f'{table}</details></div>'
         )
 
     if sections:

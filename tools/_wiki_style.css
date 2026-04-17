@@ -351,38 +351,42 @@ h2.major-heading {
 
 /* Collapsible subsection group (By section, By medium & format) */
 
-details.subsections {
-  margin: 0;
+.major-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
+  flex-wrap: wrap;
 }
 
-details.subsections > summary {
-  list-style: none;
+.subsections-toggle {
+  background: none;
+  border: none;
+  padding: 0.15em 0;
   cursor: pointer;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   font-size: 0.6em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--muted);
-  padding: 0.15em 0;
-  width: fit-content;
 }
 
-details.subsections > summary::-webkit-details-marker {
-  display: none;
-}
-
-details.subsections > summary::before {
+.subsections-toggle::before {
   content: "▸ ";
   display: inline-block;
   width: 1em;
 }
 
-details.subsections[open] > summary::before {
+.subsections-toggle[aria-expanded="true"]::before {
   content: "▾ ";
 }
 
-details.subsections > summary:hover {
+.subsections-toggle:hover {
   color: var(--link);
+}
+
+.subsections-panel[hidden] {
+  display: none;
 }
 
 /* Global expand/collapse button at the top of the view */

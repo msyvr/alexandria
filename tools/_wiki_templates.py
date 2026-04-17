@@ -242,43 +242,53 @@ _EXPAND_ALL_CONTROL_HTML = (
 _EXPAND_ALL_SCRIPT = """<script>
 (function() {
   var STORAGE_PREFIX = 'alexandria-subsections:';
-  var btn = document.getElementById('expand-toggle');
-  var list = document.querySelectorAll('details.subsections');
-  if (!list.length) return;
+  var globalBtn = document.getElementById('expand-toggle');
+  var toggles = document.querySelectorAll('.subsections-toggle');
+  if (!toggles.length) return;
 
-  function key(d) {
-    return STORAGE_PREFIX + location.pathname + '#' + (d.getAttribute('data-major-id') || '');
+  function key(btn) {
+    return STORAGE_PREFIX + location.pathname + '#' + (btn.getAttribute('data-major-id') || '');
+  }
+
+  function setOpen(btn, open) {
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (panel) panel.hidden = !open;
+    try { localStorage.setItem(key(btn), open ? '1' : '0'); } catch (e) {}
   }
 
   // Restore previous open/closed state from localStorage.
-  list.forEach(function(d) {
+  toggles.forEach(function(btn) {
     try {
-      var saved = localStorage.getItem(key(d));
-      if (saved === '1') d.open = true;
-      else if (saved === '0') d.open = false;
+      var saved = localStorage.getItem(key(btn));
+      if (saved === '1') setOpen(btn, true);
+      else if (saved === '0') setOpen(btn, false);
     } catch (e) {}
   });
 
-  // Persist state whenever a details element toggles — covers both user
-  // clicks on the <summary> and programmatic flips from the button below.
-  list.forEach(function(d) {
-    d.addEventListener('toggle', function() {
-      try { localStorage.setItem(key(d), d.open ? '1' : '0'); } catch (e) {}
+  toggles.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setOpen(btn, btn.getAttribute('aria-expanded') !== 'true');
+      syncGlobal();
     });
   });
 
-  function syncButton() {
-    if (!btn) return;
-    var anyOpen = Array.prototype.some.call(list, function(d) { return d.open; });
-    btn.textContent = anyOpen ? 'Collapse all' : 'Expand all';
+  function syncGlobal() {
+    if (!globalBtn) return;
+    var anyOpen = Array.prototype.some.call(toggles, function(b) {
+      return b.getAttribute('aria-expanded') === 'true';
+    });
+    globalBtn.textContent = anyOpen ? 'Collapse all' : 'Expand all';
   }
-  syncButton();
+  syncGlobal();
 
-  if (btn) {
-    btn.addEventListener('click', function() {
-      var anyOpen = Array.prototype.some.call(list, function(d) { return d.open; });
-      list.forEach(function(d) { d.open = !anyOpen; });
-      syncButton();
+  if (globalBtn) {
+    globalBtn.addEventListener('click', function() {
+      var anyOpen = Array.prototype.some.call(toggles, function(b) {
+        return b.getAttribute('aria-expanded') === 'true';
+      });
+      toggles.forEach(function(b) { setOpen(b, !anyOpen); });
+      syncGlobal();
     });
   }
 })();
@@ -321,13 +331,20 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         )
         table = f'<table><tbody>{rows}</tbody></table>'
         major_slug = major.replace("/", "-").replace(" ", "-").lower()
+        panel_id = f'subs-{major_slug}'
         blocks.append(
-            f'<div class="section-group"><h2 class="major-heading">'
+            f'<div class="section-group">'
+            f'<div class="major-row">'
+            f'<h2 class="major-heading">'
             f'<a href="{major_slug}.html">{escape(major)}</a> '
-            f'<small>({group_total})</small></h2>\n'
-            f'<details class="subsections" data-major-id="{major_slug}">'
-            f'<summary>View all {escape(major)}</summary>'
-            f'{table}</details></div>'
+            f'<small>({group_total})</small></h2>'
+            f'<button type="button" class="subsections-toggle" '
+            f'aria-expanded="false" aria-controls="{panel_id}" '
+            f'data-major-id="{major_slug}">View all {escape(major)}</button>'
+            f'</div>'
+            f'<div id="{panel_id}" class="subsections-panel" hidden>'
+            f'{table}</div>'
+            f'</div>'
         )
 
     if blocks:
@@ -563,13 +580,21 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
         if not rows:
             continue
         table = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
+        panel_id = f'subs-{form}'
+        form_cap = form.capitalize()
         sections.append(
-            f'<div class="section-group"><h2 class="major-heading">'
-            f'<a href="{form}.html">{escape(form.capitalize())}</a> '
-            f'<small>({active_total})</small></h2>\n'
-            f'<details class="subsections" data-major-id="{form}">'
-            f'<summary>View all {escape(form.capitalize())}</summary>'
-            f'{table}</details></div>'
+            f'<div class="section-group">'
+            f'<div class="major-row">'
+            f'<h2 class="major-heading">'
+            f'<a href="{form}.html">{escape(form_cap)}</a> '
+            f'<small>({active_total})</small></h2>'
+            f'<button type="button" class="subsections-toggle" '
+            f'aria-expanded="false" aria-controls="{panel_id}" '
+            f'data-major-id="{form}">View all {escape(form_cap)}</button>'
+            f'</div>'
+            f'<div id="{panel_id}" class="subsections-panel" hidden>'
+            f'{table}</div>'
+            f'</div>'
         )
 
     if sections:

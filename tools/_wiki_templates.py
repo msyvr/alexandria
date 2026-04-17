@@ -198,28 +198,39 @@ def homepage(library: dict, all_items: list[dict]) -> str:
 # to a per-collection config (e.g., a `section_groups` field in the index
 # yaml) instead of a hardcoded map.
 _SECTION_GROUPS: dict[str, str] = {
-    # Reading (written works)
-    "fiction": "Reading",
-    "nonfiction": "Reading",
-    "non-fiction": "Reading",
-    "books": "Reading",
-    "papers": "Reading",
-    "essays": "Reading",
-    "poetry": "Reading",
-    "reference": "Reading",
-    "technical": "Reading",
-    "textbooks": "Reading",
-    "magazines": "Reading",
-    # Media (photos, art, audio, video)
-    "photographs": "Media",
-    "photos": "Media",
-    "images": "Media",
-    "art": "Media",
-    "audio": "Media",
-    "music": "Media",
-    "video": "Media",
-    "videos": "Media",
-    # Personal (journals, correspondence, travel)
+    # Books
+    "fiction": "Books",
+    "nonfiction": "Books",
+    "non-fiction": "Books",
+    "books": "Books",
+    "poetry": "Books",
+    "reference": "Books",
+    "technical": "Books",
+    "textbooks": "Books",
+    "essays": "Books",
+    "magazines": "Books",
+    # Research papers
+    "papers": "Research papers",
+    "research": "Research papers",
+    "preprints": "Research papers",
+    "theses": "Research papers",
+    "dissertations": "Research papers",
+    # Visual
+    "photographs": "Visual",
+    "photos": "Visual",
+    "images": "Visual",
+    "art": "Visual",
+    "illustrations": "Visual",
+    "drawings": "Visual",
+    "video": "Visual",
+    "videos": "Visual",
+    "films": "Visual",
+    # Audio
+    "audio": "Audio",
+    "music": "Audio",
+    "podcasts": "Audio",
+    "recordings": "Audio",
+    # Personal
     "journal": "Personal",
     "journals": "Personal",
     "diaries": "Personal",
@@ -229,7 +240,7 @@ _SECTION_GROUPS: dict[str, str] = {
     "notes": "Personal",
     "personal": "Personal",
 }
-_SECTION_GROUP_ORDER = ["Reading", "Media", "Personal", "Other"]
+_SECTION_GROUP_ORDER = ["Books", "Research papers", "Visual", "Audio", "Personal", "Other"]
 
 
 def _section_group(section: str) -> str:

@@ -208,11 +208,16 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
     truncated_md, was_truncated = truncate_by_words(readme_md, README_WORD_LIMIT)
     html = md_renderer.render(truncated_md)
 
-    # Strip first <h1>...</h1> (the README's title duplicates the page header)
+    # Strip first <h1>...</h1> (the README's title is shown separately as the
+    # item-page title).
     html = re.sub(r'<h1>.*?</h1>\n?', '', html, count=1)
 
-    # Strip first <p><em>by ...</em></p> (author line duplicates template author)
+    # Strip first <p><em>by ...</em></p> (author is shown separately on the page).
     html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
+
+    # Strip the first remaining <p> — this is the README's description paragraph,
+    # which the item page already renders at the top.
+    html = re.sub(r'^\s*<p>.*?</p>\s*', '', html, count=1, flags=re.DOTALL)
 
     # Strip the trailing "See `metadata.yaml` ..." paragraph — the wiki template
     # renders a styled metadata link near the bottom of the page instead.
@@ -223,6 +228,16 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
     )
 
     html = _convert_kv_lists_to_dl(html)
+
+    # Strip the "Catalog entry" section (redundant with the page-level metadata
+    # grid at the top). Matches the section's <h2> plus its following list,
+    # whether the kv-list conversion turned it into a <dl> or it's still a <ul>.
+    html = re.sub(
+        r'<h2>Catalog entry</h2>\s*<(dl|ul)[^>]*>.*?</\1>\s*',
+        '',
+        html,
+        flags=re.DOTALL,
+    )
 
     return html, was_truncated
 

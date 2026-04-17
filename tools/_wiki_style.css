@@ -310,6 +310,23 @@ th, td { text-align: left; padding: 0.35em 0.6em; border-bottom: 1px solid var(-
 tr:last-child td { border-bottom: none; }
 th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; border-bottom-color: var(--muted); }
 
+/* Item title + author (page-level, not cards) */
+
+h1.item-title {
+  font-size: 1.5em;
+  font-weight: normal;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0.4em 0 0.2em 0;
+  line-height: 1.2;
+}
+
+.item-author {
+  color: var(--text-mid);
+  font-style: italic;
+  margin: 0 0 0.6em 0;
+  font-size: 0.95em;
+}
+
 /* Item metadata */
 
 .item-metadata {

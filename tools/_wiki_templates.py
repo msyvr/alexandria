@@ -777,6 +777,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 <p>Content is preserved in the item's directory. <a href="../../{path}/">Browse the item directory</a>.</p>
 </div>"""
 
+    author_html = f'<p class="item-author">by {escape(author)}</p>' if author else ""
     description_html = f'<p class="description">{description}</p>' if description else ""
     user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
 
@@ -813,11 +814,15 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 
     body = f"""<p><a href="../index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>
 
+<h1 class="item-title">{title}</h1>
+
+{header_row}
+
+{author_html}
+
 {description_html}
 
 {user_notes_html}
-
-{header_row}
 
 {file_link}
 

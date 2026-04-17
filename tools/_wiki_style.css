@@ -188,7 +188,7 @@ article.item-card:last-child { border-bottom: none; }
 }
 
 .item-card-right {
-  flex: 0 0 30%;
+  flex: 0 0 15%;
   container-type: inline-size;
 }
 

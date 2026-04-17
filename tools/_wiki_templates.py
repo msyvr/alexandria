@@ -409,6 +409,7 @@ def by_author_index(library: dict, all_items: list[dict]) -> str:
 </script>"""
 
     body = f"""<form class="search-form" role="search" onsubmit="return false;">
+<label for="author-filter-input" class="header-search-icon" aria-label="Filter">&#x1F50D;</label>
 <input type="text" id="author-filter-input" placeholder="Filter by author/artist — type to narrow, clear to see all" autocomplete="off">
 </form>
 

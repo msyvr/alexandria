@@ -155,8 +155,8 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     """
     axes = [
         ("all", "All"),
-        ("by-section", "By section"),
         ("by-author", "By author/artist"),
+        ("by-section", "By section"),
         ("by-medium-format", "By medium & format"),
         ("by-topic", "Let the LLM decide"),
     ]
@@ -240,7 +240,7 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         )
         table = f'<table><tbody>{rows}</tbody></table>'
         blocks.append(
-            f'<div class="section-group"><h2>{escape(major)} '
+            f'<div class="section-group"><h2 class="major-heading">{escape(major)} '
             f'<small>({group_total})</small></h2>\n{table}</div>'
         )
 
@@ -407,7 +407,7 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
             continue
         table = '<table><tbody>' + "\n".join(rows) + '</tbody></table>'
         sections.append(
-            f'<div class="section-group"><h2>{escape(form.capitalize())} '
+            f'<div class="section-group"><h2 class="major-heading">{escape(form.capitalize())} '
             f'<small>({active_total})</small></h2>\n{table}</div>'
         )
 

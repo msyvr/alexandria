@@ -138,8 +138,10 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
     # Data attributes power client-side sort (All view) and filter (By
     # author/artist view). Harmless on other views.
     author_raw = (author or "").lower()
+    acquired_at_attr = escape(item.get("acquired_at", "") or "")
     data_attrs = (
         f' data-date="{date_added}"'
+        f' data-acquired="{acquired_at_attr}"'
         f' data-author="{escape(_author_sort_key(author))}"'
         f' data-author-full="{escape(author_raw)}"'
         f' data-title="{title.lower()}"'
@@ -331,6 +333,8 @@ def all_index(library: dict, all_items: list[dict]) -> str:
 <select id="sort-select">
 <option value="date-desc" selected>Date added — newest first</option>
 <option value="date-asc">Date added — oldest first</option>
+<option value="acquired-desc">Date acquired — newest first</option>
+<option value="acquired-asc">Date acquired — oldest first</option>
 <option value="author-asc">Author / artist</option>
 <option value="title-asc">Title</option>
 </select>
@@ -347,11 +351,17 @@ def all_index(library: dict, all_items: list[dict]) -> str:
     var key, dir;
     if (value === 'date-desc') { key = 'date'; dir = -1; }
     else if (value === 'date-asc') { key = 'date'; dir = 1; }
+    else if (value === 'acquired-desc') { key = 'acquired'; dir = -1; }
+    else if (value === 'acquired-asc') { key = 'acquired'; dir = 1; }
     else if (value === 'author-asc') { key = 'author'; dir = 1; }
     else if (value === 'title-asc') { key = 'title'; dir = 1; }
     else return;
     items.sort(function(a, b) {
       var av = a.dataset[key] || '', bv = b.dataset[key] || '';
+      // Missing values always sort to the end, regardless of direction
+      if (!av && !bv) return 0;
+      if (!av) return 1;
+      if (!bv) return -1;
       if (av < bv) return -1 * dir;
       if (av > bv) return 1 * dir;
       return 0;

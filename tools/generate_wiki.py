@@ -273,6 +273,11 @@ def collect_books(library_path: Path, library: dict) -> list[dict]:
             merged.setdefault("slug", book_entry.get("slug", "unknown"))
             merged.setdefault("section", section_name)
             merged.setdefault("path", book_path)
+            # Attach thumbnail filename (if an image exists in the item
+            # directory) so every view that renders the item can show it.
+            thumb = find_item_thumbnail(library_path, book_path)
+            if thumb:
+                merged["thumb_filename"] = thumb
             all_items.append(merged)
     return all_items
 
@@ -515,10 +520,9 @@ def generate_wiki(library_path: Path) -> None:
         if status != "removed":
             item_notes = load_item_notes(library_path, book_path, md_renderer)
 
-        # Find an image file in the item directory for the thumbnail (if any)
-        thumb_filename = None
-        if status != "removed":
-            thumb_filename = find_item_thumbnail(library_path, book_path)
+        # Thumbnail was already attached during collect_books; item_page
+        # reads it from the item dict.
+        thumb_filename = item.get("thumb_filename") if status != "removed" else None
 
         # Pass 2 hook (currently a no-op)
         narrative_enrich(item)

@@ -104,7 +104,15 @@ def _page(title: str, body: str, library: dict, all_items: list[dict],
 
 
 def _item_card(item: dict, item_page_rel: str, show_description: bool = True) -> str:
-    """Render a single item as a card for an index page."""
+    """Render a single item as a card for an index page.
+
+    The card is a two-column flex row: left column has the title, meta,
+    description, detail line; right column (when the item has an image
+    in its directory) has a thumbnail. The right column is 30% of the
+    card; the thumb fills 80% of it, right-justified, with max-height
+    set equal to its width via container query units so portraits crop
+    to a square while landscapes render at their natural aspect ratio.
+    """
     title = escape(item.get("title", "Untitled"))
     description = escape(item.get("description", ""))
     author = item.get("author")
@@ -113,6 +121,8 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
     media_type = escape(item.get("media_type", ""))
     date_added = escape(item.get("date_added", ""))
     status = item.get("status", "active")
+    thumb_filename = item.get("thumb_filename") if status != "removed" else None
+    path = item.get("path", "")
 
     author_line = f'<div class="meta">{author_escaped}</div>' if author else ""
 
@@ -123,13 +133,10 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
 
     removed_class = " removed" if status == "removed" else ""
     removed_tag = '<span class="removed-tag">removed</span>' if status == "removed" else ""
-
     description_line = f'<p class="description">{description}</p>' if show_description else ""
 
     # Data attributes power client-side sort (All view) and filter (By
     # author/artist view). Harmless on other views.
-    #   data-author      — sort key: last name of the first author
-    #   data-author-full — match target for the author filter (full string, lowercased)
     author_raw = (author or "").lower()
     data_attrs = (
         f' data-date="{date_added}"'
@@ -138,12 +145,30 @@ def _item_card(item: dict, item_page_rel: str, show_description: bool = True) ->
         f' data-title="{title.lower()}"'
     )
 
-    return f"""<article class="item-card{removed_class}"{data_attrs}>
-<h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>
-{author_line}
-{description_line}
-<div class="detail">{detail}</div>
-</article>"""
+    left_col = (
+        f'<div class="item-card-left">'
+        f'<h3><a href="{item_page_rel}">{title}</a>{removed_tag}</h3>'
+        f'{author_line}'
+        f'{description_line}'
+        f'<div class="detail">{detail}</div>'
+        f'</div>'
+    )
+
+    right_col = ""
+    if thumb_filename and path:
+        # `item_page_rel` is "items/{slug}.html" from the homepage (root) or
+        # "../items/{slug}.html" from any subdir view. The item directory on
+        # disk is one level higher than `wiki/`: so the thumb URL needs one
+        # more `../` than item_page_rel uses.
+        dir_prefix = "../../" if item_page_rel.startswith("../") else "../"
+        thumb_url = f"{dir_prefix}{path}/{escape(thumb_filename)}"
+        right_col = (
+            f'<div class="item-card-right">'
+            f'<img class="item-card-thumb" src="{thumb_url}" alt="{title}">'
+            f'</div>'
+        )
+
+    return f'<article class="item-card{removed_class}"{data_attrs}>{left_col}{right_col}</article>'
 
 
 def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:

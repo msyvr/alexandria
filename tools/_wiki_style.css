@@ -175,9 +175,31 @@ h3 { margin-top: 1em; margin-bottom: 0.3em; font-size: 1.05em; font-weight: 600;
 article.item-card {
   border-bottom: 1px solid var(--border);
   padding: 0.45em 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8em;
 }
 
 article.item-card:last-child { border-bottom: none; }
+
+.item-card-left {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.item-card-right {
+  flex: 0 0 30%;
+  container-type: inline-size;
+}
+
+img.item-card-thumb {
+  display: block;
+  width: 80%;
+  max-height: 80cqw;
+  object-fit: cover;
+  object-position: center;
+  margin-left: auto;
+}
 
 article.item-card h3 {
   margin: 0;

@@ -206,7 +206,7 @@ article.item-card {
   padding: 0.45em 0;
   display: flex;
   align-items: flex-start;
-  min-height: 12cqw;
+  min-height: 5em;
 }
 
 article.item-card:last-child {
@@ -224,8 +224,8 @@ article.item-card:last-child {
 
 img.item-card-thumb {
   display: block;
-  width: 12cqw;
-  height: 12cqw;
+  width: 5em;
+  height: 5em;
   object-fit: cover;
   object-position: center;
   margin-left: auto;
@@ -270,7 +270,7 @@ article.item-card .description {
 article.item-card .detail {
   font-size: 0.85em;
   color: var(--muted);
-  margin-top: 0.4em;
+  margin-top: 0.6em;
   letter-spacing: 0.03em;
 }
 
@@ -343,7 +343,7 @@ h2.major-heading {
     system-ui,
     -apple-system,
     sans-serif;
-  font-size: 1.05em;
+  font-size: 0.95em;
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.04em;

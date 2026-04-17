@@ -389,6 +389,7 @@ details.subsections > summary:hover {
 
 .expand-controls {
   margin: 0.2em 0 0.4em;
+  text-align: right;
 }
 
 .expand-controls button {

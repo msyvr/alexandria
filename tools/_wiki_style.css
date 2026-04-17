@@ -349,6 +349,64 @@ h2.major-heading {
   letter-spacing: 0.04em;
 }
 
+/* Collapsible subsection group (By section, By medium & format) */
+
+details.subsections {
+  margin: 0;
+}
+
+details.subsections > summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 0.15em 0;
+  width: fit-content;
+}
+
+details.subsections > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.subsections > summary::before {
+  content: "▸ ";
+  display: inline-block;
+  width: 1em;
+}
+
+details.subsections[open] > summary::before {
+  content: "▾ ";
+}
+
+details.subsections > summary:hover {
+  color: var(--link);
+}
+
+/* Global expand/collapse button at the top of the view */
+
+.expand-controls {
+  margin: 0.2em 0 0.4em;
+}
+
+.expand-controls button {
+  background: none;
+  border: none;
+  padding: 0.25em 0;
+  cursor: pointer;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--link);
+}
+
+.expand-controls button:hover {
+  color: var(--link-hover);
+}
+
 /* Section-group tables (By section, By medium & format): drop the per-row
    dividers so only the major-group h2 border separates groups, and tighten
    row vertical padding. */

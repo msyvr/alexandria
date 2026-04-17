@@ -231,6 +231,60 @@ _MAJOR_SECTION_DEFAULT_ORDER = [
 ]
 
 
+# Used by By section + By medium & format views so users can flip every
+# major group's subsection accordion at once.
+_EXPAND_ALL_CONTROL_HTML = (
+    '<div class="expand-controls">'
+    '<button type="button" id="expand-toggle">Expand all</button>'
+    '</div>'
+)
+
+_EXPAND_ALL_SCRIPT = """<script>
+(function() {
+  var STORAGE_PREFIX = 'alexandria-subsections:';
+  var btn = document.getElementById('expand-toggle');
+  var list = document.querySelectorAll('details.subsections');
+  if (!list.length) return;
+
+  function key(d) {
+    return STORAGE_PREFIX + location.pathname + '#' + (d.getAttribute('data-major-id') || '');
+  }
+
+  // Restore previous open/closed state from localStorage.
+  list.forEach(function(d) {
+    try {
+      var saved = localStorage.getItem(key(d));
+      if (saved === '1') d.open = true;
+      else if (saved === '0') d.open = false;
+    } catch (e) {}
+  });
+
+  // Persist state whenever a details element toggles — covers both user
+  // clicks on the <summary> and programmatic flips from the button below.
+  list.forEach(function(d) {
+    d.addEventListener('toggle', function() {
+      try { localStorage.setItem(key(d), d.open ? '1' : '0'); } catch (e) {}
+    });
+  });
+
+  function syncButton() {
+    if (!btn) return;
+    var anyOpen = Array.prototype.some.call(list, function(d) { return d.open; });
+    btn.textContent = anyOpen ? 'Collapse all' : 'Expand all';
+  }
+  syncButton();
+
+  if (btn) {
+    btn.addEventListener('click', function() {
+      var anyOpen = Array.prototype.some.call(list, function(d) { return d.open; });
+      list.forEach(function(d) { d.open = !anyOpen; });
+      syncButton();
+    });
+  }
+})();
+</script>"""
+
+
 def by_section_index(library: dict, all_items: list[dict], items_by_section: dict[str, list[dict]]) -> str:
     """Render the By section index grouped by each item's major_section.
 
@@ -270,10 +324,15 @@ def by_section_index(library: dict, all_items: list[dict], items_by_section: dic
         blocks.append(
             f'<div class="section-group"><h2 class="major-heading">'
             f'<a href="{major_slug}.html">{escape(major)}</a> '
-            f'<small>({group_total})</small></h2>\n{table}</div>'
+            f'<small>({group_total})</small></h2>\n'
+            f'<details class="subsections" data-major-id="{major_slug}">'
+            f'<summary>subsections</summary>{table}</details></div>'
         )
 
-    body = "".join(blocks) if blocks else '<p>No sections to display.</p>'
+    if blocks:
+        body = _EXPAND_ALL_CONTROL_HTML + "".join(blocks) + _EXPAND_ALL_SCRIPT
+    else:
+        body = '<p>No sections to display.</p>'
     return _page("By section", body, library, all_items, axes_current="by-section", from_subdir=True)
 
 
@@ -506,10 +565,15 @@ def by_medium_format_index(library: dict, all_items: list[dict]) -> str:
         sections.append(
             f'<div class="section-group"><h2 class="major-heading">'
             f'<a href="{form}.html">{escape(form.capitalize())}</a> '
-            f'<small>({active_total})</small></h2>\n{table}</div>'
+            f'<small>({active_total})</small></h2>\n'
+            f'<details class="subsections" data-major-id="{form}">'
+            f'<summary>subsections</summary>{table}</details></div>'
         )
 
-    body = ''.join(sections) if sections else '<p>No items to display.</p>'
+    if sections:
+        body = _EXPAND_ALL_CONTROL_HTML + "".join(sections) + _EXPAND_ALL_SCRIPT
+    else:
+        body = '<p>No items to display.</p>'
     return _page("By medium & format", body, library, all_items, axes_current="by-medium-format", from_subdir=True)
 
 

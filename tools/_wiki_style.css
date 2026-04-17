@@ -5,39 +5,39 @@
    gracefully instead of failing. */
 
 @font-face {
-  font-family: 'EB Garamond';
+  font-family: "EB Garamond";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('fonts/eb-garamond-400.woff2') format('woff2');
+  src: url("fonts/eb-garamond-400.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'EB Garamond';
+  font-family: "EB Garamond";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('fonts/eb-garamond-400-italic.woff2') format('woff2');
+  src: url("fonts/eb-garamond-400-italic.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'EB Garamond';
+  font-family: "EB Garamond";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('fonts/eb-garamond-700.woff2') format('woff2');
+  src: url("fonts/eb-garamond-700.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('fonts/inter-400.woff2') format('woff2');
+  src: url("fonts/inter-400.woff2") format("woff2");
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('fonts/inter-600.woff2') format('woff2');
+  src: url("fonts/inter-600.woff2") format("woff2");
 }
 
 :root {
@@ -68,11 +68,15 @@
   }
 }
 
-* { box-sizing: border-box; }
-html { font-size: 120%; }
+* {
+  box-sizing: border-box;
+}
+html {
+  font-size: 90%;
+}
 
 body {
-  font-family: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
   max-width: 46em;
   margin: 0 auto;
   padding: 1.5em 1.25em;
@@ -84,7 +88,9 @@ body {
   min-height: 100vh;
 }
 
-main { flex: 1 0 auto; }
+main {
+  flex: 1 0 auto;
+}
 
 /* Header */
 
@@ -136,7 +142,7 @@ header.page-header h1 {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0.2em 0.45em;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: "EB Garamond", Garamond, Georgia, serif;
   font-size: 0.85em;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -156,15 +162,37 @@ header.page-header h1 {
 
 /* Links */
 
-a { color: var(--link); text-decoration: none; }
-a:hover { color: var(--link-hover); text-decoration: underline; }
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
 
 /* Headings */
 
-h1, h2, h3 { font-family: 'EB Garamond', Garamond, Georgia, serif; line-height: 1.25; }
-h2 { margin-top: 1.4em; margin-bottom: 0.4em; font-size: 1.2em; font-weight: normal; border-bottom: 1px solid var(--border); padding-bottom: 0.15em; }
-h3 { margin-top: 1em; margin-bottom: 0.3em; font-size: 1.05em; font-weight: 600; }
-
+h1,
+h2,
+h3 {
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  line-height: 1.25;
+}
+h2 {
+  margin-top: 1.4em;
+  margin-bottom: 0.4em;
+  font-size: 1.2em;
+  font-weight: normal;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.15em;
+}
+h3 {
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+  font-size: 1.05em;
+  font-weight: normal;
+}
 
 /* Item cards */
 
@@ -182,7 +210,9 @@ article.item-card {
   min-height: 12cqw;
 }
 
-article.item-card:last-child { border-bottom: none; }
+article.item-card:last-child {
+  border-bottom: none;
+}
 
 .item-card-left {
   flex: 0 0 85%;
@@ -206,18 +236,27 @@ img.item-card-thumb {
 article.item-card h3 {
   margin: 0;
   font-size: 0.95em;
-  font-weight: 600;
+  font-weight: normal;
   display: inline;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
-article.item-card h3 a { color: var(--text); }
-article.item-card h3 a:hover { color: var(--link); text-decoration: none; }
+article.item-card h3 a {
+  color: var(--text);
+}
+article.item-card h3 a:hover {
+  color: var(--link);
+  text-decoration: none;
+}
 
 article.item-card .meta {
-  font-size: 0.75em;
+  font-size: 0.85em;
   color: var(--muted);
-  margin: 0.1em 0;
+  margin: 0.1em 0 0 0;
 }
 
 article.item-card .description {
@@ -231,13 +270,15 @@ article.item-card .description {
 }
 
 article.item-card .detail {
-  font-size: 0.72em;
+  font-size: 0.85em;
   color: var(--muted);
-  margin-top: 0.15em;
+  margin-top: 0.3em;
   letter-spacing: 0.03em;
 }
 
-article.item-card.removed { opacity: 0.45; }
+article.item-card.removed {
+  opacity: 0.45;
+}
 
 article.item-card .removed-tag {
   color: var(--removed);
@@ -262,7 +303,11 @@ article.item-card .removed-tag {
   padding: 0.25em 0.6em;
   border-bottom: 1px solid transparent;
   font-size: 0.82em;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   color: var(--link);
 }
 
@@ -278,24 +323,36 @@ article.item-card .removed-tag {
 
 /* Section groups */
 
-.section-group { margin: 1.2em 0; }
-.section-group h2 { margin-top: 0.3em; }
+.section-group {
+  margin: 1.2em 0;
+}
+.section-group h2 {
+  margin-top: 0.3em;
+}
 
 /* Extra breathing room after each major group on By section / By m&f.
    :has() scopes this to groups led by a major-heading h2 so journal
    month groups are unaffected. */
-.section-group:has(> h2.major-heading) { margin-bottom: 2.2em; }
+.section-group:has(> h2.major-heading) {
+  margin-bottom: 2.2em;
+}
 
 h2.major-heading {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 1.05em;
-  font-weight: 400;
+  font-weight: normal;
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row
    dividers so only the major-group h2 border separates groups, and tighten
    row vertical padding. */
-.section-group table { margin: 0.2em 0; }
+.section-group table {
+  margin: 0.2em 0;
+}
 .section-group table td {
   border-bottom: none;
   padding: 0.1em 0.6em;
@@ -308,7 +365,11 @@ h2.major-heading {
   align-items: baseline;
   gap: 0.5em;
   margin: 0.8em 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 0.82em;
 }
 
@@ -320,7 +381,11 @@ h2.major-heading {
 }
 
 .sort-control select {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 0.95em;
   padding: 0.15em 0.3em;
   border: 1px solid var(--border);
@@ -337,7 +402,11 @@ h2.major-heading {
    keeps the link color. */
 
 .back-link {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 0.7em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -345,17 +414,40 @@ h2.major-heading {
 
 /* Tables */
 
-table { border-collapse: collapse; width: 100%; margin: 0.6em 0; }
-th, td { text-align: left; padding: 0.35em 0.6em; border-bottom: 1px solid var(--border); font-size: 0.92em; }
-tr:last-child td { border-bottom: none; }
-th { font-weight: 600; color: var(--muted); font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.04em; border-bottom-color: var(--muted); }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.6em 0;
+}
+th,
+td {
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92em;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+th {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.82em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom-color: var(--muted);
+}
 
 /* Item title (page-level, not cards) */
 
 h1.item-title {
-  font-size: 1.5em;
+  font-size: 1.05em;
   font-weight: normal;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   margin: 0.4em 0 0.2em 0;
   line-height: 1.2;
 }
@@ -369,11 +461,30 @@ h1.item-title {
   margin: 0.5em 0;
 }
 
-.item-metadata dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.1em 0.6em; font-size: 0.8em; }
-.item-metadata dt { color: var(--muted); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.04em; align-self: baseline; }
-.item-metadata dd { margin: 0; align-self: baseline; }
-.item-metadata dd a { color: var(--text); }
-.item-metadata dd a:hover { color: var(--link); }
+.item-metadata dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.1em 0.6em;
+  font-size: 0.85em;
+}
+.item-metadata dt {
+  color: var(--muted);
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  align-self: baseline;
+}
+.item-metadata dd {
+  margin: 0;
+  align-self: baseline;
+}
+.item-metadata dd a {
+  color: var(--text);
+}
+.item-metadata dd a:hover {
+  color: var(--link);
+}
 
 /* Header row: metadata grid left-half, optional thumbnail right-justified */
 
@@ -394,7 +505,9 @@ h1.item-title {
   display: block;
   line-height: 0;
 }
-.item-thumb-link:hover { text-decoration: none; }
+.item-thumb-link:hover {
+  text-decoration: none;
+}
 
 .item-thumb {
   width: 100%;
@@ -413,14 +526,38 @@ h1.item-title {
 
 /* Item content (rendered from README) */
 
-.item-content { margin: 0.8em 0; font-size: 0.9em; }
-.item-content img { max-width: 100%; height: auto; }
-.item-content h1 { font-size: 1.1em; font-weight: 600; }
-.item-content h2 { font-size: 1em; font-weight: 600; margin-top: 1em; border-bottom: none; padding-bottom: 0; }
-.item-content h3 { font-size: 0.92em; }
-.item-content ul, .item-content ol { padding-left: 1.2em; }
-.item-content li { margin: 0.15em 0; }
-.item-content p { margin: 0.4em 0; }
+.item-content {
+  margin: 0.8em 0;
+  font-size: 0.9em;
+}
+.item-content img {
+  max-width: 100%;
+  height: auto;
+}
+.item-content h1 {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+.item-content h2 {
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 1em;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.item-content h3 {
+  font-size: 0.92em;
+}
+.item-content ul,
+.item-content ol {
+  padding-left: 1.2em;
+}
+.item-content li {
+  margin: 0.15em 0;
+}
+.item-content p {
+  margin: 0.4em 0;
+}
 
 .item-content dl.kv-grid {
   margin: 0.4em 0;
@@ -463,8 +600,12 @@ blockquote.user-notes {
 
 /* Item notes (notes/ directory) */
 
-.item-notes { margin: 1.2em 0; }
-.item-notes h2 { font-size: 1.15em; }
+.item-notes {
+  margin: 1.2em 0;
+}
+.item-notes h2 {
+  font-size: 1.15em;
+}
 
 .note-entry {
   border-bottom: 1px solid var(--border);
@@ -472,8 +613,13 @@ blockquote.user-notes {
   margin: 0;
 }
 
-.note-entry:last-child { border-bottom: none; }
-.note-entry h3 { margin: 0 0 0.3em 0; font-size: 0.95em; }
+.note-entry:last-child {
+  border-bottom: none;
+}
+.note-entry h3 {
+  margin: 0 0 0.3em 0;
+  font-size: 0.95em;
+}
 
 .item-notes blockquote {
   border-left: 2px solid var(--accent);
@@ -496,7 +642,7 @@ blockquote.user-notes {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0.4em 0.6em;
-  font-family: 'EB Garamond', Garamond, Georgia, serif;
+  font-family: "EB Garamond", Garamond, Georgia, serif;
   font-size: 0.95em;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -522,7 +668,11 @@ blockquote.user-notes {
 }
 
 .search-prompt kbd {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 0.85em;
   padding: 0.1em 0.35em;
   border: 1px solid var(--border);
@@ -539,19 +689,29 @@ blockquote.user-notes {
   padding: 0.35em 0;
 }
 
-.search-item:last-child { border-bottom: none; }
+.search-item:last-child {
+  border-bottom: none;
+}
 
 .search-title {
   font-size: 0.95em;
   font-weight: 600;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
-.search-title a { color: var(--text); }
-.search-title a:hover { color: var(--link); }
+.search-title a {
+  color: var(--text);
+}
+.search-title a:hover {
+  color: var(--link);
+}
 
 .search-meta {
-  font-size: 0.78em;
+  font-size: 0.85em;
   color: var(--muted);
 }
 
@@ -562,13 +722,13 @@ blockquote.user-notes {
 }
 
 .search-detail {
-  font-size: 0.72em;
+  font-size: 0.85em;
   color: var(--muted);
   letter-spacing: 0.03em;
 }
 
 .search-notes {
-  font-size: 0.8em;
+  font-size: 0.85em;
   color: var(--muted);
   font-style: italic;
   margin-top: 0.1em;
@@ -605,7 +765,11 @@ article.journal-entry {
 .journal-date {
   font-size: 0.78em;
   color: var(--muted);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 h3.journal-headline {
@@ -620,9 +784,19 @@ h3.journal-headline {
   text-overflow: ellipsis;
 }
 
-.journal-detail { font-size: 0.88em; line-height: 1.45; }
-.journal-detail strong { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.03em; }
-.journal-detail p { margin: 0.2em 0; }
+.journal-detail {
+  font-size: 0.88em;
+  line-height: 1.45;
+}
+.journal-detail strong {
+  color: var(--muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.journal-detail p {
+  margin: 0.2em 0;
+}
 
 /* Footer */
 

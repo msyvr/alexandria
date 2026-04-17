@@ -288,8 +288,13 @@ h2.major-heading {
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row
-   dividers so only the major-group h2 border separates groups. */
-.section-group table td { border-bottom: none; }
+   dividers so only the major-group h2 border separates groups, and tighten
+   row vertical padding. */
+.section-group table { margin: 0.2em 0; }
+.section-group table td {
+  border-bottom: none;
+  padding: 0.1em 0.6em;
+}
 
 /* Sort control (All view) */
 

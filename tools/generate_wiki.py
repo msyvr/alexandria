@@ -196,12 +196,41 @@ def _convert_kv_lists_to_dl(html: str) -> str:
     return UL_RE.sub(replace_ul, html)
 
 
-def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bool]:
+def _strip_description_paragraphs(html: str, description: str) -> str:
+    """Remove any <p>...</p> whose text content matches the metadata
+    description (after whitespace normalization and inner-tag stripping).
+
+    The item page already renders the description separately at the top,
+    so any copy inside the README body is redundant — no matter where it
+    appears (first paragraph, after a photo, repeated by hand edit).
+    """
+    import re
+    if not description:
+        return html
+    norm_desc = re.sub(r"\s+", " ", description).strip()
+    if not norm_desc:
+        return html
+
+    def _replace(match: "re.Match[str]") -> str:
+        inner = match.group(1)
+        # Strip inner tags, then collapse whitespace for comparison.
+        text = re.sub(r"<[^>]+>", "", inner)
+        text = re.sub(r"\s+", " ", text).strip()
+        return "" if text == norm_desc else match.group(0)
+
+    return re.sub(r"<p>(.*?)</p>\s*", _replace, html, flags=re.DOTALL)
+
+
+def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str = "") -> tuple[str, bool]:
     """Render README markdown to HTML, truncating to the word limit.
 
-    Strips the first <h1> (duplicates the page title) and the first
-    italic paragraph if it looks like an author line (duplicates the
-    template's author display).
+    Strips redundant content that's already surfaced by the item page
+    template: the first <h1> (title shown separately), the first italic
+    "by ..." author line, and any <p>s whose text matches the metadata
+    description. Sections that mirror the page metadata grid (Catalog
+    entry, Shelf location) are stripped as whole <h2> blocks. The
+    trailing "See metadata.yaml ..." paragraph is stripped because the
+    template renders a styled link near the bottom of the page.
     """
     import re
 
@@ -215,9 +244,10 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
     # Strip first <p><em>by ...</em></p> (author is shown separately on the page).
     html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
 
-    # Strip the first remaining <p> — this is the README's description paragraph,
-    # which the item page already renders at the top.
-    html = re.sub(r'^\s*<p>.*?</p>\s*', '', html, count=1, flags=re.DOTALL)
+    # Strip every <p> whose text matches the metadata description — handles
+    # both the canonical template (description once near the top) and any
+    # item whose README repeats the description (e.g., again after a photo).
+    html = _strip_description_paragraphs(html, description)
 
     # Strip the trailing "See `metadata.yaml` ..." paragraph — the wiki template
     # renders a styled metadata link near the bottom of the page instead.
@@ -514,7 +544,9 @@ def generate_wiki(library_path: Path) -> None:
         if status != "removed" and not is_live_scout:
             readme_md = load_item_readme(library_path, book_path)
             if readme_md:
-                readme_html, readme_truncated = render_readme_html(readme_md, md_renderer)
+                readme_html, readme_truncated = render_readme_html(
+                    readme_md, md_renderer, description=item.get("description", "") or ""
+                )
 
         # Load user notes from notes/ directory if present
         if status != "removed":

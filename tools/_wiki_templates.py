@@ -710,14 +710,22 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
     slug = escape(item.get("slug", ""))
     path = item.get("path", "")
 
-    # Metadata grid
+    # Metadata grid — order: By, Acquired, Added, Shelf, Section, Format, Status
     metadata_rows = []
+    if author:
+        metadata_rows.append(f"<dt>By</dt><dd>{escape(author)}</dd>")
+    acquired_at = escape(item.get("acquired_at", ""))
+    if acquired_at:
+        metadata_rows.append(f"<dt>Acquired</dt><dd>{acquired_at}</dd>")
+    metadata_rows.append(f"<dt>Added</dt><dd>{date_added}</dd>")
+    shelf_location = escape(item.get("shelf_location", ""))
+    if shelf_location:
+        metadata_rows.append(f"<dt>Shelf</dt><dd>{shelf_location}</dd>")
+    metadata_rows.append(f"<dt>Section</dt><dd><a href=\"../by-section/{section.lower().replace(' ', '-')}.html\">{section}</a></dd>")
     if media_type:
         metadata_rows.append(f"<dt>Format</dt><dd>{media_type} ({form})</dd>")
     else:
         metadata_rows.append(f"<dt>Form</dt><dd>{form}</dd>")
-    metadata_rows.append(f"<dt>Section</dt><dd><a href=\"../by-section/{section.lower().replace(' ', '-')}.html\">{section}</a></dd>")
-    metadata_rows.append(f"<dt>Added</dt><dd>{date_added}</dd>")
 
     if item.get("book_type") == "scout":
         if settled:
@@ -782,7 +790,6 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 <p>Content is preserved in the item's directory. <a href="../../{path}/">Browse the item directory</a>.</p>
 </div>"""
 
-    author_html = f'<p class="item-author">by {escape(author)}</p>' if author else ""
     description_html = f'<p class="description">{description}</p>' if description else ""
     user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
 
@@ -822,8 +829,6 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 <h1 class="item-title">{title}</h1>
 
 {header_row}
-
-{author_html}
 
 {description_html}
 

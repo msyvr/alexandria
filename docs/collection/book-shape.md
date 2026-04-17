@@ -62,6 +62,8 @@ status: "active"                      # active or removed
 ```yaml
 author: "Ursula Le Guin"              # semantics vary by item type (see below)
 user_notes: "Essential reference."     # freeform personal notes about this item
+acquired_at: "2024-11-20"             # ISO date — when the user acquired the item
+shelf_location: "Hall bookcase, top"   # freeform — physical items only
 provenance:
   source: "Personal collection"       # freeform string — where this came from
   notes: "Inherited from family"      # freeform string — any acquisition context
@@ -247,6 +249,14 @@ provenance:
 ```
 
 The minimum structure guarantees that cross-item-type queries like "where did this come from?" work without having to know the specific item type's extended schema.
+
+### `acquired_at` (optional, ISO 8601 date)
+
+The date the user acquired the item in the real world — distinct from `date_added` (which is the date the item was cataloged in alexandria). Freeform to the extent that you provide a date; use `YYYY-MM-DD`. Displayed as "Acquired" on the item page when present. Applies to any item type that the user acquired (physical purchases, digital downloads, subscriptions).
+
+### `shelf_location` (optional, string — physical items)
+
+Freeform description of where the physical item lives — e.g., `"Upstairs hall bookcases, right bookcase, 3rd shelf from bottom"`. Displayed as "Shelf" on the item page when present. Physical items have a dedicated section for shelf details in their README; this field makes it available to the generator for a compact grid display as well.
 
 ### `removed_at` (optional, ISO 8601 date)
 

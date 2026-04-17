@@ -161,6 +161,7 @@ status: "active"
 
 # Universal optional
 author: "{author if known}"
+acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
   source: "{e.g., 'Photographed from personal shelf, 2026-04-10'}"
   notes: "{user-provided context, or omit entirely}"

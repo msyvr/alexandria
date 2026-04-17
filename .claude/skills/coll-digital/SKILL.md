@@ -200,6 +200,7 @@ status: "active"
 
 # Universal optional
 author: "{author if known}"
+acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
   source: "{original file path or URL}"
   notes: "{user-provided context, or omit}"

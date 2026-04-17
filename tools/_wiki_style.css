@@ -281,7 +281,15 @@ article.item-card .removed-tag {
 .section-group { margin: 1.2em 0; }
 .section-group h2 { margin-top: 0.3em; }
 
-h2.major-heading { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+h2.major-heading {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 1.05em;
+  font-weight: 400;
+}
+
+/* Section-group tables (By section, By medium & format): drop the per-row
+   dividers so only the major-group h2 border separates groups. */
+.section-group table td { border-bottom: none; }
 
 /* Sort control (All view) */
 

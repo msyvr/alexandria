@@ -56,7 +56,7 @@ building and organizing private curated collections.
   coll-scout, coll-notes)
 - `docs/collection/` — collection-level specs (universal item shape)
 - `docs/scout/` — scout item type reference docs (process, prompts, conventions, examples)
-- `docs/guides/` — user-facing guides (terminal basics, YAML, item anatomy, scouts, troubleshooting)
+- `docs/guides/` — user-facing guides (terminal basics, YAML, item anatomy, scouts, fonts and typography, troubleshooting)
 - `tools/` — Python tools (wiki generator, templates, stylesheet)
 - `tests/` — automated tests and manual testing checklist
 

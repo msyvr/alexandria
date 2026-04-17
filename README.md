@@ -88,7 +88,7 @@ Claude Code determines the appropriate item type and guides you through building
 
 ### Day-to-day use
 
-- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with indexes across the full collection (All), By section, By author/artist, By medium & format, and Let the LLM decide (placeholder for a narrative layer). Works fully offline. No terminal needed for daily browsing.
+- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with indexes across the full collection (All), By section, By author/artist, By medium & format, and Let the LLM decide (placeholder for a narrative layer). Works fully offline, and the fonts ship with the collection (no CDN lookups), so the rendering is identical on any machine. See the [fonts and typography guide](docs/guides/fonts-and-typography.md) for how to swap them.
 - **Add more items**: `/coll` → add an item (the wiki regenerates automatically after each addition)
 - **Update an item**: `cd` into it and work with Claude Code directly
 - **Reorganize**: `/coll` → reorganize when the structure needs adjusting
@@ -130,6 +130,7 @@ Claude Code determines the appropriate item type and guides you through building
 - [YAML basics](docs/guides/yaml-basics.md) — reading and editing metadata.yaml files
 - [Anatomy of an item](docs/guides/anatomy-of-an-item.md) — what's inside an item directory, what each file does, what you can safely change
 - [Working with scouts](docs/guides/working-with-scouts.md) — the scout lifecycle: creating, maintaining, settling, importing
+- [Fonts and typography](docs/guides/fonts-and-typography.md) — which fonts ship with the wiki, why they're self-hosted, how to swap them
 - [Troubleshooting](docs/guides/troubleshooting.md) — common issues and how to fix them
 
 ### Reference docs

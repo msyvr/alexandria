@@ -95,7 +95,7 @@ main {
 /* Header */
 
 header.page-header {
-  margin-bottom: 0.6em;
+  margin-bottom: 0.2em;
   padding-bottom: 0.4em;
   border-bottom: 1px solid var(--border);
   display: grid;
@@ -206,7 +206,6 @@ article.item-card {
   padding: 0.45em 0;
   display: flex;
   align-items: flex-start;
-  gap: 0.8em;
   min-height: 12cqw;
 }
 
@@ -221,13 +220,12 @@ article.item-card:last-child {
 
 .item-card-right {
   flex: 0 0 15%;
-  container-type: inline-size;
 }
 
 img.item-card-thumb {
   display: block;
-  width: 80%;
-  max-height: 80cqw;
+  width: 12cqw;
+  max-height: 12cqw;
   object-fit: cover;
   object-position: center;
   margin-left: auto;
@@ -272,7 +270,7 @@ article.item-card .description {
 article.item-card .detail {
   font-size: 0.85em;
   color: var(--muted);
-  margin-top: 0.3em;
+  margin-top: 0.4em;
   letter-spacing: 0.03em;
 }
 
@@ -292,7 +290,7 @@ article.item-card .removed-tag {
 /* Axes navigation */
 
 .axes-nav {
-  margin: 0.8em 0;
+  margin: 0.3em 0 0.8em;
   display: flex;
   flex-wrap: wrap;
   gap: 0.3em;
@@ -302,12 +300,14 @@ article.item-card .removed-tag {
   display: inline-block;
   padding: 0.25em 0.6em;
   border-bottom: 1px solid transparent;
-  font-size: 0.82em;
+  font-size: 0.7em;
   font-family:
     "Inter",
     system-ui,
     -apple-system,
     sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--link);
 }
 
@@ -345,6 +345,8 @@ h2.major-heading {
     sans-serif;
   font-size: 1.05em;
   font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row

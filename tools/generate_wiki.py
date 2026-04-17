@@ -229,15 +229,15 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt) -> tuple[str, bo
 
     html = _convert_kv_lists_to_dl(html)
 
-    # Strip the "Catalog entry" section (redundant with the page-level metadata
-    # grid at the top). Matches the section's <h2> plus its following list,
-    # whether the kv-list conversion turned it into a <dl> or it's still a <ul>.
-    html = re.sub(
-        r'<h2>Catalog entry</h2>\s*<(dl|ul)[^>]*>.*?</\1>\s*',
-        '',
-        html,
-        flags=re.DOTALL,
-    )
+    # Strip sections whose content is now surfaced in the page-level metadata
+    # grid. Matches the <h2> and everything until the next <h2> or end of doc.
+    for strip_h2 in ("Catalog entry", "Shelf location"):
+        html = re.sub(
+            rf'<h2>{re.escape(strip_h2)}</h2>.*?(?=<h2>|$)',
+            '',
+            html,
+            flags=re.DOTALL,
+        )
 
     return html, was_truncated
 

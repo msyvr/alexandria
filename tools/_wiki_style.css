@@ -459,6 +459,21 @@ details.subsections > summary:hover {
   outline: none;
 }
 
+/* Dropdown options: force the open panel to use the site's palette and
+   font instead of the OS default. Not every browser fully respects these
+   (macOS is the holdout — the open panel there still uses system UI),
+   but Firefox and Chromium honor the rules and the closed box already
+   uses the theme. */
+.sort-control select option {
+  background: var(--card-bg);
+  color: var(--text);
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
 /* Back link: same font/size treatment as the Sort-by label,
    keeps the link color. */
 

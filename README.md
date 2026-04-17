@@ -88,7 +88,7 @@ Claude Code determines the appropriate item type and guides you through building
 
 ### Day-to-day use
 
-- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with multi-axis indexes (by section, date, type, form, media type). Works fully offline. No terminal needed for daily browsing.
+- **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with indexes across the full collection (All), By section, By author/artist, By medium & format, and Let the LLM decide (placeholder for a narrative layer). Works fully offline. No terminal needed for daily browsing.
 - **Add more items**: `/coll` → add an item (the wiki regenerates automatically after each addition)
 - **Update an item**: `cd` into it and work with Claude Code directly
 - **Reorganize**: `/coll` → reorganize when the structure needs adjusting

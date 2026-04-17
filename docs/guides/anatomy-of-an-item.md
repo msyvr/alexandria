@@ -40,11 +40,17 @@ Some items have additional files depending on their type:
 
 ### metadata.yaml — the catalog entry
 
-This is the most important file. It contains everything the collection needs to know about the item: title, author, section, description, when it was added, what format it is, and any personal notes.
+This is the most important file. It contains everything the collection needs to know about the item: title, author, major section, section, description, when it was added, what format it is, and any personal notes. Optional fields include `acquired_at` (date you got the item, distinct from the date it was cataloged), `shelf_location` (for physical items), and `user_notes`.
 
 The collection index (`.collection-index.yaml` at the collection root) is built from these files. The wiki views are generated from them. When you search or browse your collection, this is the data being read.
 
 **You can edit this file.** See the [YAML basics guide](yaml-basics.md) for how.
+
+#### Major sections vs. sections
+
+Every item carries two grouping fields. `section` is your specific subsection (e.g., `ai safety`, `fiction`, `photographs`). `major_section` is the higher-level grouping the subsection belongs to — the defaults are `Books`, `Research papers`, `Visual`, `Audio`, `Personal`, and `Etc`, but you can use any Title-Case label you want.
+
+Two fields rather than one because the same topic can live under different majors — a book on AI safety lives under `Books / ai safety`, while a paper on AI safety lives under `Research papers / ai safety`. The By-section wiki view groups subsections under their majors; a major label you've coined yourself shows up right after the defaults.
 
 ### README.md — the spine
 
@@ -84,6 +90,12 @@ This file is created the first time you use `/coll-notes` on the item. It record
 It's useful when you return to an item after a long break — Claude reads it and picks up where you left off.
 
 **You can edit this file.** Your edits persist. It's your record.
+
+### Images — auto-discovered thumbnails
+
+Any image file in the item's directory (`.jpg`, `.jpeg`, `.png`, `.heic`, `.webp`, `.gif`) is picked up automatically — no metadata field needed. The first image (alphabetical) is shown as a small thumbnail beside the item on every list view, and as a larger right-aligned thumbnail in the two-column header of the item's wiki page. Clicking the thumbnail opens the full-size file in a new tab.
+
+For physical items this is typically the cover photo (`photo.jpg` by convention). For digital image items it's the original file. For any other item, dropping in a `cover.jpg` (or any image) will be picked up on the next wiki regeneration.
 
 ## Files you should not delete
 

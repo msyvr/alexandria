@@ -1,10 +1,10 @@
-# Discovery Patterns
+## Discovery Patterns
 
 Patterns for automated discovery of new entries and staleness detection. Used in Phase 6 (Automate) to build `scripts/discover.py`.
 
-## GitHub Discovery
+### GitHub Discovery
 
-### Search queries
+#### Search queries
 ```python
 GITHUB_QUERIES = [
     # Direct topic search
@@ -16,13 +16,13 @@ GITHUB_QUERIES = [
 ]
 ```
 
-### Filtering
+#### Filtering
 - **Minimum stars**: Calibrate to the landscape. A niche domain might use 5 stars; a broad ecosystem might use 100. Start low, adjust upward if too many candidates surface.
 - **Last updated**: Filter out repos with no commits in 24+ months (configurable). These are candidates for staleness, not discovery.
 - **Language filter**: Optional. Some landscapes are language-specific.
 - **Exclude forks**: Forks clutter results. Filter with `fork:false` in the GitHub search API.
 
-### Staleness signals
+#### Staleness signals
 ```python
 STALE_THRESHOLDS = {
     "no_commits_months": 18,      # No commits in 18 months
@@ -31,34 +31,34 @@ STALE_THRESHOLDS = {
 }
 ```
 
-### Rate limits
+#### Rate limits
 - Unauthenticated: 10 requests/minute
 - Authenticated: 30 requests/minute
 - Use a personal access token. Store in environment variable, not in code.
 - Paginate results (30 per page default, 100 max)
 
-## arXiv Discovery
+### arXiv Discovery
 
-### Category-based search
+#### Category-based search
 ```python
 ARXIV_CATEGORIES = ["cs.AI", "cs.LG", "cs.CR"]  # Adapt to domain
 ARXIV_KEYWORDS = ["keyword1", "keyword2"]
 ```
 
-### API usage
+#### API usage
 - Base URL: `http://export.arxiv.org/api/query`
 - Respect the 3-second delay between requests
 - Use `sortBy=submittedDate&sortOrder=descending` for recent papers
 - Date range: `submittedDate:[YYYYMMDD TO YYYYMMDD]`
 
-### Filtering
+#### Filtering
 - Keyword match in title or abstract
 - Date range (last 30 days for weekly runs, last 7 for daily)
 - Exclude papers already in the dataset (match by arXiv ID)
 
-## Semantic Scholar Discovery
+### Semantic Scholar Discovery
 
-### Citation-based discovery
+#### Citation-based discovery
 Find papers that cite entries already in the dataset:
 ```python
 # For each paper in entries.yaml with a Semantic Scholar ID or DOI
@@ -66,38 +66,38 @@ Find papers that cite entries already in the dataset:
 # Filter by date, venue, and citation count
 ```
 
-### Author tracking
+#### Author tracking
 Track prolific authors in the space:
 ```python
 # GET /author/{author_id}/papers
 # Filter by date range
 ```
 
-### Venue filtering
+#### Venue filtering
 Restrict to specific conferences/journals:
 ```python
 VENUES = ["NeurIPS", "ICML", "ICLR", "ACL", "USENIX Security"]
 ```
 
-### Rate limits
+#### Rate limits
 - 100 requests per 5 minutes without API key
 - 1000 requests per 5 minutes with API key
 - Request a key at semanticscholar.org for production use
 
-## General Web Discovery
+### General Web Discovery
 
-### Product Hunt
+#### Product Hunt
 - Search by topic keyword
 - Filter by launch date (recent)
 - Useful for tool/product landscapes, not research
 
-### Hacker News
+#### Hacker News
 - Use hn.algolia.com API: `http://hn.algolia.com/api/v1/search`
 - Search `Show HN` posts for new tools
 - Filter by points (>10 for niche topics, >50 for broad topics)
 - Filter by date
 
-## Discovery Script Structure
+### Discovery Script Structure
 
 ```python
 #!/usr/bin/env python3
@@ -164,7 +164,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## Key Principles
+### Key Principles
 
 1. **Surface, don't decide**: Output candidates. A human reviews and accepts/rejects.
 2. **Deduplicate against existing**: Always check if a candidate is already in entries.yaml.

@@ -1,17 +1,17 @@
-# Universal item shape
+## Universal item shape
 
 Every item in an alexandria collection follows the same outer shape, regardless of item type. This contract makes items interchangeable at the collection level: the catalog can iterate over them, views can render them, skills can operate on them, and new item types can plug into the existing infrastructure without redesigning the foundation.
 
 This document specifies the shape. Item types define their own content within it.
 
-## Design principles
+### Design principles
 
 - **Minimum mandatory, nothing speculative.** Every required field has a defined consumer today.
 - **metadata.yaml is the source of truth.** The collection-level `.collection-index.yaml` is a regenerable cache derived from every item's `metadata.yaml`.
 - **Filesystem structure is not duplicated in metadata.** If the information is in the directory path, it doesn't also live in a field. (One exception: `section` is kept in metadata so the index cache doesn't require filesystem walks.)
 - **Hand-editable.** A user should be able to open `metadata.yaml` in a text editor, change a field, and have the collection pick up the change.
 
-## Item directory shape
+### Item directory shape
 
 Every item directory contains these files at acquisition time:
 
@@ -40,9 +40,9 @@ Files created on first use or only for certain item types:
 
 **Type-specific content files**: whatever the item type needs. Scouts have `data/entries.yaml`, `scripts/`, `docs/`, and a generated `README.md`. Physical items might have a `photo.jpg`. Digital items might have an `original.pdf` plus a markdown extraction.
 
-## metadata.yaml universal schema
+### metadata.yaml universal schema
 
-### Required fields
+#### Required fields
 
 ```yaml
 slug: "condition-x-treatments"        # unique within library; matches directory name
@@ -57,7 +57,7 @@ media_type: "text:markdown"           # hierarchical format: {content_type}:{for
 status: "active"                      # active or removed
 ```
 
-### Optional fields
+#### Optional fields
 
 ```yaml
 author: "Ursula Le Guin"              # semantics vary by item type (see below)
@@ -71,7 +71,7 @@ removed_at: "2026-05-01"              # ISO date; only if status == removed
 removed_reason: "Superseded"          # freeform; only if status == removed
 ```
 
-### Type-specific fields
+#### Type-specific fields
 
 Item types define their own fields at the top level of the same file, after the universal fields. No nesting ceremony. Example for scout:
 
@@ -83,9 +83,9 @@ settled_at: "2026-05-15"              # ISO date; only present if settled == tru
 
 For scouts, the `settled` field captures whether the scout is live (updating via discovery) or frozen as a static reference. Settling is a first-class action in the /coll skill — see `.claude/skills/coll/SKILL.md`. The wiki renders settled scouts inline like other static item types, while live scouts link out to their own presentation.
 
-## Field semantics
+### Field semantics
 
-### `slug` (required, string)
+#### `slug` (required, string)
 
 URL-and-filename-safe identifier for the item. Generated from the title:
 - Lowercase
@@ -96,11 +96,11 @@ URL-and-filename-safe identifier for the item. Generated from the title:
 
 Must be **unique within the collection**. The `/coll` acquisition process checks existing slugs and appends a numeric suffix if needed (`-2`, `-3`, etc.). The item's directory name matches its slug.
 
-### `title` (required, string)
+#### `title` (required, string)
 
 Display name. Any characters allowed. Shown in catalog views and used as the `<title>` in generated HTML.
 
-### `book_type` (required, enum)
+#### `book_type` (required, enum)
 
 One of:
 - `physical` — a record of a physical item the user owns (no content files; the item lives on a shelf)
@@ -109,7 +109,7 @@ One of:
 
 This determines which creation skill was used and what type-specific fields to expect.
 
-### `major_section` (required, string)
+#### `major_section` (required, string)
 
 The top-level grouping this item belongs to. Used on the By section wiki view to organize sections into broader categories.
 
@@ -125,7 +125,7 @@ The user can pick from this set or supply a custom name. Skills offer the defaul
 
 Note: `major_section` is stored on the item because the same topic name (e.g., "ai safety") can live under multiple majors (`Books / ai safety` vs. `Research papers / ai safety`). Storing the major explicitly removes the ambiguity.
 
-### `section` (required, string)
+#### `section` (required, string)
 
 The specific subsection within the major. Matches a directory at the collection root (e.g., `fiction`, `ai safety`, `photographs`). Required.
 
@@ -133,15 +133,15 @@ If the acquisition process can't determine a section, it defaults to `"unsorted"
 
 Note: `section` duplicates information from the directory path. It's kept in metadata so the `.collection-index.yaml` cache doesn't require walking the filesystem on every read. This is a deliberate exception to the "don't duplicate filesystem structure" principle.
 
-### `description` (required, string)
+#### `description` (required, string)
 
 One-line summary. Target ~150 characters, maximum ~300. Shown in catalog and index views without opening the item. Should convey what the item is and why the user has it.
 
-### `date_added` (required, ISO 8601 date)
+#### `date_added` (required, ISO 8601 date)
 
 The date the item was added to the collection. Format: `YYYY-MM-DD`. Set automatically on acquisition; never changed by normal operations.
 
-### `form` (required, enum)
+#### `form` (required, enum)
 
 One of:
 - `digital` — content exists as files in the item directory
@@ -149,7 +149,7 @@ One of:
 
 Binary. There is no `both` value for v1. If a user has the same work in both forms, they create two entries with no cross-reference. Linking is a deferred feature.
 
-### `media_type` (required, hierarchical string)
+#### `media_type` (required, hierarchical string)
 
 Describes what the object structurally IS — its format. Not its purpose or content. Format: `{content_type}:{format}`, parseable on the colon.
 
@@ -196,7 +196,7 @@ Image formats:
 - `digital`: inferred from file extension (`.pdf` → `text:pdf`, `.mp3` → `audio:digital`, etc.)
 - `scout`: `text:markdown` (scouts are structurally markdown files)
 
-### `status` (required, enum)
+#### `status` (required, enum)
 
 One of:
 - `active` — the item is part of the live library (default)
@@ -204,7 +204,7 @@ One of:
 
 There is no `archived` status. Archiving is accomplished by moving an item to an `_archive/` section, not by changing status. Removal (via weeding) sets `status: removed` — see `/coll` weeding actions.
 
-### `author` (optional, string)
+#### `author` (optional, string)
 
 Semantics vary by item type:
 - **physical**: the literal author of the physical item (e.g., "Ursula K. Le Guin")
@@ -215,7 +215,7 @@ For the user's own work (imported via `/coll-digital`), set author to the user's
 
 When null or omitted, catalog views display "—" or skip the author display.
 
-### `user_notes` (optional, string)
+#### `user_notes` (optional, string)
 
 Freeform personal notes about this item — why the user has it, what it's useful for, anything the user wants to record for their own reference. Unlike `description` (which is a one-line summary for catalog views), `user_notes` can be any length and is for the user's own use.
 
@@ -227,7 +227,7 @@ Examples:
 
 Shown on the item's wiki page when present. Not shown in index/catalog card views (those use `description`). The user can add or edit this at any time by editing `metadata.yaml`.
 
-### `provenance` (optional, object)
+#### `provenance` (optional, object)
 
 Acquisition context. Minimum structure is two freeform string fields:
 
@@ -250,23 +250,23 @@ provenance:
 
 The minimum structure guarantees that cross-item-type queries like "where did this come from?" work without having to know the specific item type's extended schema.
 
-### `acquired_at` (optional, ISO 8601 date)
+#### `acquired_at` (optional, ISO 8601 date)
 
 The date the user acquired the item in the real world — distinct from `date_added` (which is the date the item was cataloged in alexandria). Freeform to the extent that you provide a date; use `YYYY-MM-DD`. Displayed as "Acquired" on the item page when present. Applies to any item type that the user acquired (physical purchases, digital downloads, subscriptions).
 
-### `shelf_location` (optional, string — physical items)
+#### `shelf_location` (optional, string — physical items)
 
 Freeform description of where the physical item lives — e.g., `"Upstairs hall bookcases, right bookcase, 3rd shelf from bottom"`. Displayed as "Shelf" on the item page when present. Physical items have a dedicated section for shelf details in their README; this field makes it available to the generator for a compact grid display as well.
 
-### `removed_at` (optional, ISO 8601 date)
+#### `removed_at` (optional, ISO 8601 date)
 
 Only present when `status == removed`. The date the item was weeded.
 
-### `removed_reason` (optional, string)
+#### `removed_reason` (optional, string)
 
 Only present when `status == removed`. Freeform explanation of why the item was removed. Recommended but not required — helps future browsing make sense of the historical record.
 
-## .collection-index.yaml cache format
+### .collection-index.yaml cache format
 
 The collection-level index is a regenerable cache of universal fields from every item's `metadata.yaml`. Type-specific fields are not in the cache — views that need them read the item's own `metadata.yaml` directly.
 
@@ -302,7 +302,7 @@ sections:
         path: "causal inference/causal-inference-methods"
 ```
 
-### Regeneration
+#### Regeneration
 
 If `.collection-index.yaml` is missing or stale, the `/coll` skill rebuilds it by:
 
@@ -313,7 +313,7 @@ If `.collection-index.yaml` is missing or stale, the `/coll` skill rebuilds it b
 
 This means the user can delete `.collection-index.yaml` at any time without data loss. The source of truth is the per-item `metadata.yaml` files.
 
-## How item types extend the shape
+### How item types extend the shape
 
 Each item type:
 
@@ -328,7 +328,7 @@ The item type is free to define its own content shape beyond metadata — README
 - The `metadata.yaml` universal fields are all present and valid
 - The directory is self-contained (content lives under the item's directory, not elsewhere)
 
-## Slug generation reference
+### Slug generation reference
 
 Given a title, generate a slug:
 
@@ -346,7 +346,7 @@ Examples:
 
 Uniqueness check: if the generated slug collides with an existing item in the collection, append `-2`, `-3`, etc. until a unique slug is found.
 
-## Validation
+### Validation
 
 There is no automated validation tool in v1. The `/coll` skill ensures valid metadata at acquisition time by construction. Users who hand-edit `metadata.yaml` are trusted to preserve the schema; the regeneration process tolerates missing optional fields but will fail loudly on missing required fields.
 

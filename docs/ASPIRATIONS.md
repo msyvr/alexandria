@@ -1,6 +1,6 @@
-# Project Aspirations
+## Project Aspirations
 
-## The core idea
+### The core idea
 
 Alexandria is lightweight private collection infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
 
@@ -8,7 +8,7 @@ The collection is a directory on your machine. Inside it, "items" are the things
 
 Alexandria is AI-assisted, but not AI-dependent. A librarian (Claude Code today, a local open-source model eventually) helps with cataloging, search, and cross-item questions — but every feature of the collection works without one. You can browse the catalog, walk the sections, and read any item without invoking any AI at all.
 
-## Why not just a plain folder?
+### Why not just a plain folder?
 
 A folder with subfolders is fine at ten items. By the time you have a hundred, you can't find anything you didn't name carefully, you can't remember why half of it is there, and nothing ties related items together.
 
@@ -25,13 +25,13 @@ Alexandria adds the minimum structure that makes a collection browseable at scal
 
 The structure is deliberately lightweight. It's not a database. It's not an app. It's files on disk, organized in a way that scales past a few hundred items without requiring an AI to navigate.
 
-## Who this is for
+### Who this is for
 
 Anyone who would benefit from an organized, private collection of digital content they want to own rather than depend on someone else's platform. No technical background is required. Some users will be software engineers who don't want to build the scaffolding from scratch. Some will have never opened a terminal. Both want the same thing: a collection they own, understand, and can use.
 
 The tool meets people where they are technically. For users new to working in a terminal, the process builds practical skills as a side effect. For technical users, it skips the hand-holding and gets to the result.
 
-## Technical minimalism as a skill
+### Technical minimalism as a skill
 
 For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: **technical minimalism**. Know what's absolutely necessary for security and essential capabilities, and know what isn't. Direct AI assistants effectively. Read structured data. Understand what "you own this data" means in practice.
 
@@ -39,7 +39,7 @@ This is a much smaller surface area than "learn to code" and a much more valuabl
 
 Alexandria is designed so this learning happens as a side effect of building something you actually need. If that's not your goal, fine — the collection still works the same way. The upskilling is opt-in.
 
-## Collection invariants
+### Collection invariants
 
 These derive from the real-world collection metaphor and are the acceptance criteria for alexandria's design. Every invariant must hold for the collection to earn its place over a plain folder.
 
@@ -54,11 +54,11 @@ These derive from the real-world collection metaphor and are the acceptance crit
 
 9. **Items record their form and media_type.** Every catalog entry includes a `form` field (binary: digital or physical — where does this live?) and a `media_type` field (hierarchical: content_type:format — what specifically is this? e.g., `text:hardcover`, `text:pdf`, `audio:vinyl`). The two axes let users browse by both dimensions: "show me my physical items" (form) or "show me my vinyl collection" (media_type). Linking duplicates across form (same work in physical and digital) is deferred — for v1, duplicates are separate entries.
 
-## Item types
+### Item types
 
 An item type defines how content of a particular kind gets created, organized, and maintained. All item types share the universal outer shape (README, metadata, classification, catalog entry) and the collection's infrastructure. Beyond that, each type has its own creation process and conventions.
 
-### Physical (planned, top priority)
+#### Physical (planned, top priority)
 
 A record of a physical item (or other physical item) you own. Unlike import, no content is copied — the item itself lives on your shelf. The catalog entry is the collection's representation of the item. Creation is primarily photo-based: photograph a single item or a whole shelf, and the librarian extracts title, author, and other metadata from the image. Manual entry is supported as well, with or without a photo. An optional visual record (the photograph itself) is preserved.
 
@@ -75,11 +75,11 @@ Leading with physical also signals what alexandria values: the considered, owner
 
 Best-quality AI is the default for photo extraction (vision models benefit from stronger models), with a local-model option for privacy-first users.
 
-### Digital (available now)
+#### Digital (available now)
 
 Digital content the user wants to bring into their collection — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. This includes the user's own work (notes, drafts, creative output) as well as content from other sources. Content is copied into the collection, preserved exactly in its original format, and cataloged with extracted metadata. Runs through `/coll-digital`.
 
-### Scout (available, but not the focus)
+#### Scout (available, but not the focus)
 
 A living knowledge base that monitors a domain. Unlike other item types, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
 
@@ -87,13 +87,13 @@ A scout can be **short-lived** (built for an immediate need, updated briefly, th
 
 Because scout creation depends on capabilities that currently only the best models have (research, critique, editorial writing), scouts remain Claude-assisted even as the collection librarian shifts to local models. This asymmetry is intentional: the collection foundation should be maximally portable; the ambitious item-building work can reasonably require better models.
 
-### Future types
+#### Future types
 
 The architecture accommodates item types not yet designed. The constraint is the shared infrastructure: an item type must produce a self-contained directory with the universal outer shape, fit into the collection's classification, and integrate with the catalog. Beyond that, item types are free.
 
-## Where this is headed
+### Where this is headed
 
-### Near-term (largely complete)
+#### Near-term (largely complete)
 
 - ✅ Universal item shape defined and enforced across all three item types
 - ✅ Physical, digital, and scout item types all implemented
@@ -103,14 +103,14 @@ The architecture accommodates item types not yet designed. The constraint is the
 - ✅ **Soft-locked section management** — sections are stable between organizational reviews. New items go into existing sections; `unsorted` is the fallback. Claude notices catch-all, size-drift, and unsorted-accumulation conditions and proposes a review via `/coll` → review-sections. Addresses the classification drift problem: never-updated taxonomies go stale; constantly-churning ones make nothing findable.
 - Library-level reference docs to rebalance against the depth of scout-level docs (partial — `docs/collection/book-shape.md` exists)
 
-### Medium-term
+#### Medium-term
 
 - Narrative layer for the wiki view (topics, cross-references, related-items). Default to Claude; local model support when there's a clear path and non-technical setup instructions.
 - Technical onboarding guidance woven into the process: terminal basics, reading structured data, running scripts, version control — each introduced when needed
 - Plugin packaging for streamlined installation
 - End-to-end user testing across all three item types and collection operations
 
-### Long-term
+#### Long-term
 
 - Default librarian is a local, open-source model; Claude remains the default only for the most demanding tasks (scout creation, vision-based physical item cataloging, narrative layer wiki generation)
 - Q&A as a first-class interaction with items and the collection as a whole

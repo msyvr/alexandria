@@ -1,4 +1,4 @@
-# Fonts and typography
+## Fonts and typography
 
 The wiki ships with its own fonts. Alexandria copies them into every
 collection's `wiki/_assets/fonts/` directory on regeneration, and the
@@ -7,7 +7,7 @@ on every machine — Mac, Linux, Windows, old browsers, new browsers — and
 keeps the collection fully offline: no CDN lookups, no network calls, no
 dependency on whatever fonts the user happens to have installed.
 
-## What ships with the wiki
+### What ships with the wiki
 
 Five [WOFF2](https://en.wikipedia.org/wiki/Web_Open_Font_Format) files,
 ~120 KB in total, under `tools/fonts/` in the alexandria repo:
@@ -24,7 +24,7 @@ are the
 [@fontsource](https://fontsource.org/) builds of each family, which are
 just repackaged Google Fonts source files optimized for self-hosting.
 
-## Why self-host
+### Why self-host
 
 A few reasons, roughly in order of how much they matter:
 
@@ -40,7 +40,7 @@ A few reasons, roughly in order of how much they matter:
 3. **No surprise breakage.** A font URL can change or go away. A font
    file sitting in your collection directory does not.
 
-## How the stylesheet uses them
+### How the stylesheet uses them
 
 `tools/_wiki_style.css` declares the fonts with `@font-face` and then
 falls back to system fonts if the WOFF2 files are missing or corrupt:
@@ -59,7 +59,7 @@ stack falls through to `Garamond` (installed on many systems), then
 `Georgia` (installed almost everywhere), then a generic serif. The
 rendering degrades but stays readable.
 
-## Swapping a font
+### Swapping a font
 
 If you want to use different fonts:
 
@@ -84,7 +84,7 @@ If you want to use different fonts:
 The whole change is ~10 lines of CSS and a directory of files. No code
 changes.
 
-## If you just want to tweak rather than swap
+### If you just want to tweak rather than swap
 
 Each `font-size`, `letter-spacing`, and `font-weight` in
 `tools/_wiki_style.css` is a one-line edit. Anchor sizes in `em` (relative
@@ -93,7 +93,7 @@ scales the whole wiki proportionally. The root size is `90%` by default,
 meaning 14.4 px if your browser default is 16 px — bumping it to `100%`
 makes everything ~10% larger.
 
-## Why these two families specifically
+### Why these two families specifically
 
 EB Garamond is a long-established open revival of a Garamond-family
 face — warm, readable at body sizes, with a full italic. It pairs well
@@ -107,7 +107,7 @@ for axes nav, sort labels, major-group headings, item-card titles, and
 format-line text — anywhere a structural label wants to read as
 informational rather than literary.
 
-## Further reading
+### Further reading
 
 - [fontsource.org](https://fontsource.org/) — self-hostable open-source
   fonts, packaged for download.

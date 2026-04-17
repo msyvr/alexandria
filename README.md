@@ -1,4 +1,4 @@
-# alexandria
+## alexandria
 
 Lightweight private collection infrastructure for items and other content/items you own, keep, and reference — physical and digital alike.
 
@@ -12,31 +12,31 @@ Alexandria borrows heavily from the real-world library: a curated collection whe
 
 See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).
 
-## Who is this for?
+### Who is this for?
 
 Anyone who wants to organize a private collection independently — to own the result rather than depend on an external platform, and to have the ability to use the collection without any special or proprietary software. Content can be viewed in any browser, in a simple format. No technical background required, though technical users are equally welcome.
 
-### An optional side benefit: technical upskilling
+#### An optional side benefit: technical upskilling
 
 For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: knowing how to direct AI tools effectively without needing to become a programmer. Building real things you actually need — opening a terminal, reading structured data, running scripts, understanding what "you own this data" means technically — teaches you what matters and what doesn't. The skills transfer well beyond this tool. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the technical minimalism philosophy.
 
 If that's not your goal, clear instructions are provided for building and extending your collection. After that, exploring it as as easy as using Wikipedia.
 
-## Item types
+### Item types
 
 All item types share a universal outer shape: a README (the spine), metadata (the catalog entry), and content. Each type has its own creation process within that shape.
 
-### Physical
+#### Physical
 
 A record of a physical item you own. No content is copied — the item lives on your shelf; the catalog entry represents it in your collection. Creation is photo-based: photograph a single item or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. Run `/coll-physical` or `/coll` → add an item → physical.
 
 Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanning and standard metadata well. Alexandria differentiates on shelf photo accuracy (using stronger vision models than existing apps), local-first ownership (files on your machine, not in someone's cloud), no subscription, and integration with other item types in a single collection. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
 
-### Digital
+#### Digital
 
 Digital content you want to bring into the collection — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. The collection copies the content, preserves the original exactly, and extracts metadata so you can find it later. Run `/coll-digital` or `/coll` → add an item → digital.
 
-### Scout
+#### Scout
 
 A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, systematically critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
 
@@ -44,15 +44,15 @@ A scout can be **short-lived** (built for an immediate need, updated briefly, th
 
 Scout is useful when a topic is complex enough to warrant careful organization, personal enough that no generic tool quite fits, and evolving fast enough that a static resource goes stale. For example: navigating a complex medical situation, monitoring a professional field, or tracking fast-moving developments.
 
-## Getting started
+### Getting started
 
-### What you need
+#### What you need
 
 - **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that creates items and manages the collection. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Runs in your terminal, [in a browser](https://claude.ai/code), or via the phone app ([iOS](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), [Android](https://play.google.com/store/apps/details?id=com.anthropic-claude)). Browser and phone require a GitHub-hosted library.
 - **Python 3.10+** — for scripts within built scouts. Check with `python3 --version`.
 - No coding experience required. You guide the process by answering questions; Claude Code generates all scripts and data files. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the skills you'll pick up along the way.
 
-### Create your collection
+#### Create your collection
 
 1. Install Claude Code: [claude.ai/claude-code](https://claude.ai/claude-code)
 2. Clone the alexandria repo and install dependencies:
@@ -74,7 +74,7 @@ claude
 
 All `/coll-*` commands are available inside the collection directory. No global skill installation needed.
 
-### Add an item
+#### Add an item
 
 From `/coll`, choose "add an item" and describe what you need:
 
@@ -86,7 +86,7 @@ From `/coll`, choose "add an item" and describe what you need:
 
 Claude Code determines the appropriate item type and guides you through building it. Physical and scout item types are available now; import and author are planned.
 
-### Day-to-day use
+#### Day-to-day use
 
 - **Browse**: open `~/alexandria/wiki/index.html` in any browser — the wiki view gives you a familiar, navigable interface with indexes across the full collection (All), By section, By author/artist, By medium & format, and Let the LLM decide (placeholder for a narrative layer). Works fully offline, and the fonts ship with the collection (no CDN lookups), so the rendering is identical on any machine. See the [fonts and typography guide](docs/guides/fonts-and-typography.md) for how to swap them.
 - **Add more items**: `/coll` → add an item (the wiki regenerates automatically after each addition)
@@ -95,7 +95,7 @@ Claude Code determines the appropriate item type and guides you through building
 - **Remove an item**: `/coll` → remove-item (keeps the catalog entry marked as removed) or `delete-item` (removes the entry entirely)
 - **Regenerate the wiki manually**: `/coll-menu` → regenerate-wiki (or from the collection directory: `uv run python tools/generate_wiki.py .`)
 
-## What uses Claude Code and what doesn't
+### What uses Claude Code and what doesn't
 
 **Requires Claude Code** (internet + Anthropic account): Creating a new collection, adding items, and creating scouts (the scout process involves research, schema design, editorial writing, systematic critique, and script generation). During these tasks, your prompts and responses pass through Anthropic's servers. Your data files — YAML, markdown, scripts — remain on your machine and are not uploaded.
 
@@ -105,9 +105,9 @@ Claude Code determines the appropriate item type and guides you through building
 
 **Long-term direction**: the default librarian will be a local, open-source model. Library-level tasks (browsing, cataloging, search, cross-item questions) don't require Claude's capabilities and shouldn't depend on a subscription. Claude will remain the default only for scout creation and maintenance, where the quality gap meaningfully matters. Users who never build scouts will eventually be able to use alexandria with only a local model.
 
-## What's in this repo
+### What's in this repo
 
-### Skills
+#### Skills
 
 - [/coll-build-new-collection](.claude/skills/coll-build-new-collection/SKILL.md) — create a new collection (run once from the alexandria repo)
 - [/coll-menu](.claude/skills/coll-menu/SKILL.md) — guided menu for all collection actions
@@ -123,7 +123,7 @@ Claude Code determines the appropriate item type and guides you through building
 - [/coll-import-collection](.claude/skills/coll-import-collection/SKILL.md) — import all items from another collection into this one
 - [/coll-update-from-latest-alexandria](.claude/skills/coll-update-from-latest-alexandria/SKILL.md) — update skills to the latest version from the alexandria repo
 
-### Guides
+#### Guides
 
 - [Terminal basics](docs/guides/terminal-basics.md) — directories, git repos, Claude Code sessions, running multiple sessions with tabs
 - [Python and uv](docs/guides/python-and-uv.md) — what Python, dependencies, uv, and git are (one paragraph each) and why you need them
@@ -133,24 +133,24 @@ Claude Code determines the appropriate item type and guides you through building
 - [Fonts and typography](docs/guides/fonts-and-typography.md) — which fonts ship with the wiki, why they're self-hosted, how to swap them
 - [Troubleshooting](docs/guides/troubleshooting.md) — common issues and how to fix them
 
-### Reference docs
+#### Reference docs
 
 - [docs/collection/](docs/collection/) — collection-level specs (universal item shape)
 - [docs/scout/](docs/scout/) — scout process phases, critique checklist, schema patterns, walkthroughs
 
-### Project direction
+#### Project direction
 
 - [ASPIRATIONS.md](docs/ASPIRATIONS.md) — project vision, collection architecture, technical minimalism, planned item types
 
 ---
 
-## Detailed setup walkthrough
+### Detailed setup walkthrough
 
 Step-by-step instructions assuming no prior terminal experience. Every command is shown exactly as you'll type it.
 
 Alexandria needs a few tools installed on your machine. For background on what each tool is and why it's needed, see the [Python and uv guide](docs/guides/python-and-uv.md). For help with the terminal itself, see the [terminal basics guide](docs/guides/terminal-basics.md).
 
-### 1. Open a terminal
+#### 1. Open a terminal
 
 A terminal is a text window where you type commands. See the [terminal basics guide](docs/guides/terminal-basics.md) for more detail.
 
@@ -158,7 +158,7 @@ A terminal is a text window where you type commands. See the [terminal basics gu
 - **Windows**: You'll need WSL (Windows Subsystem for Linux), which lets you run Linux commands on Windows. Install "Ubuntu" from the Microsoft Store, then open it from the Start menu. This gives you a terminal.
 - **Linux**: Open your Terminal or Konsole application.
 
-### 2. Check that Python is installed
+#### 2. Check that Python is installed
 
 Python is the programming language alexandria's tools are written in. You don't need to write Python — you just need it installed so the tools can run.
 
@@ -168,7 +168,7 @@ python3 --version
 
 You should see something like `Python 3.13.2`. If you see "command not found," install Python from [python.org/downloads](https://python.org/downloads) — download the installer for your system, run it, then try the command again.
 
-### 3. Check that Git is installed
+#### 3. Check that Git is installed
 
 Git is a tool for downloading and tracking changes to projects. You need it to download alexandria.
 
@@ -182,7 +182,7 @@ You should see something like `git version 2.43.0`. If you see "command not foun
 - **Windows (WSL/Ubuntu)**: type `sudo apt install git` (it will ask for your password)
 - **Linux**: type `sudo apt install git` (Ubuntu/Debian) or `sudo dnf install git` (Fedora)
 
-### 4. Install Claude Code
+#### 4. Install Claude Code
 
 Claude Code is the AI assistant that reads alexandria's skills and helps you build and manage your collection. You'll need an Anthropic account (free to create; Claude Code is included with a [Claude Pro subscription](https://claude.com/pricing) at $20/month).
 
@@ -190,7 +190,7 @@ Go to [claude.ai/claude-code](https://claude.ai/claude-code) and follow their in
 
 Verify it's installed by typing: `claude --version`
 
-### 5. Download alexandria
+#### 5. Download alexandria
 
 This command downloads the alexandria project to your computer:
 
@@ -201,7 +201,7 @@ git clone https://github.com/msyvr/alexandria.git
 
 The first line (`cd ~`) goes to your home directory. The second line downloads alexandria into a folder called `alexandria`. You'll see progress messages — wait until you're back at the prompt.
 
-### 6. Install uv and alexandria's dependencies
+#### 6. Install uv and alexandria's dependencies
 
 Alexandria's tools depend on a few shared Python packages (for reading YAML files, converting markdown to HTML, extracting PDF metadata, and so on). [uv](https://docs.astral.sh/uv/) is the tool that installs and manages these. See the [Python and uv guide](docs/guides/python-and-uv.md) for more about what these are.
 
@@ -220,7 +220,7 @@ uv sync
 
 This reads the list of what alexandria needs and installs it. You'll see output showing what was installed. After this, everything is ready.
 
-### 7. Create your collection
+#### 7. Create your collection
 
 You should still be in the alexandria directory from the previous step. Start Claude Code:
 
@@ -250,7 +250,7 @@ Do you want to create .collection-index.yaml?
 
 Say **Yes** (or choose option 2 to allow all edits in the collection without being asked for each one — recommended if you don't want to approve every file individually). These are the collection's catalog and skill files being set up. The skill copies the collection skills into your new collection's `.claude/skills/` directory.
 
-### 8. Switch to your collection
+#### 8. Switch to your collection
 
 Open a new terminal (or a new tab with `Cmd+T` on macOS) and start Claude Code from your collection directory:
 
@@ -261,7 +261,7 @@ claude
 
 You're now working from your collection. Type `/coll-` and hit tab to see all available commands, or type `/coll-menu` for a guided menu. You can keep the alexandria session open for reference, or close it when you're comfortable (`/exit` or `Ctrl+C`).
 
-### 9. Add your first item (from your collection directory)
+#### 9. Add your first item (from your collection directory)
 
 From the `/coll` prompt, choose "add an item" and describe what you need. A few examples:
 
@@ -271,7 +271,7 @@ From the `/coll` prompt, choose "add an item" and describe what you need. A few 
 
 Claude Code guides you from there, asking the questions relevant to the item type you chose. You provide the direction; it handles the construction.
 
-### 10. Browse your collection
+#### 10. Browse your collection
 
 In Claude Code: `/coll` → browse
 
@@ -281,11 +281,11 @@ In a browser:
 - **Windows (WSL)**: `explorer.exe $(wslpath -w ~/alexandria/index.html)`
 - **Linux**: `xdg-open ~/alexandria/index.html`
 
-### 11. Add more items
+#### 11. Add more items
 
 In Claude Code: `/coll` → add an item. Same process as step 9.
 
-### Troubleshooting
+#### Troubleshooting
 
 **"command not found"**: The tool isn't installed. Return to the relevant step above.
 

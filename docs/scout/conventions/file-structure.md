@@ -1,8 +1,8 @@
-# File Structure Convention
+## File Structure Convention
 
 Standard layout for repos built with the scout build process.
 
-## Structure
+### Structure
 
 ```
 repo-name/
@@ -24,20 +24,20 @@ repo-name/
     └── research-dump.md      # Raw research output
 ```
 
-## File Purposes
+### File Purposes
 
-### `data/entries.yaml`
+#### `data/entries.yaml`
 The single source of truth for all structured data. Every entry lives here. The generate script reads this file to produce the README.
 
 Schema is defined and validated in `scripts/generate_readme.py`, not in a separate schema file. This keeps the repo simple.
 
-### `docs/getting-started.md`
+#### `docs/getting-started.md`
 Hand-written editorial content. This is concatenated as Part 1 of the README by the generate script. It should read naturally standalone and as part of the README.
 
-### `docs/[audience].md`
+#### `docs/[audience].md`
 Audience-specific docs created when Phase 5 (Critique) identifies specialized needs. These are linked from the README but not concatenated into it.
 
-### `scripts/generate_readme.py`
+#### `scripts/generate_readme.py`
 Does three things:
 1. Validates `data/entries.yaml` against the schema (required fields, controlled vocabularies)
 2. Generates lens tables and category sections from the data
@@ -45,18 +45,18 @@ Does three things:
 
 Run with: `python scripts/generate_readme.py`
 
-### `scripts/discover.py`
+#### `scripts/discover.py`
 Searches configured sources for new candidates. Outputs results to stdout or creates GitHub issues.
 
 Run with: `python scripts/discover.py`
 
-### `references/`
+#### `references/`
 Optional directory for reading lists, link collections, or other reference material that supports the landscape but isn't structured data.
 
-### `temp/`
+#### `temp/`
 Working directory for intermediate files during the build process. Add to `.gitignore`. The research dump lives here during Phases 2-3.
 
-## What Goes Where
+### What Goes Where
 
 | Content type | Location | Generated? |
 |-------------|----------|------------|
@@ -69,7 +69,7 @@ Working directory for intermediate files during the build process. Add to `.giti
 | Schema definition | In generate_readme.py | No — Python constants |
 | Discovery config | In discover.py | No — Python constants |
 
-## Conventions
+### Conventions
 
 - **README.md is generated**: Never edit it directly. Edit the source (entries.yaml or docs/) and regenerate.
 - **One YAML file**: All entries in one file. Don't split by category — that creates merge conflicts and makes the schema harder to validate.

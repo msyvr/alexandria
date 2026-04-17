@@ -1,8 +1,8 @@
-# Troubleshooting
+## Troubleshooting
 
 Common issues and how to fix them.
 
-## Skills not found
+### Skills not found
 
 **Symptom**: You type `/coll-menu` (or any `/coll-*` command) and Claude Code doesn't recognize it.
 
@@ -13,7 +13,7 @@ Common issues and how to fix them.
 - Verify the skills are there: `ls .claude/skills/` — you should see `coll-menu`, `coll-physical`, etc.
 - If the `.claude/skills/` directory is empty or missing, the skills weren't copied during collection creation. Re-run from the alexandria repo: `cd ~/alexandria && claude`, then use `/coll-build-new-collection` and provide your existing collection's path.
 
-## Wiki not generating
+### Wiki not generating
 
 **Symptom**: You run the wiki generator and get an error about a missing file or module.
 
@@ -22,7 +22,7 @@ Common issues and how to fix them.
 2. Run the generator with the full path: `uv run python tools/generate_wiki.py .`
 3. If you get "No such file or directory" for `.collection-index.yaml`, the collection index is missing. Create it by asking Claude (from inside the collection) to scan the collection and rebuild the index.
 
-## Photo not reading (physical items)
+### Photo not reading (physical items)
 
 **Symptom**: Claude can't extract metadata from a photo you provided.
 
@@ -34,7 +34,7 @@ Common issues and how to fix them.
 
 **Fix**: Try a clearer photo, or switch to manual entry. Claude will always offer manual entry as a fallback.
 
-## metadata.yaml has an error
+### metadata.yaml has an error
 
 **Symptom**: The wiki generator or Claude Code reports an error reading an item's `metadata.yaml`.
 
@@ -45,7 +45,7 @@ Common issues and how to fix them.
 
 **Fix**: Open the file in a text editor, find the issue, correct it. See the [YAML basics guide](yaml-basics.md) for formatting rules. If you're stuck, ask Claude to look at the file and fix it.
 
-## "command not found" errors
+### "command not found" errors
 
 **Symptom**: You type a command (`claude`, `uv`, `python3`, `git`) and the terminal says "command not found."
 
@@ -57,7 +57,7 @@ Common issues and how to fix them.
 
 After installing, close and reopen your terminal (some tools aren't available until you start a new session).
 
-## Collection index seems stale
+### Collection index seems stale
 
 **Symptom**: You added or removed an item, but the wiki or browse view doesn't reflect the change.
 
@@ -68,7 +68,7 @@ uv run python tools/generate_wiki.py .
 
 If the `.collection-index.yaml` is also stale (e.g., an item you added manually without using a skill), ask Claude to rebuild the index by scanning the collection for `metadata.yaml` files.
 
-## Scout discovery script fails
+### Scout discovery script fails
 
 **Symptom**: `python scripts/discover.py` in a scout directory throws an error.
 
@@ -79,7 +79,7 @@ If the `.collection-index.yaml` is also stale (e.g., an item you added manually 
 
 **Fix**: Read the error message — it usually tells you what's wrong. If it mentions a missing module, install it. If it mentions rate limits, set up a GitHub token.
 
-## Something else went wrong
+### Something else went wrong
 
 Start Claude Code inside your collection directory and describe the problem:
 

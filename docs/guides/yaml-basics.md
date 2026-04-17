@@ -1,8 +1,8 @@
-# Reading and editing YAML
+## Reading and editing YAML
 
 Every item in your collection has a `metadata.yaml` file — the catalog entry that stores the item's title, author, section, and other information. This guide explains what you're looking at when you open one, and how to make changes safely.
 
-## What is YAML?
+### What is YAML?
 
 YAML is a way of writing structured data that's designed to be readable by humans. It looks like this:
 
@@ -15,7 +15,7 @@ date_added: "2026-04-10"
 
 Each line has a **field name** (like `title`), a colon, and a **value** (like `"The Dispossessed"`). That's it — field: value, one per line.
 
-## A real metadata.yaml file
+### A real metadata.yaml file
 
 Here's what a complete item entry looks like:
 
@@ -41,7 +41,7 @@ shelf_location: "Living room, top shelf"
 isbn: "978-0-06-012563-3"
 ```
 
-### What each field means
+#### What each field means
 
 The first group (required for every item):
 
@@ -74,7 +74,7 @@ The third group (type-specific — varies by item type):
 | `isbn` | Physical and digital items |
 | `settled` | Scouts (true if frozen as a static reference) |
 
-## How to edit metadata.yaml
+### How to edit metadata.yaml
 
 Open the file in any text editor. On macOS, you can type this in the terminal:
 
@@ -84,7 +84,7 @@ open -e ~/my-collection/fiction/the-dispossessed/metadata.yaml
 
 This opens it in TextEdit. Make your change, save, close. That's it.
 
-### What you can safely change
+#### What you can safely change
 
 - **`title`** — if you want to correct the title
 - **`description`** — if you want a better one-line summary
@@ -94,14 +94,14 @@ This opens it in TextEdit. Make your change, save, close. That's it.
 - **`shelf_location`** — update where the item is on your shelf
 - **`provenance`** — add notes about where the item came from
 
-### What you should leave alone
+#### What you should leave alone
 
 - **`slug`** — this matches the directory name. Changing one without the other breaks things.
 - **`book_type`** — this describes what kind of book it is. Changing it doesn't change what's in the directory.
 - **`date_added`** — this is the historical record of when you added it.
 - **`form`** and **`media_type`** — these describe the format. If they're wrong, it's fine to correct them, but changing `form: physical` to `form: digital` doesn't make a physical item into a digital one.
 
-### After editing
+#### After editing
 
 If you've changed a field that shows up in the collection views (title, description, author, section), you'll want to regenerate the wiki so the views reflect the change:
 
@@ -111,7 +111,7 @@ uv run python tools/generate_wiki.py .
 
 Or, from a Claude Code session inside your collection: ask Claude to regenerate the wiki, or use `/coll-menu` → regenerate wiki.
 
-## YAML formatting rules
+### YAML formatting rules
 
 A few things to keep in mind when editing:
 

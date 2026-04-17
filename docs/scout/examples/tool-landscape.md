@@ -1,8 +1,8 @@
-# Example: Building awesome-agent-sandboxes
+## Example: Building awesome-agent-sandboxes
 
 An honest walkthrough of how the awesome-agent-sandboxes repo was built using this process — including the mistakes and what the critique cycles caught.
 
-## Phase 1: Scope
+### Phase 1: Scope
 
 **Initial scope**: "Coding agent sandboxes" — environments that isolate AI coding agents from the host system.
 
@@ -19,7 +19,7 @@ An honest walkthrough of how the awesome-agent-sandboxes repo was built using th
 
 **Seed entries**: Docker, Firecracker, E2B, gVisor, Modal
 
-## Phase 2: Research
+### Phase 2: Research
 
 Research gathered 48 entries across the sandbox landscape. Sources included GitHub topic searches, product pages, blog posts, HN discussions, and academic references for VM/container isolation.
 
@@ -27,9 +27,9 @@ Research gathered 48 entries across the sandbox landscape. Sources included GitH
 
 **What was initially missed**: nono was found but initially given less attention than better-known alternatives. The gap-filling search ("alternatives to Docker for lightweight isolation") helped surface it properly.
 
-## Phase 3: Structure
+### Phase 3: Structure
 
-### Schema
+#### Schema
 ```yaml
 entries:
   - name: string
@@ -46,24 +46,24 @@ entries:
     notes: string (nullable)
 ```
 
-### Lenses (3 cross-cutting views)
+#### Lenses (3 cross-cutting views)
 1. **Isolation Tier**: hardware-vm → microvm → container/user-space-kernel → process-level → wasm/language-runtime
 2. **Adoption Effort**: zero-config → sign-up-for-service → install-a-tool → compose-building-blocks
 3. **Deployment Model**: built-into-agent → cloud-managed → local → self-hosted → kubernetes
 
-### Categories (9, in two groups)
+#### Categories (9, in two groups)
 
 **Products & Services**: cloud-managed, agent-integrated, standalone, kubernetes, dev-environment
 
 **Building Blocks**: abstraction, vm-runtime, os-primitive, wasm-runtime
 
-### What the critique checkpoint caught (before leaving Phase 3)
+#### What the critique checkpoint caught (before leaving Phase 3)
 
 **Mixed classification axes**: The initial category proposal mixed "by technology" and "by deployment model." The final taxonomy separated Products & Services (by how you access them) from Building Blocks (by what they are). This was a significant restructure that happened *during* Phase 3, not after.
 
 **General vs. purpose-built**: Koyeb (general cloud platform) and NanoClaw (purpose-built for agent sandboxing) were initially in the same category. The `agent-integrated` vs. `cloud-managed` distinction resolved this.
 
-## Phase 4: Build
+### Phase 4: Build
 
 Built `data/sandboxes.yaml` (48 entries), `docs/getting-started.md`, `docs/safety-research.md`, `scripts/generate_readme.py`, and the discovery pipeline.
 
@@ -72,11 +72,11 @@ Built `data/sandboxes.yaml` (48 entries), `docs/getting-started.md`, `docs/safet
 - getting-started.md leads with "what sandboxing protects against" (5 threat categories), not with a product comparison
 - safety-research.md was created for a specialized audience (security researchers, RL safety teams)
 
-## Phase 5: Critique
+### Phase 5: Critique
 
 Three critique passes, each producing material improvements.
 
-### Pass 1: Category misassignment and brand bias
+#### Pass 1: Category misassignment and brand bias
 
 **Finding**: "Docker Sandboxes" entries were categorized based on the category *name* (they use Docker), not the category *definition* (purpose-built sandbox environments using Docker as a runtime). Some entries were Docker-based tools that happened to provide isolation, not purpose-built sandboxes.
 
@@ -86,7 +86,7 @@ Three critique passes, each producing material improvements.
 
 **Fix**: Reordered getting-started recommendations by isolation strength and fit for purpose, not brand recognition.
 
-### Pass 2: Bundled entries and missing distinctions
+#### Pass 2: Bundled entries and missing distinctions
 
 **Finding**: Wasmtime, WasmEdge, and wasmCloud were treated as a single "WASM runtimes" entry. But they're separate projects with different maintainers, different architectures, and different capabilities.
 
@@ -96,7 +96,7 @@ Three critique passes, each producing material improvements.
 
 **Fix**: Notes field for general-purpose entries explicitly states "general-purpose platform with sandbox capabilities, not purpose-built for agent isolation."
 
-### Pass 3: Underpromotion and missing docs
+#### Pass 3: Underpromotion and missing docs
 
 **Finding**: nono (a lightweight, security-focused container alternative) was buried in a long category list despite being highly relevant for users who prioritize security and simplicity. Brand-recognition bias in ordering.
 
@@ -106,11 +106,11 @@ Three critique passes, each producing material improvements.
 
 **Fix**: Created `docs/safety-research.md` — a dedicated doc covering three research contexts (RL training, capability evaluation, adversarial red-teaming) with threat models and sandbox recommendations per context.
 
-## Phase 6: Automate
+### Phase 6: Automate
 
 Discovery script searches GitHub for new sandbox tools (topic search, keyword search, "awesome-sandbox" list mining). Staleness checking flags repos with no commits in 18+ months.
 
-## Lessons Encoded in the Tracker Process
+### Lessons Encoded in the Tracker Process
 
 | Lesson | Where it's encoded |
 |--------|-------------------|

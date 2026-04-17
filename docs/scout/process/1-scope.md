@@ -1,17 +1,17 @@
-# Phase 1: Scope
+## Phase 1: Scope
 
 **Driver**: User
 **Goal**: Establish what the repo covers and who it's for.
 
-## Why This Phase Matters
+### Why This Phase Matters
 
 Scope drift mid-build is expensive. The awesome-agent-sandboxes repo started as "coding agent sandboxes" and broadened to "any agent type" after user clarification. That shift affected categories, entries, and editorial framing. Getting scope right early saves rework.
 
-## Dialog with the User
+### Dialog with the User
 
 Ask about direction, not details. The user shouldn't need to think about YAML fields or Python code structure — they should think about what the repo covers and who reads it.
 
-### Questions to ask:
+#### Questions to ask:
 
 1. **Topic**: What's the landscape? What's in scope, what's out?
    - "Agent sandboxes" vs "coding agent sandboxes" vs "secure execution environments" are very different scopes
@@ -29,7 +29,7 @@ Ask about direction, not details. The user shouldn't need to think about YAML fi
    - Seed entries anchor the research and help calibrate scope
    - "I know about Docker, Firecracker, and E2B" immediately tells you the scope level
 
-## Output
+### Output
 
 A scope document — can be informal, in a temp file — that anchors all subsequent work:
 
@@ -55,7 +55,7 @@ A scope document — can be informal, in a temp file — that anchors all subseq
 - ...
 ```
 
-## Common Pitfalls
+### Common Pitfalls
 
 - **Scope too broad**: "AI tools" is a repo that never ships. Narrow to something a reader can scan in one sitting.
 - **Scope too narrow**: "Python sandboxes for coding agents on macOS" might have three entries. Broaden if the landscape is thin.

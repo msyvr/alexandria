@@ -1,8 +1,8 @@
-# Critique Checklist
+## Critique Checklist
 
 Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanically, or ask the user for direction. Iterate until a clean pass.
 
-## Category Integrity
+### Category Integrity
 
 - [ ] **Write inclusion tests**: For each category, write a one-sentence test: "An entry belongs in [Category] if and only if [criterion]."
 
@@ -14,7 +14,7 @@ Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanic
 
 - [ ] **Check for mixed classification axes**: Are categories grouping by the same principle? Mixing "by technology" (containers, VMs, WASM) with "by use case" (CI/CD, development, production) creates entries that belong in two categories.
 
-## Perspective Bias
+### Perspective Bias
 
 - [ ] **Check ordering**: Are recommendations and prominent entries ordered by quality, security properties, or fit for purpose? Or by brand recognition and GitHub stars? In awesome-agent-sandboxes, Docker-based solutions were listed first despite not being the most secure option — because Docker is the most recognized brand.
 
@@ -26,7 +26,7 @@ Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanic
 
 - [ ] **Check risk specificity**: Are risk callouts specific and sourced? "Containers share a kernel" is generic. "Docker's default seccomp profile allows ~300 of 435 syscalls; see [documentation link] for which calls are permitted" is actionable.
 
-## Completeness
+### Completeness
 
 - [ ] **Check for entries that should be split**: Are any entries actually multiple distinct projects bundled together? Different maintainers, different architectures, different use cases = different entries. Wasmtime, WasmEdge, and wasmCloud are three projects, not one "WASM runtimes" entry.
 
@@ -36,7 +36,7 @@ Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanic
 
 - [ ] **Check for missing specialized docs**: Is there an audience segment that deserves its own document? The safety research doc in awesome-agent-sandboxes emerged from recognizing that security-focused readers needed a different framing than the getting-started guide provided.
 
-## Schema Hygiene
+### Schema Hygiene
 
 - [ ] **Check for low-variance fields**: Any field where >80% of entries have the same value? That field isn't helping anyone triage. Drop it, fold it into notes, or rethink the vocabulary. In awesome-agent-sandboxes, `status: active` was true for nearly every entry.
 
@@ -44,7 +44,7 @@ Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanic
 
 - [ ] **Check lens tag accuracy**: Were lens tags assigned thoughtfully per-entry, or bulk-assigned based on category? Read 5 random entries and verify their lens tags are correct for that specific entry, not just plausible for its category.
 
-## Editorial Quality
+### Editorial Quality
 
 - [ ] **Test getting-started for least-technical audience**: Read the getting-started guide as if you know nothing about the domain. Does it explain what the domain is, why it matters, and how to pick a first option? Or does it assume knowledge?
 
@@ -54,7 +54,7 @@ Run this checklist after Phase 4 (Build). For each finding, decide: fix mechanic
 
 - [ ] **Check notes on recommended entries**: Every entry mentioned in editorial content should have notes in the YAML that explain its tradeoffs. If the getting-started guide says "start with X," the YAML notes for X should explain what X is good at and what it's not.
 
-## Running the Checklist
+### Running the Checklist
 
 1. Go through each item systematically. Don't skip items that "seem fine" — the point is to check.
 2. For each finding, categorize:

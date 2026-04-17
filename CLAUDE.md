@@ -1,6 +1,6 @@
-# alexandria
+## alexandria
 
-## Quick start
+### Quick start
 
 - **Building a new collection from scratch?** Type `/coll-build-new-collection`
 - **Already have a collection?** Close this session, navigate to your collection
@@ -11,7 +11,7 @@ If you need help at any point, just describe what you're trying to do in plain
 language. See the [guides](docs/guides/) for reference on terminals, YAML,
 item structure, scouts, and troubleshooting.
 
-## Important: this is the alexandria repo, not a collection
+### Important: this is the alexandria repo, not a collection
 
 This directory is the source code for alexandria — it's where skills are developed
 and where new collections are created from. It is NOT a collection itself.
@@ -34,7 +34,7 @@ If a user invokes any other `/coll-*` skill from this directory (e.g., `/coll-di
 >
 > If you haven't created a collection yet, type `/coll-build-new-collection`.
 
-## A note about permissions
+### A note about permissions
 
 When working on the collection, you'll sometimes see prompts asking "Do you want
 to proceed?" before a command runs. This is a safety feature — Claude Code asks
@@ -45,12 +45,12 @@ explain in plain language.
 
 ---
 
-## For developers working on alexandria
+### For developers working on alexandria
 
 This repo contains the alexandria toolkit — Claude Code skills and reference docs for
 building and organizing private curated collections.
 
-### Repo structure
+#### Repo structure
 - `.claude/skills/` — all collection skills (coll-build-new-collection, coll-menu,
   coll-physical, coll-hardcover, coll-paperback, coll-digital, coll-new-scout,
   coll-scout, coll-notes)
@@ -60,7 +60,7 @@ building and organizing private curated collections.
 - `tools/` — Python tools (wiki generator, templates, stylesheet)
 - `tests/` — automated tests and manual testing checklist
 
-### Development notes
+#### Development notes
 - Skill files must be self-contained — they're copied into each collection's `.claude/skills/`
 - Skills in this repo are the master copies; `/coll-build-new-collection` copies them into new collections
 - Users update their collection's skills via `/coll-menu` → update-skills (re-copies from this repo)

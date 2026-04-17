@@ -1,10 +1,10 @@
-# Research Gathering Prompts
+## Research Gathering Prompts
 
 Templates for systematic research in Phase 2. Adapt to the specific domain.
 
-## Tool/Product Landscape Research
+### Tool/Product Landscape Research
 
-### Initial broad search
+#### Initial broad search
 ```
 Search for [topic] tools, products, and services. For each, capture:
 - Name
@@ -22,7 +22,7 @@ Sources to check:
 5. Reddit: r/[relevant-subreddit], search "[topic]"
 ```
 
-### Gap-filling search
+#### Gap-filling search
 ```
 Given these existing entries: [list entries found so far]
 
@@ -34,7 +34,7 @@ Search for alternatives and competitors that might be missing:
 5. Non-English sources: are there tools popular in non-English-speaking communities?
 ```
 
-### Sentiment and real-world usage
+#### Sentiment and real-world usage
 ```
 For each entry in [list], search for real-world usage reports:
 1. GitHub issues: what do users complain about? What do they praise?
@@ -45,9 +45,9 @@ For each entry in [list], search for real-world usage reports:
 Capture: common praise, common complaints, known limitations not in docs
 ```
 
-## Research Domain Research
+### Research Domain Research
 
-### Paper search
+#### Paper search
 ```
 Search for papers on [topic]. For each, capture:
 - Title
@@ -67,7 +67,7 @@ Sources:
 5. Survey papers: search "survey [topic]", "review [topic]" — these map the landscape
 ```
 
-### Organization and group tracking
+#### Organization and group tracking
 ```
 Identify research groups and organizations active in [topic]:
 1. Who published the most-cited papers?
@@ -78,7 +78,7 @@ Identify research groups and organizations active in [topic]:
 For each org: name, type (academic/industry/nonprofit/government), key publications, URL
 ```
 
-### Area mapping
+#### Area mapping
 ```
 Map the sub-areas within [topic]:
 1. What are the main research threads?
@@ -90,7 +90,7 @@ Map the sub-areas within [topic]:
 For each sub-area: name, description, key questions, active groups, seminal papers, current state
 ```
 
-## Output Format
+### Output Format
 
 Use this consistent format for the research dump:
 

@@ -1,8 +1,8 @@
-# YAML Schema Patterns
+## YAML Schema Patterns
 
 Reusable schema patterns for different domain types. Choose and adapt based on the landscape.
 
-## Tool/Product Landscape
+### Tool/Product Landscape
 
 For repos tracking tools, products, services, or libraries.
 
@@ -30,12 +30,12 @@ entries:
     notes: "Context about this entry."   # Optional. Free text.
 ```
 
-### When to use
+#### When to use
 - Comparing tools that solve similar problems
 - "Awesome list" style repos with structured data
 - Decision-support repos ("which X should I use?")
 
-### Common domain fields
+#### Common domain fields
 | Field | Type | Use when |
 |-------|------|----------|
 | `capabilities` | list[string] | Entries do different things |
@@ -45,11 +45,11 @@ entries:
 | `pricing` | string | Mix of free and paid options |
 | `last_release` | string (date) | Maintenance status matters |
 
-## Research/Paper Tracking
+### Research/Paper Tracking
 
 For repos tracking academic papers, methods, or research areas.
 
-### Paper-centric schema
+#### Paper-centric schema
 ```yaml
 papers:
   - title: "Paper Title"                # Required.
@@ -64,7 +64,7 @@ papers:
     notes: "Why this matters."          # Optional.
 ```
 
-### Area-centric schema
+#### Area-centric schema
 ```yaml
 areas:
   - name: "Area Name"                   # Required.
@@ -81,7 +81,7 @@ areas:
     notes: null                          # Optional.
 ```
 
-### Hybrid schema
+#### Hybrid schema
 When you need both papers and areas, use separate top-level keys with cross-references:
 
 ```yaml
@@ -97,24 +97,24 @@ papers:
     # ...
 ```
 
-### When to use which
+#### When to use which
 - **Paper-centric**: The landscape is defined by publications. Readers want to find papers.
 - **Area-centric**: The landscape is defined by research threads. Readers want to understand the field.
 - **Hybrid**: Both — readers want to navigate areas and find specific papers within them.
 
-## Schema Design Principles
+### Schema Design Principles
 
-### Every field must earn its place
+#### Every field must earn its place
 If a field has the same value for >80% of entries, it's noise. Drop it or fold it into notes.
 
-### Required vs. optional
+#### Required vs. optional
 A field is required only if *every* entry can reasonably have a meaningful value. If you'd frequently write "N/A" or "unknown," make it optional.
 
-### Controlled vocabularies are small
+#### Controlled vocabularies are small
 3-6 values for lens fields. If you need more, the field is probably a free-text field or two separate fields.
 
-### Lists over booleans for capabilities
+#### Lists over booleans for capabilities
 `capabilities: ["gpu", "networking", "filesystem"]` is more informative and extensible than `has_gpu: true, has_networking: true, has_filesystem: true`.
 
-### Notes are nullable free text
+#### Notes are nullable free text
 Not every entry needs notes. But entries with important context — caveats, controversies, tradeoffs — should use them. Don't force notes on entries that don't need them.

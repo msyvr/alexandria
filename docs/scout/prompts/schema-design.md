@@ -1,23 +1,23 @@
-# Schema Design Prompt
+## Schema Design Prompt
 
 Use after Phase 2 (Research) to design the YAML schema for Phase 3 (Structure).
 
-## Process
+### Process
 
-### 1. Review the research dump
+#### 1. Review the research dump
 Read all entries. Identify:
 - What information is available for most entries?
 - What information varies meaningfully between entries?
 - What information is the same for most entries (and therefore not useful as a field)?
 
-### 2. Identify core fields
+#### 2. Identify core fields
 Every entry needs these regardless of domain:
 - `name`: Display name
 - `category`: Which section it belongs in
 - `url`: Primary link
 - `description`: One-sentence summary
 
-### 3. Identify domain fields
+#### 3. Identify domain fields
 Fields specific to the landscape type. Ask:
 - What does a reader need to compare entries?
 - What would a reader filter by?
@@ -25,17 +25,17 @@ Fields specific to the landscape type. Ask:
 
 **Test**: For each proposed field, check 5 entries from the research dump. Can you fill it in with meaningful, varying values? If not, the field doesn't earn its place.
 
-### 4. Identify lens fields
+#### 4. Identify lens fields
 Controlled-vocabulary fields for cross-cutting views. See [lens-design.md](lens-design.md).
 
-### 5. Decide on notes
+#### 5. Decide on notes
 The `notes` field is free text, nullable. It holds per-entry editorial context that doesn't fit structured fields. Not every entry needs notes, but entries with important caveats should have them.
 
-## Schema Patterns
+### Schema Patterns
 
 See [yaml-schema-patterns.md](../conventions/yaml-schema-patterns.md) for detailed patterns by domain type.
 
-### Tool landscape
+#### Tool landscape
 ```yaml
 entries:
   - name: string (required)
@@ -56,7 +56,7 @@ entries:
     notes: string (optional)
 ```
 
-### Research tracking
+#### Research tracking
 ```yaml
 papers:
   - title: string (required)
@@ -71,7 +71,7 @@ papers:
     notes: string (optional)
 ```
 
-## Presenting to the User
+### Presenting to the User
 
 When proposing the schema in Phase 3:
 1. Show the schema with one example entry fully populated

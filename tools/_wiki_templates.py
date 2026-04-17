@@ -329,36 +329,35 @@ def all_index(library: dict, all_items: list[dict]) -> str:
     listing = cards if cards else "<p>No items to display.</p>"
 
     sort_control = """<div class="sort-control">
-<label for="sort-select">Sort by</label>
-<select id="sort-select">
-<option value="date-desc" selected>Date added — newest first</option>
-<option value="date-asc">Date added — oldest first</option>
-<option value="acquired-desc">Date acquired — newest first</option>
-<option value="acquired-asc">Date acquired — oldest first</option>
-<option value="author-asc">Author / artist</option>
-<option value="title-asc">Title</option>
+<label for="sort-field">Sort by</label>
+<select id="sort-field">
+<option value="date" selected>Date added</option>
+<option value="acquired">Date acquired</option>
+<option value="author">Author / artist</option>
+<option value="title">Title</option>
+</select>
+<select id="sort-dir">
+<option value="desc" selected>Descending</option>
+<option value="asc">Ascending</option>
 </select>
 </div>"""
 
     sort_script = """<script>
 (function() {
-  var select = document.getElementById('sort-select');
+  var fieldSel = document.getElementById('sort-field');
+  var dirSel = document.getElementById('sort-dir');
   var container = document.getElementById('all-listing');
-  if (!select || !container) return;
-  select.addEventListener('change', function() {
-    var value = select.value;
+  if (!fieldSel || !dirSel || !container) return;
+  // Default direction per field: dates default to desc (newest first),
+  // text fields default to asc (A → Z).
+  var defaultDir = { date: 'desc', acquired: 'desc', author: 'asc', title: 'asc' };
+
+  function sortNow() {
+    var key = fieldSel.value;
+    var dir = (dirSel.value === 'desc') ? -1 : 1;
     var items = Array.prototype.slice.call(container.querySelectorAll('.item-card'));
-    var key, dir;
-    if (value === 'date-desc') { key = 'date'; dir = -1; }
-    else if (value === 'date-asc') { key = 'date'; dir = 1; }
-    else if (value === 'acquired-desc') { key = 'acquired'; dir = -1; }
-    else if (value === 'acquired-asc') { key = 'acquired'; dir = 1; }
-    else if (value === 'author-asc') { key = 'author'; dir = 1; }
-    else if (value === 'title-asc') { key = 'title'; dir = 1; }
-    else return;
     items.sort(function(a, b) {
       var av = a.dataset[key] || '', bv = b.dataset[key] || '';
-      // Missing values always sort to the end, regardless of direction
       if (!av && !bv) return 0;
       if (!av) return 1;
       if (!bv) return -1;
@@ -367,7 +366,14 @@ def all_index(library: dict, all_items: list[dict]) -> str:
       return 0;
     });
     items.forEach(function(el) { container.appendChild(el); });
+  }
+
+  fieldSel.addEventListener('change', function() {
+    // Switch direction to the new field's default, then re-sort.
+    dirSel.value = defaultDir[fieldSel.value] || 'desc';
+    sortNow();
   });
+  dirSel.addEventListener('change', sortNow);
 })();
 </script>"""
 

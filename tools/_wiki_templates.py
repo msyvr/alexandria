@@ -194,7 +194,7 @@ def homepage(library: dict, all_items: list[dict]) -> str:
 
 # Heuristic mapping of section names to major groups, used only by the
 # By section index page. A concept test: sections not matching a keyword
-# fall into "Other". When a real grouping need emerges we can promote this
+# fall into "Etc". When a real grouping need emerges we can promote this
 # to a per-collection config (e.g., a `section_groups` field in the index
 # yaml) instead of a hardcoded map.
 _SECTION_GROUPS: dict[str, str] = {
@@ -240,11 +240,11 @@ _SECTION_GROUPS: dict[str, str] = {
     "notes": "Personal",
     "personal": "Personal",
 }
-_SECTION_GROUP_ORDER = ["Books", "Research papers", "Visual", "Audio", "Personal", "Other"]
+_SECTION_GROUP_ORDER = ["Books", "Research papers", "Visual", "Audio", "Personal", "Etc"]
 
 
 def _section_group(section: str) -> str:
-    return _SECTION_GROUPS.get(section.lower(), "Other")
+    return _SECTION_GROUPS.get(section.lower(), "Etc")
 
 
 def by_section_index(library: dict, all_items: list[dict], items_by_section: dict[str, list[dict]]) -> str:

@@ -9,7 +9,7 @@ Scouts are useful when:
 - The topic is **personal** enough that no generic tool fits (your specific questions, your specific constraints)
 - The landscape is **evolving** fast enough that a static reference goes stale
 
-Most items in your collection should be static (physical items, imported digital content). Scouts are the exception — powerful, but they take more effort to create and maintain.
+Most items in your collection are static (physical items, imported digital content). Scouts are the moving ones — more effort to create and maintain, and the fullest expression of what the collection enables: a resource on a subject you care about, built and owned by you rather than subscribed to from someone else.
 
 ### Creating a scout
 

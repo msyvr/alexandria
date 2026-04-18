@@ -1,6 +1,6 @@
 ## Reading and editing YAML
 
-Every item in your collection has a `metadata.yaml` file — the catalog entry that stores the item's title, author, section, and other information. This guide explains what you're looking at when you open one, and how to make changes safely.
+Every item in your collection has a `metadata.yaml` file — the catalog entry that stores the item's title, author, section, and other information. This guide is the reference for reading and editing it. Being comfortable with YAML — or any structured text format; JSON, TOML, and frontmatter are all the same idea — is one of the practical fluencies alexandria exercises.
 
 ### What is YAML?
 

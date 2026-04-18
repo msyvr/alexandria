@@ -1,5 +1,9 @@
 ## alexandria
 
+Alexandria is a path to the minimum tech literacy needed to retain control of one's own digital work as AI becomes pervasive — learned by building and maintaining a private collection. The collection is the vehicle; the fluency is the point. See [README.md](README.md) and [docs/ASPIRATIONS.md](docs/ASPIRATIONS.md) for the full thesis.
+
+When explaining things to users, remember that many arrive without prior terminal experience. Explain concepts as they come up, name what is being learned when it matters, and prefer the measured tone of an experienced teacher over product language.
+
 ### Quick start
 
 - **Building a new collection from scratch?** Type `/coll-build-new-collection`

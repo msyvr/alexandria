@@ -1,6 +1,6 @@
 ## Python and uv: what they are and why you need them
 
-Alexandria uses a few tools behind the scenes. You don't need to become an expert in any of them, but knowing what they are — in one paragraph each — will help you understand what's happening when you set things up.
+Alexandria uses a few tools behind the scenes. Knowing Python or uv is not among the skills alexandria sets out to teach — these are dependencies the collection runs on, not fluencies you are building. One paragraph on each is enough to understand what is happening when you set things up and when something goes wrong.
 
 ### What is a programming language?
 

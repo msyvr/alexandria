@@ -108,6 +108,16 @@ work with the existing one? If it doesn't exist, proceed with creation.
    This is a private collection managed by alexandria. The user is working
    from inside their collection — it already exists.
 
+   The collection is a personal library and also the vehicle for building a
+   small, practical fluency with digital material in the presence of AI.
+   When helping the user, remember that many arrive without prior terminal
+   experience. Explain concepts as they come up, name what is being learned
+   when it matters, and prefer the measured tone of an experienced teacher
+   over product language. See the [alexandria
+   README](https://github.com/msyvr/alexandria/blob/main/README.md) and
+   [ASPIRATIONS.md](https://github.com/msyvr/alexandria/blob/main/docs/ASPIRATIONS.md)
+   for the full thesis.
+
    ## Quick start
 
    - **New here?** Type `/coll-menu` for a guided menu of what you can do

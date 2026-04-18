@@ -1,10 +1,30 @@
 ## Project Aspirations
 
-### The core idea
+### The thesis
 
-Alexandria is lightweight private collection infrastructure — a structure for organizing the digital content you want to own, keep, and reference. It borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help.
+As AI takes on more of the work of making, editing, and organizing digital material, retaining control of one's own work has begun to depend on a small, practical fluency. Not programming — a narrower set: terminal use, structured text, directing an AI assistant, a sense of what a file is and whether you own it, and light version control as insurance. A person who is comfortable with those few things can remain in control of their own work as AI continues to advance. A person who is not is increasingly renting the capability from whoever made the nearest app.
 
-The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent outer shape. Some items are content you've collected from elsewhere. Some are your own writing. A few may be dynamic — living resources that update themselves. The collection's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
+Alexandria is for people who would like that fluency but have not yet built it. The collection — a private library of books, papers, notes, research, whatever else is worth holding onto — is the vehicle for developing it. Each skill comes up in the course of the work, when there is something concrete to apply it to. The finished collection is entirely the user's, and continues to work whether or not any AI is running.
+
+### What you are learning
+
+Five skills, picked for leverage rather than breadth:
+
+1. Working in a terminal — enough to navigate, start tools, and recover from small mistakes.
+2. Reading structured data — YAML and markdown with frontmatter, as a shape rather than as a language.
+3. Directing an AI assistant — prompting, reviewing, pushing back, verifying.
+4. File ownership in practice — what a local file is, what a format is, whether the data is yours.
+5. Version control as insurance — git, used lightly, against mistakes on files you care about.
+
+The set is smaller than "learn to code" and considerably more leveraged for a person whose work is not programming. Someone who can direct AI and verify the result can accomplish a great deal without becoming a developer — not by learning to program, but by learning what to ask for and what to check.
+
+The curriculum is built into the workflow. The five skills are not studied in isolation; they surface when the work calls for them, and Claude is there to explain each one as it appears.
+
+### The collection itself
+
+Alexandria borrows from the real-world library: a curated collection where things live in predictable places, findable by catalog or by browsing the stacks, with or without a librarian's help. This is not a product claim but a pedagogical choice — the library metaphor gives the reader something concrete and spatial to reason about while the underlying files teach what they are.
+
+The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent outer shape. Some items are content you have collected from elsewhere. Some are your own writing. A few are dynamic — living resources that update themselves, called **scouts**, which can be "settled" into static items when they are done. The collection's job is to hold them, organize them, and make them browseable. Your job is to decide what goes in.
 
 Alexandria is AI-assisted, but not AI-dependent. A librarian (Claude Code today, a local open-source model eventually) helps with cataloging, search, and cross-item questions — but every feature of the collection works without one. You can browse the catalog, walk the sections, and read any item without invoking any AI at all.
 
@@ -27,17 +47,21 @@ The structure is deliberately lightweight. It's not a database. It's not an app.
 
 ### Who this is for
 
-Anyone who would benefit from an organized, private collection of digital content they want to own rather than depend on someone else's platform. No technical background is required. Some users will be software engineers who don't want to build the scaffolding from scratch. Some will have never opened a terminal. Both want the same thing: a collection they own, understand, and can use.
+People who would like a working fluency with their own digital material in the presence of AI, and are open to developing it as they go. No prior technical background is expected — the process introduces what is needed when it is needed. Software engineers who would rather not build the scaffolding from scratch are equally welcome.
 
-The tool meets people where they are technically. For users new to working in a terminal, the process builds practical skills as a side effect. For technical users, it skips the hand-holding and gets to the result.
+The tool meets people where they are technically. For readers new to a terminal, the setup is the first occasion to use most of the skills above. For technical readers, it skips the hand-holding and gets to the result.
 
-### Technical minimalism as a skill
+### Why these five, specifically
 
-For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: **technical minimalism**. Know what's absolutely necessary for security and essential capabilities, and know what isn't. Direct AI assistants effectively. Read structured data. Understand what "you own this data" means in practice.
+The five skills above are chosen deliberately. Adjacent skills — writing full applications, understanding networking, configuring CI — are valuable but not minimum. The test is: what is the smallest set such that a person whose work is not programming can still exercise meaningful control over their own digital material as AI proliferates?
 
-This is a much smaller surface area than "learn to code" and a much more valuable one for a busy professional. Someone who can open a terminal, direct an AI assistant, and verify that the result does what it should can accomplish things that previously required hiring a developer — not because they learned to program, but because they learned what to ask for and what to check.
+The defense for this specific set:
 
-Alexandria is designed so this learning happens as a side effect of building something you actually need. If that's not your goal, fine — the collection still works the same way. The upskilling is opt-in.
+- Terminal and structured data are the substrate. Most useful digital artifacts are structured files that can be read and run from a terminal. A person who cannot see past the app layer loses visibility into what they own.
+- Directing an AI assistant is the leverage. With it, the other four skills are recoverable — one can ask Claude to explain the YAML, teach git when it is needed, diagnose a terminal error. Without it, each small friction becomes a dead end.
+- File ownership and version control are the insurance. AI is going to touch one's files; some of those touches will be wrong. If the earlier version cannot be recovered, or if the data cannot be read without the app that wrote it, "you own this" is not literally true.
+
+This is the literacy floor, not a programming curriculum.
 
 ### Collection invariants
 
@@ -79,11 +103,11 @@ Best-quality AI is the default for photo extraction (vision models benefit from 
 
 Digital content the user wants to bring into their collection — local files (PDFs, HTML, markdown, text, images, audio, video), URLs to fetch and archive, or pasted text. This includes the user's own work (notes, drafts, creative output) as well as content from other sources. Content is copied into the collection, preserved exactly in its original format, and cataloged with extracted metadata. Runs through `/coll-digital`.
 
-#### Scout (available, but not the focus)
+#### Scout (available now)
 
-A living knowledge base that monitors a domain. Unlike other item types, a scout is actively maintained by AI — researched, organized, critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+A knowledge base on a topic, actively maintained by AI — researched, organized, critiqued, and kept current through discovery scripts. A scout is the fullest expression of what this collection makes possible: a resource on a subject the user cares about, built and owned by them, rather than a subscription to a generic version of it.
 
-A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static item in the collection.
+A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). The user decides when to settle a scout — to freeze it as a static item in the collection. Most items in a mature collection are static, as most holdings in a library are; scouts are the ones that keep moving until the user decides otherwise.
 
 Because scout creation depends on capabilities that currently only the best models have (research, critique, editorial writing), scouts remain Claude-assisted even as the collection librarian shifts to local models. This asymmetry is intentional: the collection foundation should be maximally portable; the ambitious item-building work can reasonably require better models.
 

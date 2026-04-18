@@ -1,6 +1,6 @@
 ## Working with your collection: terminal basics
 
-This guide covers the practical skills you need to work with your private collection. It assumes you've never worked in a terminal before, or have but want a clear reference for how things fit together in the context of alexandria.
+This guide covers working in a terminal — one of the small set of skills alexandria exercises. It assumes no prior terminal experience, and is organized as a reference to come back to rather than as a tutorial to finish.
 
 ### What is a terminal?
 

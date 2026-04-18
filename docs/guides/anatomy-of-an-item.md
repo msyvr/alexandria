@@ -1,6 +1,6 @@
 ## Anatomy of an item
 
-Every item in your collection — whether it's a physical item, a saved PDF, or a living scout — has the same basic structure. This guide walks through what's inside an item directory, what each file does, and what you can safely change.
+Every item in your collection — whether it's a physical item, a saved PDF, or a living scout — has the same basic structure. This guide walks through what is inside an item directory, what each file does, and what you can safely change. It is also, incidentally, the best place to see what "you own this" looks like in practice: self-contained directories of plain-text files readable without the collection tools.
 
 ### The universal shape
 

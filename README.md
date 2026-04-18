@@ -1,26 +1,36 @@
 ## alexandria
 
-Lightweight private collection infrastructure for items and other content/items you own, keep, and reference — physical and digital alike.
+Alexandria is a way of building and keeping a private library — books, papers, notes, research, whatever else you would like to have organized — in a form you own and can use without any particular app or service.
 
-Alexandria provides minimal structure to make a collection browseable at scale: a catalog, consistent item shape, classification conventions, and generated views. The structure is lightweight enough that you can browse it without invoking any AI at all.
+The motivation is practical. As AI takes on more of the work of making, editing, and organizing digital material, retaining control of one's own work has begun to depend on a small, practical fluency. Not programming — a narrower set: enough terminal to navigate and recover, enough structured text to read a YAML file, enough command of an AI assistant to direct and correct its work, enough sense of what a file is to know when you own it. People who have that fluency can remain in control as AI advances. People who do not are increasingly renting the capability from whoever made the nearest app.
+
+Alexandria is for people who would like that fluency but have not yet built it. The collection is the vehicle. Each skill comes up in the course of the work, when there is something concrete to apply it to.
 
 ![Example alexandria collection landing page](docs/images/wiki-landing-example.png)
 
-> **Getting started?** You'll work in two windows: this page (for reference) and a terminal (where you type commands). If you're new to the terminal, start with the [detailed walkthrough](#detailed-setup-walkthrough) — it shows every step. If you're comfortable in the terminal, jump to the [quick start](#create-your-collection).
+The collection itself borrows from the real-world library: a curated set of items that live in predictable places, findable by catalog or by walking the stacks, with or without a librarian's help. It is a directory on your machine. Inside it, items have a consistent shape — a catalog entry, content files, and a README. Most items are static; a few ("scouts") are AI-curated and evolving, and can be settled into static references when they are done. The finished collection is entirely yours, and works whether or not any AI is running.
 
-Alexandria borrows heavily from the real-world library: a curated collection where items are stored in predictable places, findable by catalog or by walking the stacks. The collection is a directory on your machine. Inside it, "items" are the things you hold — self-contained units with a consistent shape. Most items are content you've collected from elsewhere or written yourself. A few may be dynamic, living resources that update themselves (see [scout](#scout-available-now--the-exception-not-the-rule)). The collection's job is to hold them, organize them, and make them browseable — with or without an agent-librarian's help.
+See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for the full thesis and where the project is headed. If you are new to working in a terminal, the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page shows every step, and the [terminal basics guide](docs/guides/terminal-basics.md) covers the fundamentals.
 
-See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for the full vision, collection invariants, and where this project is headed. If you're new to working in a terminal, see the [detailed setup walkthrough](#detailed-setup-walkthrough) at the end of this page and the [terminal basics guide](docs/guides/terminal-basics.md).
+### Quick start
 
-### Who is this for?
+If you're comfortable in the terminal, [jump in](#create-your-collection). If you're new to the terminal, start with the [detailed walkthrough](#detailed-setup-walkthrough) — it shows every step. You'll work in two windows: this page (for reference) and a terminal (where you type commands).
 
-Anyone who wants to organize a private collection independently — to own the result rather than depend on an external platform, and to have the ability to use the collection without any special or proprietary software. Content can be viewed in any browser, in a simple format. No technical background required, though technical users are equally welcome.
+### Who this is for
 
-#### An optional side benefit: technical upskilling
+People who would like a working fluency with their own digital material in the presence of AI, and are open to developing it as they go. No prior technical background is expected — the process introduces what is needed when it is needed. Software engineers who would rather not build the scaffolding from scratch are equally welcome.
 
-For users who want it, alexandria doubles as a low-friction path to a disproportionately useful skill set: knowing how to direct AI tools effectively without needing to become a programmer. Building real things you actually need — opening a terminal, reading structured data, running scripts, understanding what "you own this data" means technically — teaches you what matters and what doesn't. The skills transfer well beyond this tool. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the technical minimalism philosophy.
+### What the process touches
 
-If that's not your goal, clear instructions are provided for building and extending your collection. After that, exploring it as as easy as using Wikipedia.
+The skills that come up, in roughly the order they appear:
+
+- Working in a terminal — enough to navigate, start tools, and recover from small mistakes.
+- Reading structured data — YAML and markdown with frontmatter, as a shape rather than as a language.
+- Directing an AI assistant — prompting, reviewing, pushing back, verifying.
+- File ownership in practice — what a local file is, what a format is, whether the data is yours.
+- Version control as insurance — git, used lightly, against mistakes on files you care about.
+
+The set is small by design, and chosen for leverage rather than breadth. Someone who can direct AI and verify the result can accomplish a great deal without learning to program. The intention is not to teach software engineering; it is to mark out the fluency that lets a person retain control of their own work.
 
 ### Item types
 
@@ -28,9 +38,9 @@ All item types share a universal outer shape: a README (the spine), metadata (th
 
 #### Physical
 
-A record of a physical item you own. No content is copied — the item lives on your shelf; the catalog entry represents it in your collection. Creation is photo-based: photograph a single item or a whole shelf, and alexandria extracts title, author, and other metadata from the image (with your confirmation). Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. Run `/coll-physical` or `/coll` → add an item → physical.
+A record of a physical item you own. No content is copied — the item lives on your shelf; the catalog entry represents it in your collection. Creation is photo-based: photograph a single item or a whole shelf, and alexandria extracts title, author, and other metadata from the image, which you confirm. Manual entry works too, with or without a photo. Optional online metadata and summaries are available for users who want them. Run `/coll-physical` or `/coll` → add an item → physical.
 
-Existing cataloging tools (LibraryThing, Libib, CLZ Books) handle barcode scanning and standard metadata well. Alexandria differentiates on shelf photo accuracy (using stronger vision models than existing apps), local-first ownership (files on your machine, not in someone's cloud), no subscription, and integration with other item types in a single collection. Leading with physical signals what alexandria values: a book on your shelf is as first-class as a PDF on your drive.
+Physical items are the simplest case of the collection's shape: something you own in the world is given a catalog entry that lives with you, built from a photo or entered by hand. A book on your shelf is treated on equal footing with a PDF on your drive.
 
 #### Digital
 
@@ -38,9 +48,9 @@ Digital content you want to bring into the collection — local files (PDFs, HTM
 
 #### Scout
 
-A living knowledge base that monitors a domain. Unlike import and author, a scout is actively maintained by AI — researched, organized, systematically critiqued, and kept current through automated discovery. Scouts are powerful but are the exception rather than the rule: most library holdings should be static, like most of a real library's holdings.
+A knowledge base on a topic, actively maintained by AI — researched, organized, critiqued, and kept current through discovery scripts. A scout is the fullest expression of what this collection makes possible: a resource on a subject you care about, built and owned by you, rather than a subscription to a generic version of it.
 
-A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). You decide when to settle a scout — to freeze it as a static item in your collection.
+A scout can be **short-lived** (built for an immediate need, updated briefly, then settled into a static reference) or **long-lived** (kept updating indefinitely for an evolving domain). You decide when to settle a scout — to freeze it as a static item in your collection. Most items in a mature collection are static, as most holdings in a real library are; scouts are the ones that keep moving until you decide otherwise.
 
 Scout is useful when a topic is complex enough to warrant careful organization, personal enough that no generic tool quite fits, and evolving fast enough that a static resource goes stale. For example: navigating a complex medical situation, monitoring a professional field, or tracking fast-moving developments.
 
@@ -50,7 +60,7 @@ Scout is useful when a topic is complex enough to warrant careful organization, 
 
 - **[Claude Code](https://claude.ai/claude-code)** — the AI assistant that creates items and manages the collection. Included with a [Claude Pro subscription](https://claude.com/pricing) ($20/month). Runs in your terminal, [in a browser](https://claude.ai/code), or via the phone app ([iOS](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), [Android](https://play.google.com/store/apps/details?id=com.anthropic-claude)). Browser and phone require a GitHub-hosted library.
 - **Python 3.10+** — for scripts within built scouts. Check with `python3 --version`.
-- No coding experience required. You guide the process by answering questions; Claude Code generates all scripts and data files. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for more on the skills you'll pick up along the way.
+- No prior technical background is expected. You direct the process by answering questions and reviewing output; Claude Code writes the scripts and data files. See [ASPIRATIONS.md](docs/ASPIRATIONS.md) for the thesis and the fluency developed along the way.
 
 #### Create your collection
 
@@ -146,9 +156,9 @@ Claude Code determines the appropriate item type and guides you through building
 
 ### Detailed setup walkthrough
 
-Step-by-step instructions assuming no prior terminal experience. Every command is shown exactly as you'll type it.
+Step-by-step instructions for readers without prior terminal experience. Every command is shown exactly as you would type it. The setup is also the first occasion to use most of the skills described above; that is intentional.
 
-Alexandria needs a few tools installed on your machine. For background on what each tool is and why it's needed, see the [Python and uv guide](docs/guides/python-and-uv.md). For help with the terminal itself, see the [terminal basics guide](docs/guides/terminal-basics.md).
+Alexandria needs a few tools installed on your machine. For background on what each tool is and why it is needed, see the [Python and uv guide](docs/guides/python-and-uv.md). For the terminal itself, see the [terminal basics guide](docs/guides/terminal-basics.md).
 
 #### 1. Open a terminal
 

@@ -1,0 +1,15 @@
+# Files and directories the alexandria update process writes into every
+# collection. The update script reads this file to know what to track.
+#
+# A path ending in "/" is a directory: every file beneath it (recursively) is
+# tracked. A plain path is a single file.
+#
+# When alexandria starts managing a new file, add its path (or a parent
+# directory) here in the same release. This is how the set of upstream-managed
+# files stays explicit and reviewable.
+
+paths:
+  - CLAUDE.md
+  - pyproject.toml
+  - .claude/skills/
+  - tools/

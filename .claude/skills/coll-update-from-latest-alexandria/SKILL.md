@@ -103,19 +103,37 @@ Then start Claude Code from the alexandria repo and run this skill.
    inline the individual copy/sync/regen steps — always call the script:
 
    ```
-   bash scripts/update_collection.sh {collection_path}
+   uv run python tools/update_collection.py {collection_path}
    ```
 
-   The script does all of the following in one shot:
-   - Copies `.claude/skills/` from the repo into the collection
-   - Copies `tools/` from the repo into the collection
-   - Copies `pyproject.toml` from the repo into the collection
-   - Runs `uv sync` inside the collection
-   - Regenerates the wiki via the collection's own copy of the tools
+   The script is interactive when the user has made local changes to any
+   upstream-managed file. It:
 
-   If the script exits non-zero, surface its stderr to the user and stop —
-   do not attempt to repair the update by running the individual commands
-   by hand.
+   - Reads `{collection_path}/.alexandria-manifest.yaml` (created at
+     collection build time, updated on each successful run) to know what
+     files were installed and at which sha.
+   - For every upstream-managed file (declared in `tools/managed-paths.yaml`),
+     compares upstream sha, local sha, and the last-installed sha recorded
+     in the manifest.
+   - Files the user has not touched are updated silently. Files where the
+     user has local changes and upstream has also changed are surfaced to
+     the user with a `[k]eep / [u]pstream / [e]dit / [d]iff / [c]hanges
+     upstream` prompt, with `[A]` / `[K]` batch shortcuts at the start.
+     Backups of any unchosen version are saved under
+     `.alexandria-backups/{timestamp}/` in the collection.
+   - After resolving any conflicts, copies files from the repo into the
+     collection, updates the manifest atomically, runs `uv sync`, and
+     regenerates the wiki.
+
+   The script can also be invoked with `--dry-run` to preview without
+   making changes. If the script exits non-zero, surface its stderr to
+   the user and stop — do not attempt to repair the update by running the
+   individual commands by hand.
+
+   **When relaying the script's output to the user**, pass through the
+   prompts as-is — they are designed to be read by the user directly. Do
+   not summarize or rephrase the conflict-resolution options; the user
+   needs to make the decision, not you.
 
 6. **Report what was updated:**
    - Skills: list directories copied (note any new ones)
@@ -139,14 +157,25 @@ Then start Claude Code from the alexandria repo and run this skill.
 
 ## What this updates
 
+Files tracked by `tools/managed-paths.yaml` in the alexandria repo:
+
 - Skill instruction files (`.claude/skills/coll-*/SKILL.md`)
 - Wiki generator and templates (`tools/`)
 - Stylesheet (`tools/_wiki_style.css` → copied into `wiki/_assets/` on regen)
 - Python dependency list (`pyproject.toml`)
+- The collection's root `CLAUDE.md`
+- The collection's `.alexandria-manifest.yaml` (metadata about what was
+  installed and when — rewritten atomically after a successful update)
 - All generated wiki HTML
+
+The update process preserves any local edits the user has made to these
+files, surfacing conflicts for their decision rather than overwriting
+silently.
 
 ## What this does NOT modify
 
 - The collection's data (items, metadata, sections, journal content)
 - Item directories or their contents (README, metadata.yaml, notes/)
 - The `.collection-index.yaml` catalog (read for wiki generation, not written)
+- Any `.alexandria-backups/` from previous conflict resolutions (kept
+  indefinitely; the user can clean them up when they no longer need them)

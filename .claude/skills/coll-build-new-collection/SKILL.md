@@ -148,7 +148,24 @@ work with the existing one? If it doesn't exist, proceed with creation.
    - Items are organized in section subdirectories
    ```
 
-7. **Tell the user what to do next:**
+7. **Write the initial manifest.** Run the update script's `--init` mode
+   from the alexandria repo directory, pointing at the new collection:
+
+   ```
+   uv run python tools/update_collection.py {collection_path} --init
+   ```
+
+   This records every upstream-managed file (as declared in
+   `tools/managed-paths.yaml`) with its sha256, the install timestamp, and
+   the alexandria commit at install time. The manifest lets future updates
+   distinguish user customizations from old upstream versions. It must not
+   be edited by hand.
+
+   If the script reports a manifest already exists, something went wrong
+   earlier — surface the message and stop; do not delete the existing
+   manifest without confirming with the user.
+
+8. **Tell the user what to do next:**
 
    > Your collection is ready at `{path}`.
    >

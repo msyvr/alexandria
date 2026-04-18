@@ -79,6 +79,70 @@ If the `.collection-index.yaml` is also stale (e.g., an item you added manually 
 
 **Fix**: Read the error message — it usually tells you what's wrong. If it mentions a missing module, install it. If it mentions rate limits, set up a GitHub token.
 
+### Update-script errors
+
+The update script (`/coll-update-from-latest-alexandria`) is careful about your local edits and will pause and ask for your decision when it cannot act safely. If it prints an error, the anchor at the end of the message points here.
+
+#### not-a-collection
+
+The script expects the path you gave it to contain a `.collection-index.yaml` file, which every alexandria collection has at its root. If it doesn't find one, it stops rather than risk writing into an unrelated directory.
+
+**Fix**: double-check the path. If you meant a collection that doesn't exist yet, run `/coll-build-new-collection` first.
+
+#### managed-paths-missing
+
+The update script reads `tools/managed-paths.yaml` in the alexandria repo to know which files to update. If that file is missing, it stops — without it, the script doesn't know what to manage.
+
+**Fix**: make sure you are running the script from a complete alexandria repo. If you cloned partially or the file was deleted, re-run `git pull` (or re-clone the repo).
+
+#### manifest-corrupted
+
+The manifest (`.alexandria-manifest.yaml` in your collection) records which upstream files alexandria manages in your collection. If it becomes unreadable — usually because something modified it by hand and broke the YAML — the script moves it aside and re-creates a fresh one on the next run.
+
+**Fix**: re-run the update. The damaged file is kept with a `.corrupted-<timestamp>` suffix for reference if you need to look at it. The fresh manifest will surface every upstream-managed file for your decision (one-time event), because without the old manifest the script can't tell which files you customized vs. which are old upstream versions. Pick `[A]` at the batch prompt if you haven't customized anything; otherwise walk through them normally.
+
+#### schema-too-new
+
+The manifest carries a `schema_version` field. If it's newer than the script understands, the script refuses to run rather than risk misinterpreting it.
+
+**Fix**: update the alexandria repo to a newer version (`cd ~/alexandria && git pull && uv sync`). If you already have the latest and still see this, the manifest may have been hand-edited — see manifest-corrupted above.
+
+#### init-manifest-exists
+
+The `--init` mode of the script is used by `/coll-build-new-collection` to write a fresh manifest for a new collection. It refuses to run against a collection that already has a manifest, to avoid overwriting install history that future updates rely on.
+
+**Fix**: you probably don't want `--init` here. If you meant to update the collection, use `/coll-update-from-latest-alexandria` instead (without `--init`). If you genuinely want to reset the manifest (rare — only if the manifest has a bug you can't work around), delete `.alexandria-manifest.yaml` first.
+
+#### editor-not-set
+
+When you pick `[e] Edit manually` to resolve a conflict, the script opens a merge-view file in your text editor. It uses the `EDITOR` environment variable to know which editor to open.
+
+**Fix**: set `EDITOR` to your preferred editor in your shell, then re-run the update. Common choices:
+
+- `export EDITOR=nano` — nano is beginner-friendly and installed on most systems
+- `export EDITOR=vim` — vim if you know it
+- `export EDITOR="code --wait"` — VS Code (the `--wait` flag is important so the script waits for you to close the file)
+
+To make the setting permanent, add the line to your `~/.bashrc` or `~/.zshrc`. Or skip `[e]` and use `[k]`, `[u]`, or `[d]` for this file.
+
+#### ancestor-commit-unreachable
+
+When you pick `[c] What changed upstream` or `[e] Edit manually`, the script uses git history to reconstruct the version of the file that was last installed. If the repo's history has been rewritten or the repo was re-cloned shallowly, that historical commit may no longer be available.
+
+**Fix**: the `[d] Show the diff` option still works (it compares your local version directly to the current upstream version) and is usually enough to decide. If you want the full three-way view, make sure your alexandria repo has full history (`git fetch --unshallow` if it was cloned shallow).
+
+#### uv-sync-failed
+
+The update succeeded at copying files and saving the manifest, but `uv sync` (which installs any new Python dependencies) returned an error.
+
+**Fix**: run `uv sync` manually inside the collection directory and read the error. Common causes are missing system tools (git, a C compiler) or network issues. The file updates are already saved, so you can retry the sync alone without re-running the update.
+
+#### wiki-regen-failed
+
+The update succeeded but the wiki regeneration step (which builds the browseable HTML) returned an error.
+
+**Fix**: run `uv run python tools/generate_wiki.py .` inside the collection directory and read the error. Common causes are a malformed `metadata.yaml` in one of your items (see the metadata.yaml error section above). The file updates are already saved, so you can retry the wiki generation alone.
+
 ### Something else went wrong
 
 Start Claude Code inside your collection directory and describe the problem:

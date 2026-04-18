@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bash scripts/update_collection.sh:*)",
+      "Bash(uv run python tools/update_collection.py:*)",
       "Bash(bash scripts/get_default_collection.sh:*)"
     ]
   }

@@ -175,6 +175,7 @@ status: "active"
 
 # Universal optional
 author: "{author if known}"
+date_created: "{the date the work itself was made — publication date for books, release year for films, date taken for photos, etc.; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
   source: "{e.g., 'Photographed from personal shelf, 2026-04-10'}"
@@ -186,14 +187,19 @@ shelf_location: "{freeform, if user provided}"
 isbn: "{if known}"
 edition: "{if known}"
 publisher: "{if known}"
-publication_date: "{if known}"
+publication_date: "{if known — same as date_created for books; keep both if the semantics feel distinct, otherwise use date_created alone}"
 ```
 
 **Description generation**: build a one-line description from available fields.
-- Publisher + year: `"{title} by {author} ({publisher}, {year})"`
-- Author only: `"{title} by {author}"`
-- Year only: `"{title} ({year})"`
-- Otherwise: `"Physical copy of {title}"`
+The title is rendered as the page heading on every item view, so it is
+deliberately omitted here to avoid repetition on-page.
+
+- Publisher + year + extra context: `"By {author} ({publisher}, {year}); {extra context}"`
+- Publisher + year: `"By {author} ({publisher}, {year})"`
+- Author + year: `"By {author} ({year})"`
+- Author only: `"By {author}"`
+- Year only: `"({year})"`
+- Otherwise: `""` (empty — cards/item pages render no description line)
 
 ## README.md template (the item's spine)
 

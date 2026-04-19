@@ -62,6 +62,7 @@ status: "active"                      # active or removed
 ```yaml
 author: "Ursula Le Guin"              # semantics vary by item type (see below)
 user_notes: "Essential reference."     # freeform personal notes about this item
+date_created: "1974"                  # ISO date or year — when the work itself was made
 acquired_at: "2024-11-20"             # ISO date — when the user acquired the item
 shelf_location: "Hall bookcase, top"   # freeform — physical items only
 provenance:
@@ -249,6 +250,18 @@ provenance:
 ```
 
 The minimum structure guarantees that cross-item-type queries like "where did this come from?" work without having to know the specific item type's extended schema.
+
+#### `date_created` (optional, ISO 8601 date or year)
+
+The date the work itself was created — distinct from both `acquired_at` (when the user got it) and `date_added` (when it was cataloged). Semantics vary by item type:
+
+- Books and papers: publication date.
+- Films, music albums, podcasts: release date.
+- Photographs: date the photo was taken (often available in EXIF).
+- User-authored work (essays, notes, drafts): the date you wrote it.
+- Scouts: the date the scout was started. Less meaningful than `date_added` for scouts; usually the two match.
+
+Accepts a full date (`"2024-11-20"`), a year and month (`"2024-11"`), or just a year (`"1974"`). Displayed as "Created" on the item page when present, in the metadata grid between "By" and "Acquired" so the timeline reads: created → acquired → added.
 
 #### `acquired_at` (optional, ISO 8601 date)
 

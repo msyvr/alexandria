@@ -213,6 +213,7 @@ status: "active"
 
 # Universal optional
 author: "{author if known}"
+date_created: "{the date the work itself was made — publication date for papers/articles, release date for audio/video, date taken for photos (often available in EXIF), date written for user-authored drafts; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
   source: "{original file path or URL}"
@@ -224,10 +225,13 @@ provenance:
 ```
 
 **Description generation**: build a one-line description from available fields.
-- Author and year: `"{title} by {author} ({year})"`
-- Author only: `"{title} by {author}"`
-- URL source: `"{title} (from {domain})"`
-- Fallback: `"Digital copy of {title}"`
+The title is rendered as the page heading on every item view, so it is
+deliberately omitted here to avoid repetition on-page.
+
+- Author + year: `"By {author} ({year})"`
+- Author only: `"By {author}"`
+- URL source: `"(from {domain})"`
+- Otherwise: `""` (empty — cards/item pages render no description line)
 
 ## README.md template
 

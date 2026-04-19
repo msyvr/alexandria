@@ -908,8 +908,22 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
       render as a right-justified thumbnail beside the metadata grid; None
       renders no thumbnail.
     """
-    title = escape(item.get("title", "Untitled"))
-    description = escape(item.get("description", ""))
+    raw_title = item.get("title", "Untitled")
+    title = escape(raw_title)
+    raw_description = item.get("description", "") or ""
+    # If the description starts with the title, strip it — the title is
+    # already the page's h1 right above, so repeating it reads as noise.
+    # Also skip common leading punctuation and separators left behind
+    # ("(", "—", "-", ":", ","). Case-insensitive on the title match.
+    if raw_description.lower().startswith(raw_title.lower()):
+        remainder = raw_description[len(raw_title):].lstrip()
+        # Strip one leading separator char if present, then trim again.
+        if remainder and remainder[0] in "(—–-:,·":
+            # Keep "(" intact — it often opens a year: "(1995) — ..." reads fine.
+            if remainder[0] != "(":
+                remainder = remainder[1:].lstrip()
+        raw_description = remainder
+    description = escape(raw_description)
     author = item.get("author")
     user_notes = item.get("user_notes")
     book_type = escape(item.get("book_type", "unknown"))
@@ -922,10 +936,15 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
     slug = escape(item.get("slug", ""))
     path = item.get("path", "")
 
-    # Metadata grid — order: By, Acquired, Added, Shelf, Section, Format, Status
+    # Metadata grid — order: By, Created, Acquired, Added, Shelf, Section,
+    # Format, Status. The three dates read as a timeline: when the work was
+    # made → when the user got it → when it was cataloged.
     metadata_rows = []
     if author:
         metadata_rows.append(f"<dt>By</dt><dd>{escape(author)}</dd>")
+    date_created = escape(item.get("date_created", ""))
+    if date_created:
+        metadata_rows.append(f"<dt>Created</dt><dd>{date_created}</dd>")
     acquired_at = escape(item.get("acquired_at", ""))
     if acquired_at:
         metadata_rows.append(f"<dt>Acquired</dt><dd>{acquired_at}</dd>")

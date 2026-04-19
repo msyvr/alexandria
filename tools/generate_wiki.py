@@ -213,7 +213,7 @@ def _strip_description_paragraphs(html: str, description: str) -> str:
     return re.sub(r"<p>(.*?)</p>\s*", _replace, html, flags=re.DOTALL)
 
 
-def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str = "") -> tuple[str, bool]:
+def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str = "", book_path: str = "") -> tuple[str, bool]:
     """Render README markdown to HTML, truncating to the word limit.
 
     Strips redundant content that's already surfaced by the item page
@@ -223,6 +223,12 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str
     entry, Shelf location) are stripped as whole <h2> blocks. The
     trailing "See metadata.yaml ..." paragraph is stripped because the
     template renders a styled link near the bottom of the page.
+
+    If `book_path` is provided, relative <img src="..."> values are
+    rewritten to point at the item's directory from the item-page
+    location (../../{book_path}/{src}) so embedded images resolve
+    correctly when the README HTML is embedded in wiki/items/{slug}.html.
+    Absolute URLs and data/fragment URIs are left alone.
     """
     import re
 
@@ -260,6 +266,34 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str
             html,
             flags=re.DOTALL,
         )
+
+    # Strip the first standalone-image paragraph from the rendered README.
+    # By convention, the item's README leads with `![title](photo.ext)` so
+    # that the README itself reads standalone with a visual. The item page
+    # already renders that image as the header-row thumbnail, so repeating
+    # it inside the content block is redundant. Targets only a `<p>` whose
+    # sole content is a single `<img>` so inline images (e.g., embedded in
+    # a paragraph of prose) are left alone.
+    html = re.sub(
+        r'<p>\s*<img[^>]*>\s*</p>\n?',
+        '',
+        html,
+        count=1,
+    )
+
+    # Rewrite relative image src values on any remaining images so they
+    # resolve from the item-page location. The README lives at
+    # {path}/README.md with images typically as siblings; the rendered
+    # HTML is embedded in wiki/items/{slug}.html where those relative
+    # paths would otherwise break. Absolute URLs, protocol-relative
+    # URLs, fragments, data URIs, and root-absolute paths are left alone.
+    if book_path:
+        def _rewrite_img_src(match: re.Match) -> str:
+            src = match.group(1)
+            if src.startswith(("http://", "https://", "//", "#", "data:", "/")):
+                return match.group(0)
+            return f'src="../../{book_path}/{src}"'
+        html = re.sub(r'src="([^"]+)"', _rewrite_img_src, html)
 
     return html, was_truncated
 
@@ -537,7 +571,9 @@ def generate_wiki(library_path: Path) -> None:
             readme_md = load_item_readme(library_path, book_path)
             if readme_md:
                 readme_html, readme_truncated = render_readme_html(
-                    readme_md, md_renderer, description=item.get("description", "") or ""
+                    readme_md, md_renderer,
+                    description=item.get("description", "") or "",
+                    book_path=book_path,
                 )
 
         # Load user notes from notes/ directory if present

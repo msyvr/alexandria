@@ -146,6 +146,15 @@ work with the existing one? If it doesn't exist, proceed with creation.
      to log what was done and add personal details to the collection journal
    - The `.collection-index.yaml` in this directory is the collection's catalog
    - Items are organized in section subdirectories
+   - Regenerate the wiki with
+     `uv run python tools/generate_wiki.py . 2>&1 | tail -30`
+     (the trailing `.` is the collection path and is required). When this
+     command triggers a permission prompt and you see it happen for the
+     first time this session, ask the user once whether they would like to
+     preauthorize it going forward by adding
+     `Bash(uv run python tools/generate_wiki.py:*)` to the allow list in
+     `.claude/settings.json`. If they say yes, make the edit. If no, do not
+     ask again. If the entry is already present, do not ask.
    ```
 
 7. **Write the initial manifest.** Run the update script's `--init` mode

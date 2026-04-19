@@ -39,13 +39,18 @@ inside a collection.
       Copy into `{item}/notes/` with `.md` extension (plain text renders
       fine as markdown).
 
-      **PDF (`.pdf`):**
-      Copy into `{item}/notes/` with the generated filename. The wiki
-      will link to it (PDFs can't render inline in static HTML).
+      **PDF (`.pdf`) or other binary formats:**
+      Refuse with a plain-English explanation: notes are for the user's
+      own writing about an item, which should be text (markdown or plain
+      text) so it can be read and edited by any tool. If the user has a
+      PDF they want alongside the item, suggest placing it in the item
+      directory as content (not in `notes/`) — it lives with the item's
+      other files. If they want text *about* the PDF, write it as
+      markdown.
 
       **Other formats:**
-      Explain that supported formats are `.md`, `.txt`, and `.pdf`.
-      Offer to treat the file as plain text if appropriate.
+      Explain that supported formats are `.md` and `.txt`. Offer to
+      treat the file as plain text if appropriate.
 
    e. Create the `notes/` directory if it doesn't exist yet.
 
@@ -72,9 +77,8 @@ inside a collection.
 ## How notes appear in the wiki
 
 Each item's wiki page has a "Notes" section that shows all notes from the
-`notes/` directory, sorted chronologically by filename (newest last or first
-depending on preference). Markdown and text notes render inline. PDF notes
-show a download link.
+`notes/` directory, sorted chronologically by filename. Notes are text
+(markdown or plain text) and render inline on the item's wiki page.
 
 ## The notes/ directory
 
@@ -85,18 +89,17 @@ causal-inference-primer/
 ├── original.pdf
 └── notes/
     ├── 2026-04-14-reading-notes.md
-    ├── 2026-04-21-seminar-followup.md
-    └── 2026-05-10-annotated-version.pdf
+    └── 2026-04-21-seminar-followup.md
 ```
 
 Each note is independent. The user can:
 - Edit any note directly in their text editor
 - Delete a note by removing the file
 - Rename a note (the date prefix keeps sort order)
-- Have both markdown and PDF notes on the same item
 
 ## What this does NOT do
 
 - Does not create or edit notes — the user writes them externally
-- Does not convert PDF content to text
+- Does not accept PDFs or other binary formats (notes are the user's own
+  writing, stored as text)
 - Does not modify the item's metadata or README

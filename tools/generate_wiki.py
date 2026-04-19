@@ -127,14 +127,7 @@ def load_item_notes(library_path: Path, book_path: str, md_renderer) -> list[dic
     for f in sorted(notes_dir.iterdir()):
         if f.name.startswith("."):
             continue
-        if f.suffix == ".pdf":
-            notes.append({
-                "filename": f.name,
-                "title": f.stem.replace("-", " ").lstrip("0123456789 "),
-                "html": "",
-                "is_pdf": True,
-            })
-        elif f.suffix in (".md", ".txt"):
+        if f.suffix in (".md", ".txt"):
             content = f.read_text()
             # Extract title from first heading if present
             title = f.stem.replace("-", " ").lstrip("0123456789 ")
@@ -147,7 +140,6 @@ def load_item_notes(library_path: Path, book_path: str, md_renderer) -> list[dic
                 "filename": f.name,
                 "title": title,
                 "html": html,
-                "is_pdf": False,
             })
     return notes
 

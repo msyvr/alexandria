@@ -68,16 +68,15 @@ Scouts have a CLAUDE.md file that Claude reads automatically when you start a se
 
 #### notes/ — your personal notes
 
-A directory for personal notes about the item. Each note is a separate file — you can accumulate many notes over time. Write them in any editor; use `/coll-add-item-notes` to import them, or just drop files directly into the `notes/` directory.
+A directory for personal notes about the item, written as text — markdown or plain text. Each note is a separate file — you can accumulate many notes over time. Write them in any editor; use `/coll-add-item-notes` to import them, or just drop files directly into the `notes/` directory.
 
 ```
 notes/
 ├── 2026-04-14-reading-notes.md
-├── 2026-04-21-seminar-followup.md
-└── 2026-05-10-annotated-version.pdf
+└── 2026-04-21-seminar-followup.md
 ```
 
-Markdown and text files render inline on the item's wiki page. PDF files show a download link. Notes sort chronologically by filename (date-prefix them for clean ordering).
+Notes render inline on the item's wiki page and sort chronologically by filename (date-prefix them for clean ordering). Notes are text-only on purpose: they are your own writing about the item, and plain text is the form that can be read and edited by any tool. If you have a PDF or other binary you want alongside the item (a scanned page, an annotated export), place it directly in the item directory as content — it lives with the item's other files.
 
 Unlike `user_notes` in metadata.yaml (which is a short one-liner for catalog views), the `notes/` directory has no limit on the number or length of notes. Use it for substantial annotations on papers, detailed thoughts about a physical item, or any extended personal writing about the item.
 

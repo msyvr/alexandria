@@ -1010,20 +1010,12 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
     if item_notes:
         note_blocks = []
         for note in (item_notes or []):
-            if note["is_pdf"]:
-                note_blocks.append(
-                    f'<div class="note-entry">'
-                    f'<h3>{escape(note["title"])}</h3>'
-                    f'<p>📄 <a href="../../{path}/notes/{note["filename"]}">Open as PDF</a></p>'
-                    f'</div>'
-                )
-            else:
-                note_blocks.append(
-                    f'<div class="note-entry">'
-                    f'<h3>{escape(note["title"])}</h3>'
-                    f'{note["html"]}'
-                    f'</div>'
-                )
+            note_blocks.append(
+                f'<div class="note-entry">'
+                f'<h3>{escape(note["title"])}</h3>'
+                f'{note["html"]}'
+                f'</div>'
+            )
         notes_section = f"""<div class="item-notes">
 <h2>Notes</h2>
 {''.join(note_blocks)}

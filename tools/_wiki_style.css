@@ -92,6 +92,33 @@ main {
   flex: 1 0 auto;
 }
 
+/* Inline code and code blocks. Without this, backtick-wrapped text
+   renders at the browser default monospace size, which looks oversized
+   next to the EB Garamond body (serifs and monospaces have different
+   x-heights even at the same pixel size). 0.88em reads as approximately
+   equal weight. */
+code,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.88em;
+}
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.88em;
+  line-height: 1.45;
+  overflow-x: auto;
+  padding: 0.6em 0.8em;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+pre code {
+  font-size: 1em;
+}
+
 /* Header */
 
 header.page-header {

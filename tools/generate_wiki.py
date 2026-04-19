@@ -281,7 +281,7 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str
 
     # Strip sections whose content is now surfaced in the page-level metadata
     # grid. Matches the <h2> and everything until the next <h2> or end of doc.
-    for strip_h2 in ("Catalog entry", "Shelf location"):
+    for strip_h2 in ("Catalog entry", "Shelf location", "Source"):
         html = re.sub(
             rf'<h2>{re.escape(strip_h2)}</h2>.*?(?=<h2>|$)',
             '',

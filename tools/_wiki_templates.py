@@ -183,7 +183,7 @@ def _axes_nav(current: str | None = None, from_subdir: bool = False) -> str:
     axes = [
         ("all", "All"),
         ("by-author", "Author/artist/producer"),
-        ("by-section", "Topic"),
+        ("by-section", "Section"),
         ("by-medium-format", "Format"),
         ("by-topic", "Inference"),
     ]

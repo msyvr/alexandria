@@ -9,7 +9,14 @@
 # files stays explicit and reviewable.
 
 paths:
-  - CLAUDE.md
   - pyproject.toml
   - .claude/skills/
   - tools/
+
+# Deliberately NOT managed:
+#   CLAUDE.md — per-collection content written by /coll-build-new-collection.
+#     The alexandria repo has its own CLAUDE.md with different purpose (dev
+#     instructions for the repo, not for a collection), so we must not copy
+#     alexandria's version over a collection's.
+#   .collection-index.yaml, collection-context.md, README.md — collection
+#     content, not alexandria infrastructure.

@@ -89,9 +89,9 @@ changes.
 Each `font-size`, `letter-spacing`, and `font-weight` in
 `tools/_wiki_style.css` is a one-line edit. Anchor sizes in `em` (relative
 to the root `html` font-size) so a single change to `html { font-size: … }`
-scales the whole wiki proportionally. The root size is `90%` by default,
-meaning 14.4 px if your browser default is 16 px — bumping it to `100%`
-makes everything ~10% larger.
+scales the whole wiki proportionally. The root size is `100%` by default
+(matching the browser default — typically 16 px) — bumping it to e.g.
+`90%` makes everything about 10% smaller, `110%` about 10% larger.
 
 ### Why these two families specifically
 

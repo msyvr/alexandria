@@ -72,7 +72,7 @@
   box-sizing: border-box;
 }
 html {
-  font-size: 90%;
+  font-size: 100%;
 }
 
 body {
@@ -815,16 +815,10 @@ blockquote.user-notes {
 }
 
 .search-item mark {
-  background: rgba(139, 105, 20, 0.2);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
   color: inherit;
   padding: 0;
   border-radius: 1px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .search-item mark {
-    background: rgba(196, 160, 80, 0.25);
-  }
 }
 
 /* Collection journal */

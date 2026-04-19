@@ -25,6 +25,7 @@ import datetime
 import difflib
 import hashlib
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -584,6 +585,16 @@ def run_update(collection: Path, repo: Path, dry_run: bool) -> int:
     preserved = [(p, s, i) for p, s, i in classifications if s == "LOCAL_ONLY"]
     unchanged = [(p, s, i) for p, s, i in classifications if s == "UNCHANGED"]
 
+    # Backfill UNCHANGED files into the manifest if they aren't recorded yet.
+    # Happens on the first update against a collection that had no prior
+    # manifest — we want the manifest to end up authoritative for what's
+    # installed, not just for what this run touched.
+    unchanged_to_record = [
+        (p, i)
+        for p, _, i in unchanged
+        if i["installed_sha"] is None and not dry_run
+    ]
+
     # Dry-run: report and exit
     if dry_run:
         print("\nDry run — no changes will be made.\n")
@@ -725,6 +736,16 @@ def run_update(collection: Path, repo: Path, dry_run: bool) -> int:
     removed_upstream = handle_removed_files(
         collection, manifest, managed_set, get_backup_dir
     )
+
+    # Backfill UNCHANGED files that weren't previously tracked. Uses the
+    # local sha (which equals upstream sha in this state) and the current
+    # upstream commit — these files match what's in the repo right now.
+    for rel, info in unchanged_to_record:
+        manifest.setdefault("files", {})[str(rel)] = {
+            "sha256": info["local_sha"],
+            "installed_at": now,
+            "installed_from_commit": commit,
+        }
 
     # Update manifest metadata and flush
     manifest["schema_version"] = SCHEMA_VERSION

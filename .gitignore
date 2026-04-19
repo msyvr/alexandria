@@ -12,3 +12,4 @@ wheels/
 # Local
 tmp/
 .claude/state/
+.claude/settings.local.json

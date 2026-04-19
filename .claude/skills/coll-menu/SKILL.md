@@ -81,8 +81,15 @@ directory intact.
 4. Update `metadata.yaml`: set `status: removed`, `removed_at: YYYY-MM-DD`,
    `removed_reason: "..."`.
 5. Update `.collection-index.yaml` to match.
-6. Invoke `/coll-notes` to log the removal in `collection-context.md`.
-7. Regenerate the wiki.
+6. Commit to the git repo (silent no-op if version control isn't enabled):
+   ```
+   uv run python tools/commit_change.py . \
+     --message "Remove item: {slug}" \
+     .collection-index.yaml \
+     {section}/{slug}/metadata.yaml
+   ```
+7. Invoke `/coll-notes` to log the removal in `collection-context.md`.
+8. Regenerate the wiki.
 
 **Opt-in: delete-item** — fully removes the catalog entry and deletes the item's
 directory. Destructive.
@@ -94,8 +101,16 @@ directory. Destructive.
 4. Require explicit confirmation ("yes, delete").
 5. Remove from `.collection-index.yaml`.
 6. Delete the item's directory.
-7. Invoke `/coll-notes` to log the deletion in `collection-context.md`.
-8. Regenerate the wiki.
+7. Commit to the git repo (silent no-op if version control isn't enabled):
+   ```
+   uv run python tools/commit_change.py . \
+     --message "Delete item: {slug}" \
+     .collection-index.yaml \
+     {section}/{slug}
+   ```
+   (`git add` records the deletion of files that no longer exist on disk.)
+8. Invoke `/coll-notes` to log the deletion in `collection-context.md`.
+9. Regenerate the wiki.
 
 ## Settle a scout
 

@@ -41,11 +41,11 @@ inside a collection.
 
       **PDF (`.pdf`) or other binary formats:**
       Refuse with a plain-English explanation: notes are for the user's
-      own writing about an item, which should be text (markdown or plain
-      text) so it can be read and edited by any tool. If the user has a
-      PDF they want alongside the item, suggest placing it in the item
-      directory as content (not in `notes/`) — it lives with the item's
-      other files. If they want text *about* the PDF, write it as
+      own writing about an item, which should be markdown so it can be
+      version-tracked and diffed. If the user has a PDF they want
+      alongside the item, suggest placing it in the item directory as
+      content (not in `notes/`) — it'll be preserved and backed up via
+      `/coll-backup`. If they want text *about* the PDF, write it as
       markdown.
 
       **Other formats:**
@@ -64,7 +64,18 @@ inside a collection.
 5. **Confirm what was done.** Tell the user the note's filename and that it
    will appear on the item's wiki page after regenerating.
 
-6. **Suggest regenerating the wiki:**
+6. **Commit the note to the collection's git repo** (silent no-op if
+   version control isn't enabled):
+
+   ```
+   uv run python tools/commit_change.py {collection_path} \
+     --message "Add notes to {slug}" \
+     {section}/{slug}/notes/{note_filename}
+   ```
+
+   For an updated note, use `"Update notes on {slug}"` as the message.
+
+7. **Suggest regenerating the wiki:**
 
    > Note saved. To see it in the wiki, regenerate it:
    >
@@ -101,5 +112,5 @@ Each note is independent. The user can:
 
 - Does not create or edit notes — the user writes them externally
 - Does not accept PDFs or other binary formats (notes are the user's own
-  writing, stored as text)
+  writing, stored as text so they can be version-tracked and diffed)
 - Does not modify the item's metadata or README

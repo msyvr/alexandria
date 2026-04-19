@@ -54,9 +54,29 @@ collection and offer to help create one with /coll-build-new-collection.
 
 7. **Update `.collection-index.yaml`** with the scout's universal fields.
 
-8. **Regenerate the wiki** so the scout appears in all views.
+8. **Register the scout in the collection's `.gitignore`.** Scouts are
+   their own git repos; the collection should not track their contents.
+   If the collection has a `.gitignore` (meaning version control is
+   enabled), append the scout's directory path — but check first that
+   the same line isn't already there:
 
-9. **Invoke `/coll-notes`** to log the import.
+   ```
+   {section}/{scout-slug}/
+   ```
+
+9. **Commit the scout registration to the collection's git repo** (silent
+   no-op if version control isn't enabled):
+
+   ```
+   uv run python tools/commit_change.py . \
+     --message "Import scout: {scout-slug}" \
+     .collection-index.yaml \
+     .gitignore
+   ```
+
+10. **Regenerate the wiki** so the scout appears in all views.
+
+11. **Invoke `/coll-notes`** to log the import.
 
 10. **Tell the user about scout maintenance.** Since the scout is now in the
     collection, explain:

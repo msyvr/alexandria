@@ -165,7 +165,28 @@ work with the existing one? If it doesn't exist, proceed with creation.
    earlier — surface the message and stop; do not delete the existing
    manifest without confirming with the user.
 
-8. **Tell the user what to do next:**
+8. **Enable git version control.** Run the version-control initializer
+   from the alexandria repo directory, pointing at the new collection:
+
+   ```
+   uv run python tools/init_version_control.py {collection_path}
+   ```
+
+   This runs `git init` inside the collection, copies the standard
+   `.gitignore` template (which excludes binary content, the generated
+   wiki, per-machine state, and common sensitive-filename patterns),
+   resolves git identity (uses the user's global config if set, asks if
+   not), and makes an initial commit of the freshly-built collection.
+
+   The script prints an informational message explaining what was
+   enabled and how to disable or reconfigure it — pass its output
+   through to the user as-is; do not summarize.
+
+   If the user explicitly says they do not want git for this collection,
+   skip this step and mention they can enable it later with
+   `/coll-enable-version-control`. Otherwise default to running it.
+
+9. **Tell the user what to do next:**
 
    > Your collection is ready at `{path}`.
    >

@@ -179,6 +179,19 @@ viewers anyway.
 **Update `.collection-index.yaml`** with each new item's universal fields. For multi-item
 batches, update once at the end rather than per item.
 
+**Commit the item(s) to the collection's git repo** (silent no-op if version control
+isn't enabled). Once per invocation, after all item files and the index are written:
+
+```
+uv run python tools/commit_change.py {collection_path} \
+  --message "Add digital item: {title}" \
+  .collection-index.yaml \
+  {section}/{slug}
+```
+
+For batches, use a single commit with a message like
+`"Add {N} digital items"` and pass all section/slug paths plus the index.
+
 **Invoke /coll-notes** once at the end of the invocation to log the import batch to
 `collection-context.md`: how many items were added, what sources, any notable preferences
 observed (e.g., "user declined online enrichment").

@@ -281,8 +281,36 @@ and not exposed as a first-class action.
 ## Collection integration
 
 If this scout is being created within a collection (detected by `.collection-index.yaml` in a
-parent directory), update the collection index after Phase 4 (Build) completes:
-- Add the item entry with name, path, type ("scout"), creation date, and a one-line
-  description derived from the scope document.
+parent directory), after Phase 4 (Build) completes:
+
+1. **Update the collection index.** Add the item entry with name, path,
+   type ("scout"), creation date, and a one-line description derived from
+   the scope document.
+
+2. **Register the scout in the collection's `.gitignore`.** Scouts are their
+   own git repos; the collection should not track their contents. Append
+   the scout's directory path as a gitignore entry if the collection has
+   a `.gitignore` (meaning version control is enabled):
+
+   ```
+   # Append to {collection_path}/.gitignore if present and the scout
+   # entry isn't already there:
+   {section}/{scout-slug}/
+   ```
+
+   Check that the line doesn't already exist before appending.
+
+3. **Commit the scout registration to the collection's git repo** (silent
+   no-op if version control isn't enabled):
+
+   ```
+   uv run python tools/commit_change.py {collection_path} \
+     --message "Add scout: {scout-slug}" \
+     .collection-index.yaml \
+     .gitignore
+   ```
+
+   Note the scout's own files are excluded by the gitignore entry, so the
+   commit only captures the catalog change and the gitignore update.
 
 If invoked standalone (no library context), skip this step — the scout works independently.

@@ -96,6 +96,19 @@ marker that we're inside an alexandria collection):
    If CLAUDE.md exists but has no "Recent context" section, add one immediately before
    the final "For full decision history..." pointer.
 
-7. End your response with exactly:
+7. **Commit the journal update to the collection's git repo** (silent no-op if
+   version control isn't enabled). Use a date-prefixed message:
+
+   ```
+   uv run python tools/commit_change.py {collection_path} \
+     --message "Journal entry: {YYYY-MM-DD}" \
+     {target_file} \
+     {CLAUDE.md path if it was updated}
+   ```
+
+   Where `{target_file}` is the `context.md` or `collection-context.md` that was
+   appended to in step 5.
+
+8. End your response with exactly:
 
 SESSION_NOTES_CHECKPOINT

@@ -731,6 +731,36 @@ def run_update(collection: Path, repo: Path, dry_run: bool) -> int:
     manifest["last_updated_at"] = now
     save_manifest(manifest_path, manifest)
 
+    # Auto-commit the update to the collection's git repo if version control
+    # is enabled. Captures the files this update touched plus the manifest.
+    if (collection / ".git").is_dir() and shutil.which("git") is not None:
+        touched_paths: list[str] = [MANIFEST_FILENAME]
+        for rel, _, _ in auto:
+            touched_paths.append(str(rel))
+        for rel, _, _ in conflicts:
+            decision = decisions.get(rel)
+            if decision in ("take",) or isinstance(decision, bytes):
+                touched_paths.append(str(rel))
+        if touched_paths:
+            msg = f"Update from alexandria {commit}" if commit else "Update from alexandria"
+            try:
+                subprocess.run(
+                    [
+                        "uv",
+                        "run",
+                        "python",
+                        "tools/commit_change.py",
+                        str(collection),
+                        "--message",
+                        msg,
+                    ]
+                    + touched_paths,
+                    cwd=collection,
+                    check=False,
+                )
+            except Exception:
+                pass  # commit_change.py prints its own errors
+
     # Post-processing: uv sync and wiki regen. Flush stdout before each
     # subprocess so the banner prints before the subprocess output, not after.
     print("\nSyncing dependencies...", flush=True)

@@ -1,0 +1,70 @@
+# Git ignore rules for an alexandria collection.
+#
+# This repo holds the textual backbone of your collection: catalog metadata,
+# item READMEs, notes, and skill configuration. Binary content (PDFs, images,
+# audio, video) and the generated wiki are excluded on purpose — those are
+# backed up via /coll-backup, not through git.
+#
+# See docs/guides/backing-up-your-collection.md for the full two-track story.
+
+# Generated output and caches — regenerated on demand, no value in tracking
+wiki/
+.venv/
+__pycache__/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+*.pyc
+*.pyo
+
+# Per-machine state — specific to the machine you're on, not shared across clones
+.claude/state/
+.alexandria-backups/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Sensitive files — never track these by default. If you genuinely need to
+# version-track a file matching one of these patterns, explicitly add it
+# with `git add -f <path>`. The friction is intentional.
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+credentials*
+secrets*
+id_rsa*
+id_ed25519*
+.aws/
+.ssh/
+.gnupg/
+
+# Binary content — backed up via /coll-backup, not git. Personal photos,
+# PDFs, audio, video, and auto-discovered thumbnails live with your items
+# but don't need version history. If you want a binary file to be tracked,
+# explicitly add it with `git add -f <path>`.
+*.pdf
+*.epub
+*.mobi
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.webp
+*.gif
+*.mp3
+*.flac
+*.wav
+*.m4a
+*.ogg
+*.mp4
+*.mov
+*.mkv
+*.webm
+
+# Scouts — each scout is its own git repo. Entries below are added
+# automatically by /coll-new-scout and /coll-scout when scouts are created
+# or imported. Do not edit by hand; use those skills.

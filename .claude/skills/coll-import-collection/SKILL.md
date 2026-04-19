@@ -59,7 +59,17 @@ skill must be run inside a collection — the current collection is the
    uv run python tools/generate_wiki.py .
    ```
 
-9. **Report what was done:**
+9. **Commit the import to the collection's git repo** (silent no-op if
+   version control isn't enabled). One commit for the batch:
+
+   ```
+   uv run python tools/commit_change.py . \
+     --message "Import {N} items from {source_name}" \
+     .collection-index.yaml \
+     {each imported section or item directory}
+   ```
+
+10. **Report what was done:**
 
    > Imported {N} items from "{source name}" into "{dest name}".
    > - {X} items added to existing sections

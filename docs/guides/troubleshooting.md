@@ -143,6 +143,89 @@ The update succeeded but the wiki regeneration step (which builds the browseable
 
 **Fix**: run `uv run python tools/generate_wiki.py .` inside the collection directory and read the error. Common causes are a malformed `metadata.yaml` in one of your items (see the metadata.yaml error section above). The file updates are already saved, so you can retry the wiki generation alone.
 
+### Version-control errors
+
+#### git-not-installed
+
+The version-control setup needs `git`, but it's not installed on the machine.
+
+**Fix**:
+
+- macOS: `xcode-select --install`
+- Linux (Debian/Ubuntu): `sudo apt install git`
+- Linux (Fedora): `sudo dnf install git`
+
+Then re-run the skill that was trying to enable version control.
+
+#### version-control-already-enabled
+
+You tried to enable git on a collection that already has a `.git/` directory. This is intentional — the skill refuses to overwrite existing history.
+
+**Fix**: nothing needed; version control is already active. If you want to start fresh (lose all history), run `/coll-disable-version-control` first, then re-enable.
+
+#### gitignore-template-missing
+
+The `.gitignore` template at `tools/collection-gitignore.template` is missing from the alexandria repo.
+
+**Fix**: your alexandria repo is incomplete. Run `git pull` in the alexandria repo, or re-clone it.
+
+#### git-init-failed
+
+`git init` returned an error. Usually a permissions issue on the collection directory.
+
+**Fix**: check that you own the collection directory and have write permission. Run `ls -la <collection-path>` to verify. If the directory is read-only or owned by another user, correct the permissions and re-run.
+
+#### git-identity-save-failed
+
+Git couldn't save your name/email for this collection. The `.git/` directory has been created but isn't usable for commits until identity is set.
+
+**Fix**: inside the collection directory, run:
+
+```
+git config --local user.name "Your Name"
+git config --local user.email "you@example.com"
+```
+
+#### git-initial-commit-failed
+
+Git was set up but couldn't make the initial commit. Most often caused by missing identity.
+
+**Fix**: inside the collection directory, run `git status` to see what's staged. Set identity if needed (see `git-identity-save-failed`). Then run `git commit -m "Initial commit"` when ready.
+
+### Backup errors
+
+#### rsync-not-installed
+
+The backup skill needs `rsync`, but it's not installed or isn't on the path.
+
+**Fix**:
+
+- macOS: rsync is built-in. If the command isn't found, try opening a new terminal — your shell may not have picked it up yet.
+- Linux (Debian/Ubuntu): `sudo apt install rsync`
+- Linux (Fedora): `sudo dnf install rsync`
+- Windows (WSL): `sudo apt install rsync` in your WSL terminal
+
+Then re-run `/coll-backup`.
+
+#### backup-destination-unsafe
+
+The destination you picked would either (a) recurse into the collection, (b) overlap with the collection, or (c) is a too-broad path like `/` or your home directory directly. The skill refuses to run in any of these cases because `rsync --delete` would risk your data.
+
+**Fix**: pick a destination folder outside your collection. An external drive, a cloud-synced folder (iCloud Drive, Dropbox, Google Drive, OneDrive), or a different folder on your machine that isn't your home root. The skill appends `alexandria-backup-{collection-name}/` automatically, so you only need to give it the parent.
+
+#### rsync-failed
+
+`rsync` ran but returned an error. Your collection is untouched; the backup may be partial.
+
+**Fix**: read the rsync output for specifics. Common causes:
+
+- Destination disk is full
+- Destination drive unplugged mid-operation
+- Permission issue on the destination
+- Network issue if the destination is on a network mount
+
+After fixing the underlying issue, re-run the skill — rsync is incremental, so it picks up where it left off.
+
 ### Something else went wrong
 
 Start Claude Code inside your collection directory and describe the problem:

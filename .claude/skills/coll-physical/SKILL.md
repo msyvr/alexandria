@@ -140,6 +140,20 @@ and Claude can derive operational context from it directly.
 **Update `.collection-index.yaml`** with the item's universal fields (one entry under its
 section). For shelf batches, update once at the end rather than per item.
 
+**Commit the item to the collection's git repo** (silent no-op if version control
+isn't enabled). Once per invocation, after all item files and the index are written.
+For a single item:
+
+```
+uv run python tools/commit_change.py {collection_path} \
+  --message "Add physical item: {title}" \
+  .collection-index.yaml \
+  {section}/{slug}
+```
+
+For a shelf batch, use a single commit with a batch message like
+`"Add {N} physical items from shelf photo"`.
+
 **Invoke /coll-notes** once at the end of the invocation to log the acquisition batch
 to `collection-context.md`. Include: how many items were added, what workflow was used,
 any notable user preferences observed (e.g., "user prefers no online enrichment").

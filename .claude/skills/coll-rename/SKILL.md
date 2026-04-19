@@ -32,17 +32,32 @@ skill must be run inside a collection.
    uv run python tools/generate_wiki.py .
    ```
 
+   Commit the rename to the collection's git repo (silent no-op if
+   version control isn't enabled):
+   ```
+   uv run python tools/commit_change.py . \
+     --message "Rename collection: {old_name} → {new_name}" \
+     .collection-index.yaml
+   ```
+
    Done. Confirm the new name is live.
 
 6. **If renaming the directory**:
 
    a. Update `.collection-index.yaml` with the new name (do this first,
       while the current path still works).
-   b. Rename the directory with `mv`.
-   c. **Do NOT attempt to regenerate the wiki or do any further file
+   b. **Commit the rename** before moving — the git repo is about to be
+      at a new path, and we want the commit in the history either way:
+      ```
+      uv run python tools/commit_change.py . \
+        --message "Rename collection: {old_name} → {new_name}" \
+        .collection-index.yaml
+      ```
+   c. Rename the directory with `mv`.
+   d. **Do NOT attempt to regenerate the wiki or do any further file
       operations** — the working directory no longer exists. Everything
       after the `mv` will fail, and that's expected.
-   d. Tell the user:
+   e. Tell the user:
 
       > Collection renamed. Start a new session from the new location:
       >

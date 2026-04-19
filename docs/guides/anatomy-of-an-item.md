@@ -76,7 +76,7 @@ notes/
 └── 2026-04-21-seminar-followup.md
 ```
 
-Notes render inline on the item's wiki page and sort chronologically by filename (date-prefix them for clean ordering). Notes are text-only on purpose: they are your own writing about the item, and plain text is the form that can be read and edited by any tool. If you have a PDF or other binary you want alongside the item (a scanned page, an annotated export), place it directly in the item directory as content — it lives with the item's other files.
+Notes render inline on the item's wiki page and sort chronologically by filename (date-prefix them for clean ordering). Notes are text-only on purpose: they're your own writing about the item, and text is what git can version-track and diff over time. If you have a PDF or other binary you want alongside the item (e.g., a scanned handwritten sheet, an annotated export), place it directly in the item directory as content — it'll be preserved and backed up via `/coll-backup`.
 
 Unlike `user_notes` in metadata.yaml (which is a short one-liner for catalog views), the `notes/` directory has no limit on the number or length of notes. Use it for substantial annotations on papers, detailed thoughts about a physical item, or any extended personal writing about the item.
 
@@ -115,3 +115,25 @@ The collection adds two things on top:
 2. **The wiki** at `wiki/` — a browseable HTML interface generated from the catalog. Also regenerable at any time.
 
 Both are derived from the items. The items are the source of truth.
+
+### What belongs at the collection root
+
+The collection directory is for alexandria-managed content. The following live at the root by design:
+
+- `.collection-index.yaml` — the catalog
+- `.alexandria-manifest.yaml` — records which alexandria-managed files are installed (do not edit by hand; maintained by the update skill)
+- `README.md` and `CLAUDE.md` — human-readable intro and session context for Claude Code
+- `collection-context.md` — the collection journal
+- `pyproject.toml`, `uv.lock`, `.python-version` — Python dependency files
+- `.gitignore` — if version control is enabled, the rules for what git tracks (do not edit by hand; alexandria-managed)
+- `.git/` — git state, if version control is enabled
+- `.claude/` — skills and per-machine state
+- `.venv/` — local Python environment (regenerable)
+- `tools/` — alexandria's wiki generator, templates, and scripts
+- `wiki/` — the generated HTML wiki (regenerable from the catalog)
+- `.alexandria-backups/` — timestamped backups of any files replaced during conflict resolution in updates
+- Section subdirectories (e.g., `fiction/`, `research/`) containing items
+
+**Loose files at the root that aren't in this list are stray.** `/coll-backup` will include them in the backup and flag them; `.gitignore` may or may not track them depending on extension. The collection's structure assumes the directory is for collection content — dropping unrelated files at the root produces noise and, if the file is text (not caught by the gitignore binary rules), can accidentally be committed to git and later pushed.
+
+If you find yourself wanting to keep a scratch file or unrelated note alongside your collection, keep it in a separate directory outside the collection. Your collection stays clean; your scratch file isn't backed up or committed to anything by accident.

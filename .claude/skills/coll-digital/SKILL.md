@@ -212,7 +212,8 @@ media_type: "{inferred or user-selected, e.g., text:pdf}"
 status: "active"
 
 # Universal optional
-author: "{author if known}"
+author: "{canonical name only — e.g., 'Ursula Le Guin', not 'Written by Ursula Le Guin'}"
+author_role: "{role as it would be phrased before the name — Author (default for text), Writer, Director, Photographer, Artist, Performer, Composer, Producer, Illustrator, Translator, Editor, Narrator, Curator. Infer from media_type when possible: video:* → Director, audio:* (music) → Artist, image:* → Photographer, text:* → Author. Ask the user if ambiguous.}"
 date_created: "{the date the work itself was made — publication date for papers/articles, release date for audio/video, date taken for photos (often available in EXIF), date written for user-authored drafts; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
@@ -224,23 +225,67 @@ provenance:
   extracted_path: "content.md"        # only if HTML extraction was created
 ```
 
-**Description generation**: build a one-line description from available fields.
-The title is rendered as the page heading on every item view, so it is
-deliberately omitted here to avoid repetition on-page.
+**Description generation**: compose a short natural-prose description (1–3
+sentences) that reads on its own. The grid already shows title, author,
+role, date, format, section, and source; so the description focuses on
+**subject, premise, and notable context** — what the item is *about*, not
+the catalog attributes.
 
-- Author + year: `"By {author} ({year})"`
-- Author only: `"By {author}"`
-- URL source: `"(from {domain})"`
-- Otherwise: `""` (empty — cards/item pages render no description line)
+Template: `{subject/genre phrase}{, optional one-sentence premise}{, optional tail of notable secondary credits or context}`
+
+Loose scope: light repetition with grid fields is fine when the grammar
+wants it. The rule is "read naturally," not "zero overlap."
+
+Per-type guidance:
+
+- **Paper / research article**: research domain + central claim or question + (optional) co-authors, methodology, venue
+  - e.g. *"Retrieval-augmented generation study evaluating context-window effects on hallucination rates across three model families. Co-authored with Chen and Nakamura; NeurIPS 2024."*
+- **Article / web content**: topic + main point + (optional) source context
+  - e.g. *"Profile of the 1968 Memphis sanitation strike, reconstructed from union archives. Long-form essay from The Atlantic's 50th-anniversary series."*
+- **Digital audio**: genre + concept or era + (optional) featured players, producers
+- **Digital video**: genre + premise + (optional) notable cast, director, production context
+- **Digital image / photograph**: subject + location + (optional) context, camera or series
+  - e.g. *"Narrowboat moored on the Oxford canal at golden hour, with a 14th-century church rising behind. Part of a summer canal-walk series."*
+- **User-authored writing (drafts, notes, essays)**: topic/type + angle or purpose + (optional) status
+  - e.g. *"Working notes on continuous-integration strategies for monorepos. Collected while evaluating Bazel migration at work."*
+
+Fallback when little is known: empty description (the item page simply
+won't render a description line).
 
 ## README.md template
+
+The README is both the wiki's content source and a standalone readable
+document on disk (for browsing an item's directory in a markdown reader
+without alexandria). The layout follows the catalog-style convention:
+identification → reference card → body. The two `<!-- alexandria:metadata-*
+-->` HTML comments are invisible in rendered markdown but act as
+deterministic delimiters for the wiki generator's stripper — everything
+between them is dropped from the wiki item page because the page already
+renders those fields as a structured grid.
+
+Byline wording is role-aware: use the `author_role` to phrase it
+(`*Photographed by Ansel Adams*`, `*Written by Ursula Le Guin*`,
+`*by Ursula Le Guin*` for default Author). If role is absent or equals
+`Author`, use `*by {author}*`; otherwise use `*{role-verb} by {author}*`.
 
 ```markdown
 # {title}
 
-{if author:} *by {author}*
+{if author:} *{role-aware byline}*
 
 {description}
+
+<!-- alexandria:metadata-start -->
+
+## Catalog entry
+
+- **Title**: {title}
+- **{role-aware author label}**: {author}
+- **Created**: {date_created if known}
+- **Acquired**: {acquired_at if known}
+- **Added**: {date_added}
+- **Section**: {major_section} / {section}
+- **Format**: {media_type} ({form})
 
 ## Source
 
@@ -253,25 +298,18 @@ deliberately omitted here to avoid repetition on-page.
 {if provenance.notes:}
 - **Notes**: {notes}
 
+<!-- alexandria:metadata-end -->
+
 {if HTML extracted:}
 ## Content
 
-{readable extraction from content.md, embedded in full if under ~500 words, otherwise
-a preview with a link to content.md for the full extraction}
+{readable extraction from content.md, embedded in full if under ~500 words,
+otherwise a preview with a link to content.md for the full extraction}
 
 {if PDF or other binary format:}
 ## Content
 
 Content is preserved in its original format. Open `{original_path}` to view.
-
-## Catalog entry
-
-- **Title**: {title}
-- **Author**: {author or "—"}
-- **Form**: digital
-- **Media type**: {media_type}
-- **Section**: {section}
-- **Date added**: {date_added}
 
 See `metadata.yaml` for the full catalog entry.
 ```

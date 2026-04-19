@@ -174,7 +174,8 @@ media_type: "text:hardcover"          # or text:paperback, audio:vinyl, etc.
 status: "active"
 
 # Universal optional
-author: "{author if known}"
+author: "{canonical name only — e.g., 'Lawrence Kasdan', not 'Directed by Lawrence Kasdan'}"
+author_role: "{role as it would be phrased before the name — Director, Author, Writer, Artist, Performer, Composer, Photographer, Producer, Illustrator, Translator, Editor, Narrator, Curator. Infer from media_type when possible: video:* → Director, audio:* (music) → Artist, image:* → Photographer, text:* → Author. Ask the user if ambiguous.}"
 date_created: "{the date the work itself was made — publication date for books, release year for films, date taken for photos, etc.; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
 provenance:
@@ -190,47 +191,89 @@ publisher: "{if known}"
 publication_date: "{if known — same as date_created for books; keep both if the semantics feel distinct, otherwise use date_created alone}"
 ```
 
-**Description generation**: build a one-line description from available fields.
-The title is rendered as the page heading on every item view, so it is
-deliberately omitted here to avoid repetition on-page.
+**Description generation**: compose a short natural-prose description (1–3
+sentences) that reads on its own. The grid already shows title, author,
+role, date, format, section, and shelf; so the description focuses on
+**subject, premise, and notable context** — what the item is *about*, not
+the catalog attributes.
 
-- Publisher + year + extra context: `"By {author} ({publisher}, {year}); {extra context}"`
-- Publisher + year: `"By {author} ({publisher}, {year})"`
-- Author + year: `"By {author} ({year})"`
-- Author only: `"By {author}"`
-- Year only: `"({year})"`
-- Otherwise: `""` (empty — cards/item pages render no description line)
+Template: `{subject/genre phrase}{, optional one-sentence premise}{, optional tail of notable secondary credits or context}`
+
+Loose scope: light repetition with grid fields is fine when the grammar
+wants it. The rule is "read naturally," not "zero overlap."
+
+Per-type guidance:
+
+- **Book (fiction)**: genre + plot premise + (optional) notable edition/translator/series
+  - e.g. *"Anarchist utopia novel set between twin worlds. Core of Le Guin's Hainish Cycle; this 2003 Eos edition includes the author's 1975 afterword."*
+- **Book (non-fiction)**: subject area + thesis or approach + (optional) notable context
+  - e.g. *"Biography of Alan Turing, tracing his cryptanalytic work at Bletchley Park through his death. Draws on Hodges's decade of archive research; includes the 2014 afterword on post-conviction reappraisals."*
+- **Film / DVD / Blu-ray**: genre + plot hook + (optional) notable cast, cinematographer, production context
+  - e.g. *"Romantic comedy: a woman chases her straying fiancé across Paris and gets tangled with a charming thief. Meg Ryan, Kevin Kline, Timothy Hutton, Jean Reno; cinematography by Owen Roizman."*
+- **Music (vinyl, CD, tape)**: genre + concept or era + (optional) featured players, producers
+  - e.g. *"Folk-rock concept album woven around the Port of Seattle shipyard strike of 1919. Produced by Joe Henry; Rosanne Cash features on two tracks."*
+- **Other physical objects (art prints, ephemera)**: kind + subject + (optional) provenance/context
+  - e.g. *"Letterpress poster commemorating the 1968 Olympia type foundry. One of 250; signed by the designer."*
+
+Fallback when little is known: empty description (the item page simply
+won't render a description line).
 
 ## README.md template (the item's spine)
+
+The README is both the wiki's content source and a standalone readable
+document on disk (for browsing an item's directory in a markdown reader
+without alexandria). The layout follows the catalog-style convention:
+identification → reference card → body. The two `<!-- alexandria:metadata-*
+-->` HTML comments are invisible in rendered markdown but act as
+deterministic delimiters for the wiki generator's stripper — everything
+between them is dropped from the wiki item page because the page already
+renders those fields as a structured grid.
+
+Byline wording is role-aware: use the `author_role` to phrase it
+(`*Directed by Lawrence Kasdan*`, `*Photographed by Ansel Adams*`,
+`*by Ursula Le Guin*` for default Author). If role is absent or equals
+`Author`, use `*by {author}*`; otherwise use `*{role}ed by {author}*`
+(Director → "Directed by", Producer → "Produced by", etc. — the skill
+knows the conjugation for the recommended role vocabulary).
 
 ```markdown
 # {title}
 
-{if author:} *by {author}*
+{if author:} *{role-aware byline}*
 
 {description}
 
 {if photo preserved:}
 ![{title}](photo.jpg)
 
-{if enrichment summary accepted:}
-## About
+<!-- alexandria:metadata-start -->
 
-{short summary from Open Library, ≤500 words}
+## Catalog entry
+
+- **Title**: {title}
+- **{role-aware author label}**: {author}
+- **Created**: {date_created if known}
+- **Acquired**: {acquired_at if known}
+- **Added**: {date_added}
+- **Section**: {major_section} / {section}
+- **Format**: {media_type} ({form})
+- **Publisher**: {publisher if known}
+- **ISBN**: {isbn if known}
+- **Edition**: {edition if known}
+- (any other type-specific fields that make sense as a labelled list entry)
 
 {if shelf_location:}
 ## Shelf location
 
 {shelf_location}
 
-## Catalog entry
+<!-- alexandria:metadata-end -->
 
-- **Title**: {title}
-- **Author**: {author or "—"}
-- **Medium**: physical
-- **Section**: {section}
-- **Date added**: {date_added}
-{include publisher, edition, ISBN, publication_date lines if known}
+{if editorial body appropriate:}
+## About
+
+{body — subject summary, plot discussion, notable context, etc. Keep to
+the informational/editorial register; no catalog repetition.}
 
 See `metadata.yaml` for the full catalog entry.
 ```

@@ -235,12 +235,34 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str
     truncated_md, was_truncated = truncate_by_words(readme_md, README_WORD_LIMIT)
     html = md_renderer.render(truncated_md)
 
+    # Strip the metadata-mirror block delimited by explicit HTML-comment
+    # sentinels. By convention the README holds a "Catalog entry" (and
+    # optional "Shelf location" / "Source") section bracketed by
+    # `<!-- alexandria:metadata-start -->` and `<!-- alexandria:metadata-end -->`
+    # — a human-readable mirror of metadata.yaml useful for standalone
+    # browsing. The item page already renders those fields as a structured
+    # grid, so we drop the entire delimited range from the wiki render.
+    html = re.sub(
+        r'<!--\s*alexandria:metadata-start\s*-->.*?<!--\s*alexandria:metadata-end\s*-->\s*',
+        '',
+        html,
+        flags=re.DOTALL,
+    )
+
     # Strip first <h1>...</h1> (the README's title is shown separately as the
     # item-page title).
     html = re.sub(r'<h1>.*?</h1>\n?', '', html, count=1)
 
-    # Strip first <p><em>by ...</em></p> (author is shown separately on the page).
-    html = re.sub(r'<p><em>by\s.*?</em></p>\n?', '', html, count=1)
+    # Strip the first italic byline paragraph (author is shown separately on
+    # the page via the metadata grid's role-aware "By" / "Directed by" / etc.
+    # label). Matches both plain `<p><em>by X</em></p>` and role-aware forms
+    # like `<p><em>Directed by X</em></p>` or `<p><em>Photographed by X</em></p>`.
+    html = re.sub(
+        r'<p><em>(?:\w+\s+)?[Bb]y\s.*?</em></p>\n?',
+        '',
+        html,
+        count=1,
+    )
 
     # Strip every <p> whose text matches the metadata description — handles
     # both the canonical template (description once near the top) and any

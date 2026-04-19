@@ -60,7 +60,8 @@ status: "active"                      # active or removed
 #### Optional fields
 
 ```yaml
-author: "Ursula Le Guin"              # semantics vary by item type (see below)
+author: "Ursula Le Guin"              # canonical name — sort key and display in lists
+author_role: "Author"                 # optional; see below
 user_notes: "Essential reference."     # freeform personal notes about this item
 date_created: "1974"                  # ISO date or year — when the work itself was made
 acquired_at: "2024-11-20"             # ISO date — when the user acquired the item
@@ -250,6 +251,30 @@ provenance:
 ```
 
 The minimum structure guarantees that cross-item-type queries like "where did this come from?" work without having to know the specific item type's extended schema.
+
+#### `author` (optional, string) and `author_role` (optional, string)
+
+The `author` field holds the **canonical name** of the primary creative contributor — just the name, not a role-prefixed phrase. The Author/artist/producer view groups and sorts items by this field, so keeping it role-free means names list cleanly: "Kasdan, Lawrence" not "Directed by Lawrence Kasdan".
+
+The `author_role` field records how that person contributed. It's optional; when absent, the default role is `Author` and the display label is "By". When present, the item page and README use role-aware labels ("Directed by", "Photographed by", "Translated by", etc.).
+
+Recommended role vocabulary (the rendering logic has short-form labels for these; free-form values also work but render with a generic fallback):
+
+- `Author` (default — books, papers, articles)
+- `Director` (films, TV episodes)
+- `Writer` (screenplays, teleplays, distinct from Author when both exist)
+- `Artist` (albums, visual art)
+- `Performer` (live recordings, covers)
+- `Composer`
+- `Photographer`
+- `Producer` (films, albums where producer is the primary credit)
+- `Illustrator`
+- `Translator`
+- `Editor`
+- `Narrator`
+- `Curator`
+
+Items with a role not in this list render as `By: {author} ({role})` on the item page.
 
 #### `date_created` (optional, ISO 8601 date or year)
 

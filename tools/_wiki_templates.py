@@ -941,7 +941,32 @@ def item_page(item: dict, readme_html: str, readme_truncated: bool, library: dic
     # made → when the user got it → when it was cataloged.
     metadata_rows = []
     if author:
-        metadata_rows.append(f"<dt>By</dt><dd>{escape(author)}</dd>")
+        author_role = (item.get("author_role") or "").strip()
+        # Role-aware label: for common roles, render a natural "Directed by"
+        # style phrase; for Author/Artist (or no role), use plain "By"; for
+        # any other role, fall back to "By: {author} ({role})".
+        role_labels = {
+            "Author": "By",
+            "Artist": "By",
+            "Director": "Directed by",
+            "Writer": "Written by",
+            "Performer": "Performed by",
+            "Composer": "Composed by",
+            "Photographer": "Photographed by",
+            "Producer": "Produced by",
+            "Illustrator": "Illustrated by",
+            "Translator": "Translated by",
+            "Editor": "Edited by",
+            "Narrator": "Narrated by",
+            "Curator": "Curated by",
+        }
+        if not author_role or author_role in role_labels:
+            label = role_labels.get(author_role, "By")
+            metadata_rows.append(f"<dt>{label}</dt><dd>{escape(author)}</dd>")
+        else:
+            metadata_rows.append(
+                f"<dt>By</dt><dd>{escape(author)} ({escape(author_role)})</dd>"
+            )
     date_created = escape(item.get("date_created", ""))
     if date_created:
         metadata_rows.append(f"<dt>Created</dt><dd>{date_created}</dd>")

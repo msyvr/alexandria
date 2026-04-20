@@ -106,6 +106,23 @@ Default is to ask (not to auto-enrich). Privacy-first users can answer "no" and 
 goes to external services. Item content is never fetched — only bibliographic metadata
 from open book databases.
 
+### 3.5. Ask for optional personal notes
+
+Before writing the item, offer the user an optional personal-notes slot:
+
+> Any personal notes you'd like to attach to this item? A reaction,
+> why you have it, what you think of it, what to remember — anything
+> you'd want to see again when you revisit the item. Press Enter to
+> skip, or type/paste your notes (multi-line is fine).
+
+If the user provides anything, record it verbatim as the `user_notes`
+field in `metadata.yaml` and as a **## Personal notes** section in the
+item's README. See the README template below. If the user skips, omit
+both.
+
+For shelf batches, ask once at the start whether per-item personal
+notes should be prompted or skipped for the batch, then act accordingly.
+
 ### 4. Classify, create, record
 
 For each confirmed (and possibly enriched) item:
@@ -178,6 +195,9 @@ author: "{canonical name only — e.g., 'Lawrence Kasdan', not 'Directed by Lawr
 author_role: "{role as it would be phrased before the name — Director, Author, Writer, Artist, Performer, Composer, Photographer, Producer, Illustrator, Translator, Editor, Narrator, Curator. Infer from media_type when possible: video:* → Director, audio:* (music) → Artist, image:* → Photographer, text:* → Author. Ask the user if ambiguous.}"
 date_created: "{the date the work itself was made — publication date for books, release year for films, date taken for photos, etc.; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
+user_notes: |
+  {optional — freeform personal notes the user provided (see step 3.5 below).
+  Can be multi-line; use a YAML block scalar if so. Stored verbatim.}
 provenance:
   source: "{e.g., 'Photographed from personal shelf, 2026-04-10'}"
   notes: "{user-provided context, or omit entirely}"
@@ -274,6 +294,12 @@ knows the conjugation for the recommended role vocabulary).
 
 {body — subject summary, plot discussion, notable context, etc. Keep to
 the informational/editorial register; no catalog repetition.}
+
+{if user_notes:}
+## Personal notes
+
+{user_notes, verbatim — whatever the user provided in step 3.5, preserving
+line breaks. No editing, no summarizing.}
 
 See `metadata.yaml` for the full catalog entry.
 ```

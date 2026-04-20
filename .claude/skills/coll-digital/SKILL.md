@@ -120,6 +120,24 @@ Enrichment fetches only bibliographic metadata — title, author, publisher, sub
 short description. Item content is never fetched. General web content (not matching
 an item or paper) doesn't get enrichment; the source URL is its provenance.
 
+### 3.5. Ask for optional personal notes
+
+Before writing the item, offer the user an optional personal-notes slot:
+
+> Any personal notes you'd like to attach to this item? A reaction,
+> why you have it, what you think of it, what to remember — anything
+> you'd want to see again when you revisit the item. Press Enter to
+> skip, or type/paste your notes (multi-line is fine).
+
+If the user provides anything, record it verbatim as the `user_notes`
+field in `metadata.yaml` and as a **## Personal notes** section in the
+item's README (see the README template below). If the user skips, omit
+both.
+
+For multi-item batches (multiple files or URLs), ask once at the start
+whether per-item personal notes should be prompted or skipped for the
+batch, then act accordingly.
+
 ### 4. Classify, create, record
 
 **Propose a major section and section** for each confirmed candidate.
@@ -216,6 +234,10 @@ author: "{canonical name only — e.g., 'Ursula Le Guin', not 'Written by Ursula
 author_role: "{role as it would be phrased before the name — Author (default for text), Writer, Director, Photographer, Artist, Performer, Composer, Producer, Illustrator, Translator, Editor, Narrator, Curator. Infer from media_type when possible: video:* → Director, audio:* (music) → Artist, image:* → Photographer, text:* → Author. Ask the user if ambiguous.}"
 date_created: "{the date the work itself was made — publication date for papers/articles, release date for audio/video, date taken for photos (often available in EXIF), date written for user-authored drafts; ISO date, year+month, or just year}"
 acquired_at: "{YYYY-MM-DD, if the user knows when they got this item}"
+user_notes: |
+  {optional — freeform personal notes the user provided (see workflow
+  step below). Can be multi-line; use a YAML block scalar if so. Stored
+  verbatim.}
 provenance:
   source: "{original file path or URL}"
   notes: "{user-provided context, or omit}"
@@ -310,6 +332,12 @@ otherwise a preview with a link to content.md for the full extraction}
 ## Content
 
 Content is preserved in its original format. Open `{original_path}` to view.
+
+{if user_notes:}
+## Personal notes
+
+{user_notes, verbatim — whatever the user provided in step 3.5, preserving
+line breaks. No editing, no summarizing.}
 
 See `metadata.yaml` for the full catalog entry.
 ```

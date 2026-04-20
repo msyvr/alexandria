@@ -219,7 +219,9 @@ When null or omitted, catalog views display "—" or skip the author display.
 
 #### `user_notes` (optional, string)
 
-Freeform personal notes about this item — why the user has it, what it's useful for, anything the user wants to record for their own reference. Unlike `description` (which is a one-line summary for catalog views), `user_notes` can be any length and is for the user's own use.
+Freeform personal notes about this item — why the user has it, what it's useful for, anything the user wants to record for their own reference. Unlike `description` (which is a one-line summary for catalog views), `user_notes` can be any length (use a YAML block scalar for multi-line) and is for the user's own use.
+
+The add-item skills (`coll-physical`, `coll-digital`) prompt for this content at item-creation time and, if provided, write it verbatim to two places: the `user_notes` field here in `metadata.yaml`, and a `## Personal notes` section in the item's README. The wiki item page renders the Personal notes section from the README (which preserves markdown formatting), so the two copies are kept in sync by the skill rather than regenerated on display.
 
 Examples:
 - "Essential reference for the first six months of treatment decisions"

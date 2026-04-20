@@ -1047,7 +1047,13 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
 </div>"""
 
     description_html = f'<p class="description">{description}</p>' if description else ""
-    user_notes_html = f'<blockquote class="user-notes"><p>{escape(user_notes)}</p></blockquote>' if user_notes else ""
+    # user_notes is rendered via the README's "## Personal notes" section
+    # (written by the add-item skill when the user provides notes). We used
+    # to render a separate blockquote here from the metadata field, but
+    # that produced either duplication (when README also had the section)
+    # or format limits (single-line escaped text). The README-section path
+    # supports markdown formatting and keeps one source for display.
+    user_notes_html = ""
 
     # Render notes from notes/ directory
     notes_section = ""

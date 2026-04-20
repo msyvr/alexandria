@@ -14,8 +14,8 @@ Five [WOFF2](https://en.wikipedia.org/wiki/Web_Open_Font_Format) files,
 
 | Family | Weights included | Role in the wiki |
 | ------ | ---------------- | ---------------- |
-| **EB Garamond** | 400 (regular), 400 italic, 700 (bold) | Body text, descriptions, titles on the item-detail page — the long-form serif |
-| **Inter**       | 400 (regular), 600 (semibold)         | Small caps labels (nav, sort labels, major-group headings, item-card titles, format lines, "FROM THE ITEM DIRECTORY" links) |
+| **Source Serif 4** | 300 (light), 300 italic, 700 (bold) | Body text, descriptions, titles on the item-detail page — the long-form serif |
+| **Inter**       | 300 (light), 400 (regular), 600 (semibold) | Small caps labels (nav, sort labels, major-group headings, item-card titles, format lines, "FROM THE ITEM DIRECTORY" links) |
 
 Both families are distributed under the
 [SIL Open Font License 1.1](https://scripts.sil.org/OFL) — free to use,
@@ -28,11 +28,11 @@ just repackaged Google Fonts source files optimized for self-hosting.
 
 A few reasons, roughly in order of how much they matter:
 
-1. **Consistency.** System fonts vary across operating systems. Garamond
-   on a Mac renders differently than Garamond on a Windows box, and a
-   Linux box may not have Garamond at all and fall back to a generic
-   serif. Self-hosting pins the exact glyphs so your collection looks
-   the same everywhere.
+1. **Consistency.** System fonts vary across operating systems. Playfair
+   Display on a Mac renders differently than Source Serif 4 on a
+   Windows box, and a Linux box may not have Playfair at all and fall
+   back to a generic serif. Self-hosting pins the exact glyphs so your
+   collection looks the same everywhere.
 2. **Offline / ownership.** Loading fonts from a CDN means every visit
    phones home to Google or wherever. You lose the ability to browse
    without internet, and someone else knows when you're reading your
@@ -47,17 +47,17 @@ falls back to system fonts if the WOFF2 files are missing or corrupt:
 
 ```css
 body {
-  font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
 }
 .axes-nav a, h2.major-heading, .back-link, .sort-control {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 ```
 
-If a visitor's browser somehow can't load `eb-garamond-400.woff2`, the
-stack falls through to `Garamond` (installed on many systems), then
-`Georgia` (installed almost everywhere), then a generic serif. The
-rendering degrades but stays readable.
+If a visitor's browser somehow can't load `source-serif-4-300.woff2`,
+the stack falls through to `Georgia` (installed on almost every system),
+then `Times New Roman`, then a generic serif. The rendering degrades
+but stays readable.
 
 ### Swapping a font
 
@@ -95,10 +95,12 @@ scales the whole wiki proportionally. The root size is `100%` by default
 
 ### Why these two families specifically
 
-EB Garamond is a long-established open revival of a Garamond-family
-face — warm, readable at body sizes, with a full italic. It pairs well
-with structural labels in a complementary sans-serif without fighting
-for attention.
+Source Serif 4 is Adobe's humanist serif, designed by Frank Grießhammer
+for on-screen reading at a wide weight range (200–900). The bundled
+Light (300) weight gives the catalog a softer, lower-contrast
+reading feel than a Regular-weight serif would; it pairs cleanly with
+Inter Light in the sans-serif role for labels and content, keeping the
+whole page tonally consistent.
 
 Inter was designed for screens at small sizes. It's the dominant
 "modern clean sans" on the web because it stays legible down to 11 px

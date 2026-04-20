@@ -1074,8 +1074,7 @@ or <a href="../../{path}/">browse the scout directory</a>.</p>
     metadata_link = ""
     if status != "removed" and path:
         metadata_link = (
-            f'<p class="file-link">Open <a href="../../{path}/metadata.yaml">metadata.yaml</a> '
-            f'from the <a href="../../{path}/">item directory</a></p>'
+            f'<p class="file-link"><a href="../../{path}/">Open item directory</a></p>'
         )
 
     body = f"""<p><a href="../index.html" class="back-link" onclick="if (history.length &gt; 1) {{ history.back(); return false; }}">← Back</a></p>

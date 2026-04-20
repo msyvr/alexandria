@@ -5,25 +5,32 @@
    gracefully instead of failing. */
 
 @font-face {
-  font-family: "EB Garamond";
+  font-family: "Source Serif 4";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   font-display: swap;
-  src: url("fonts/eb-garamond-400.woff2") format("woff2");
+  src: url("fonts/source-serif-4-300.woff2") format("woff2");
 }
 @font-face {
-  font-family: "EB Garamond";
+  font-family: "Source Serif 4";
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   font-display: swap;
-  src: url("fonts/eb-garamond-400-italic.woff2") format("woff2");
+  src: url("fonts/source-serif-4-300-italic.woff2") format("woff2");
 }
 @font-face {
-  font-family: "EB Garamond";
+  font-family: "Source Serif 4";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("fonts/eb-garamond-700.woff2") format("woff2");
+  src: url("fonts/source-serif-4-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("fonts/inter-300.woff2") format("woff2");
 }
 @font-face {
   font-family: "Inter";
@@ -55,8 +62,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #161614;
-    --text: #dbcab8;
+    --bg: #202020;
+    --text: #c9b394;
     --text-mid: #c4a47e;
     --muted: #9a8367;
     --border: #2e2c28;
@@ -76,7 +83,8 @@ html {
 }
 
 body {
-  font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-weight: 300;
   max-width: 46em;
   margin: 0 auto;
   padding: 1.5em 1.25em;
@@ -94,7 +102,7 @@ main {
 
 /* Inline code and code blocks. Without this, backtick-wrapped text
    renders at the browser default monospace size, which looks oversized
-   next to the EB Garamond body (serifs and monospaces have different
+   next to the Source Serif 4 body (serifs and monospaces have different
    x-heights even at the same pixel size). 0.88em reads as approximately
    equal weight. */
 code,
@@ -144,7 +152,7 @@ header.page-header h1 {
 }
 
 .header-home:hover {
-  color: var(--link-hover);
+  color: var(--text-mid);
   text-decoration: none;
 }
 
@@ -159,7 +167,7 @@ header.page-header h1 {
 
 .header-search-icon {
   font-size: 0.9em;
-  color: var(--muted);
+  color: var(--link);
   cursor: text;
   user-select: none;
   line-height: 1;
@@ -169,7 +177,7 @@ header.page-header h1 {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0.2em 0.45em;
-  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.85em;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -183,7 +191,7 @@ header.page-header h1 {
 }
 
 .header-search-form input::placeholder {
-  color: var(--muted);
+  color: var(--link);
   font-style: italic;
 }
 
@@ -194,8 +202,8 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: var(--link-hover);
-  text-decoration: underline;
+  color: var(--text-mid);
+  text-decoration: none;
 }
 
 /* Headings */
@@ -203,7 +211,7 @@ a:hover {
 h1,
 h2,
 h3 {
-  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   line-height: 1.25;
 }
 h2 {
@@ -263,11 +271,7 @@ article.item-card h3 {
   font-size: 0.95em;
   font-weight: normal;
   display: inline;
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
 }
 
 article.item-card h3 a {
@@ -280,15 +284,16 @@ article.item-card h3 a:hover {
 
 article.item-card .meta {
   font-size: 0.85em;
-  color: var(--muted);
+  color: var(--link);
   margin: 0 0 0 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 article.item-card .description {
   margin: 0.1em 0 0 0;
   font-size: 0.85em;
-  color: var(--text-mid);
-  font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  color: var(--link);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -296,10 +301,11 @@ article.item-card .description {
 }
 
 article.item-card .detail {
-  font-size: 0.85em;
-  color: var(--muted);
+  font-size: 0.7em;
+  color: var(--link);
   margin-top: 0.6em;
   letter-spacing: 0.03em;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 article.item-card.removed {
@@ -340,13 +346,13 @@ article.item-card .removed-tag {
 }
 
 .axes-nav a:hover {
-  color: var(--link-hover);
-  border-bottom-color: var(--link-hover);
+  color: var(--text-mid);
+  border-bottom-color: var(--text-mid);
   text-decoration: none;
 }
 
 .axes-nav a[aria-current="page"] {
-  color: var(--text-mid);
+  color: var(--link);
 }
 
 /* Section groups */
@@ -375,6 +381,7 @@ h2.major-heading {
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: var(--link);
 }
 
 /* Collapsible subsection group (By section, By medium & format) */
@@ -396,7 +403,7 @@ h2.major-heading {
   font-size: 0.6em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  color: var(--link);
 }
 
 .subsections-toggle::before {
@@ -410,7 +417,7 @@ h2.major-heading {
 }
 
 .subsections-toggle:hover {
-  color: var(--link);
+  color: var(--text-mid);
 }
 
 .subsections-panel[hidden] {
@@ -437,7 +444,7 @@ h2.major-heading {
 }
 
 .expand-controls button:hover {
-  color: var(--link-hover);
+  color: var(--text-mid);
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row
@@ -467,7 +474,7 @@ h2.major-heading {
 }
 
 .sort-control label {
-  color: var(--muted);
+  color: var(--link);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.85em;
@@ -539,11 +546,11 @@ tr:last-child td {
 }
 th {
   font-weight: 600;
-  color: var(--muted);
+  color: var(--link);
   font-size: 0.82em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-bottom-color: var(--muted);
+  border-bottom-color: var(--link);
 }
 
 /* Item title (page-level, not cards) */
@@ -551,11 +558,7 @@ th {
 h1.item-title {
   font-size: 1.05em;
   font-weight: normal;
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   margin: 0.4em 0 0.2em 0;
   line-height: 1.2;
 }
@@ -574,11 +577,10 @@ h1.item-title {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.1em 0.6em;
-  font-size: 0.85em;
+  font-size: 0.78em;
 }
 .item-metadata dt {
-  color: var(--muted);
-  font-size: 0.78em;
+  color: var(--link);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   align-self: baseline;
@@ -627,18 +629,19 @@ h1.item-title {
 /* File link */
 
 .file-link {
-  font-size: 0.92em;
-  color: var(--muted);
+  font-size: 0.7em;
+  color: var(--link);
   margin: 0.3em 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 /* Item-page description (subtitle-like summary under the header row).
-   Inherits the body serif (EB Garamond) so the short summary reads like
+   Inherits the body serif (Source Serif 4) so the short summary reads like
    part of the literary page flow, while the rendered README body below
    switches to sans-serif for tonal contrast. Slightly larger than body
    so the description reads as the page's subtitle. */
 p.description {
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 /* Item content (rendered from README) */
@@ -655,7 +658,7 @@ p.description {
   height: auto;
 }
 /* Headings inside the rendered README body. The global `h1, h2, h3`
-   rule near the top of the stylesheet sets these to EB Garamond serif;
+   rule near the top of the stylesheet sets these to Source Serif 4 serif;
    explicit sans-serif here keeps them consistent with the item-content's
    Inter sans-serif body. */
 .item-content h1,
@@ -695,7 +698,7 @@ p.description {
   gap: 0.1em 0.6em;
 }
 .item-content dl.kv-grid dt {
-  color: var(--muted);
+  color: var(--link);
   font-size: 0.78em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -755,7 +758,7 @@ blockquote.user-notes {
   border-left: 2px solid var(--accent);
   margin: 0.4em 0;
   padding: 0.2em 0.8em;
-  color: var(--muted);
+  color: var(--link);
   font-size: 0.92em;
 }
 
@@ -772,7 +775,7 @@ blockquote.user-notes {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0.4em 0.6em;
-  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: 0.95em;
   border: 1px solid var(--border);
   border-radius: 0;
@@ -786,14 +789,14 @@ blockquote.user-notes {
 }
 
 .search-form input::placeholder {
-  color: var(--muted);
+  color: var(--link);
   font-style: italic;
 }
 
 .search-prompt {
   padding: 0.4em 0;
   font-size: 0.85em;
-  color: var(--text-mid);
+  color: var(--link);
   margin-bottom: 0.6em;
 }
 
@@ -842,24 +845,24 @@ blockquote.user-notes {
 
 .search-meta {
   font-size: 0.85em;
-  color: var(--muted);
+  color: var(--link);
 }
 
 .search-desc {
   font-size: 0.85em;
-  color: var(--text-mid);
+  color: var(--link);
   margin: 0.1em 0;
 }
 
 .search-detail {
   font-size: 0.85em;
-  color: var(--muted);
+  color: var(--link);
   letter-spacing: 0.03em;
 }
 
 .search-notes {
   font-size: 0.85em;
-  color: var(--muted);
+  color: var(--link);
   font-style: italic;
   margin-top: 0.1em;
 }
@@ -874,7 +877,7 @@ blockquote.user-notes {
 /* Collection journal */
 
 .journal-intro {
-  color: var(--muted);
+  color: var(--link);
   font-style: italic;
   font-size: 0.9em;
   margin-bottom: 1em;
@@ -888,7 +891,7 @@ article.journal-entry {
 
 .journal-date {
   font-size: 0.78em;
-  color: var(--muted);
+  color: var(--link);
   font-family:
     "Inter",
     system-ui,
@@ -913,7 +916,7 @@ h3.journal-headline {
   line-height: 1.45;
 }
 .journal-detail strong {
-  color: var(--muted);
+  color: var(--link);
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -929,7 +932,7 @@ footer.page-footer {
   padding-top: 0.5em;
   border-top: 1px solid var(--border);
   font-size: 0.78em;
-  color: var(--muted);
+  color: var(--link);
   text-align: center;
   line-height: 1.8;
 }

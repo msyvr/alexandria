@@ -459,9 +459,15 @@ def generate_wiki(library_path: Path) -> None:
     css_dst = wiki_dir / "_assets" / "style.css"
     shutil.copy(css_src, css_dst)
 
-    # Copy bundled fonts into wiki/_assets/fonts/ so @font-face URLs resolve
+    # Copy bundled fonts into wiki/_assets/fonts/ so @font-face URLs resolve.
+    # Clean the destination first so font swaps (e.g., removing an old family
+    # and adding a new one) don't leave stale .woff2 files behind.
     fonts_src_dir = tools_dir / "fonts"
     fonts_dst_dir = wiki_dir / "_assets" / "fonts"
+    if fonts_dst_dir.is_dir():
+        for old in fonts_dst_dir.iterdir():
+            if old.is_file() and old.suffix.lower() == ".woff2":
+                old.unlink()
     fonts_dst_dir.mkdir(exist_ok=True)
     if fonts_src_dir.is_dir():
         for font_file in fonts_src_dir.iterdir():

@@ -67,7 +67,7 @@
     --text-mid: #c4a47e;
     --muted: #9a8367;
     --border: #2e2c28;
-    --link: #b5793b;
+    --link: #a5793b;
     --link-hover: #c78a4c;
     --accent: #c4a050;
     --card-bg: #211f1c;
@@ -673,6 +673,7 @@ p.description {
 .item-content h2 {
   font-size: 1em;
   font-weight: normal;
+  font-style: italic;
   margin-top: 1em;
   border-bottom: none;
   padding-bottom: 0;

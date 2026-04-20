@@ -233,21 +233,28 @@ def render_readme_html(readme_md: str, md_renderer: MarkdownIt, description: str
     import re
 
     truncated_md, was_truncated = truncate_by_words(readme_md, README_WORD_LIMIT)
-    html = md_renderer.render(truncated_md)
 
-    # Strip the metadata-mirror block delimited by explicit HTML-comment
-    # sentinels. By convention the README holds a "Catalog entry" (and
-    # optional "Shelf location" / "Source") section bracketed by
-    # `<!-- alexandria:metadata-start -->` and `<!-- alexandria:metadata-end -->`
-    # — a human-readable mirror of metadata.yaml useful for standalone
-    # browsing. The item page already renders those fields as a structured
-    # grid, so we drop the entire delimited range from the wiki render.
-    html = re.sub(
+    # Strip the metadata-mirror block from the markdown *source* before it's
+    # rendered. The markers are HTML comments, but our markdown renderer runs
+    # with `html: False`, which escapes raw HTML into literal text rather
+    # than preserving comments — so matching against the rendered HTML
+    # wouldn't find real comment nodes, and the escaped `&lt;!-- ... --&gt;`
+    # would leak visibly into the page. Stripping at the markdown layer
+    # sidesteps the whole escaping dance. By convention the README holds a
+    # "Catalog entry" (and optional "Shelf location" / "Source") section
+    # bracketed by `<!-- alexandria:metadata-start -->` and
+    # `<!-- alexandria:metadata-end -->` — a human-readable mirror of
+    # metadata.yaml useful for standalone browsing. The item page already
+    # renders those fields as a structured grid, so we drop the entire
+    # delimited range from the wiki render.
+    truncated_md = re.sub(
         r'<!--\s*alexandria:metadata-start\s*-->.*?<!--\s*alexandria:metadata-end\s*-->\s*',
         '',
-        html,
+        truncated_md,
         flags=re.DOTALL,
     )
+
+    html = md_renderer.render(truncated_md)
 
     # Strip first <h1>...</h1> (the README's title is shown separately as the
     # item-page title).

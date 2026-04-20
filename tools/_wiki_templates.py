@@ -223,7 +223,7 @@ def homepage(library: dict, all_items: list[dict]) -> str:
 # view. Values not in this list appear alphabetically after these.
 _MAJOR_SECTION_DEFAULT_ORDER = [
     "Books",
-    "Research papers",
+    "Journal articles",
     "Visual",
     "Audio",
     "Personal",

@@ -128,7 +128,7 @@ notes should be prompted or skipped for the batch, then act accordingly.
 For each confirmed (and possibly enriched) item:
 
 **Propose a major section and section**. Major section is the top-level grouping on
-the By section wiki view (`Books`, `Research papers`, `Visual`, `Audio`, `Personal`,
+the By section wiki view (`Books`, `Journal articles`, `Visual`, `Audio`, `Personal`,
 `Etc` — user can supply a custom name). Section is the specific subsection (e.g.,
 `fiction`, `photographs`). The same subsection name can live under different majors,
 so both must be captured.

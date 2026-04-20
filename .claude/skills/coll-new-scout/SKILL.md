@@ -124,7 +124,7 @@ Template:
 slug: "{generated-slug}"              # from title, lowercase, hyphen-separated
 title: "{scout title}"
 book_type: "scout"
-major_section: "{major section}"      # top-level grouping — e.g., "Research papers"
+major_section: "{major section}"      # top-level grouping — e.g., "Journal articles"
 section: "{section name}"             # determined during acquisition
 description: "{one-line summary from the scope document}"
 date_added: "YYYY-MM-DD"              # today's date, ISO 8601

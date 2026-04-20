@@ -142,11 +142,11 @@ batch, then act accordingly.
 
 **Propose a major section and section** for each confirmed candidate.
 Major section is the top-level grouping on the By section wiki view
-(`Books`, `Research papers`, `Visual`, `Audio`, `Personal`, `Etc` —
+(`Books`, `Journal articles`, `Visual`, `Audio`, `Personal`, `Etc` —
 user can supply a custom name). Section is the specific subsection
 (e.g., `ai safety`, `fiction`, `photographs`). The same subsection
 name can live under different majors (e.g., `Books / ai safety`
-vs. `Research papers / ai safety`), so both must be captured.
+vs. `Journal articles / ai safety`), so both must be captured.
 
 For section:
 

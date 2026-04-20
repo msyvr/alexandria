@@ -48,7 +48,7 @@ Files created on first use or only for certain item types:
 slug: "condition-x-treatments"        # unique within library; matches directory name
 title: "Condition X Treatments"       # display name, any characters
 book_type: "scout"                    # physical, digital, or scout
-major_section: "Research papers"      # top-level grouping (user-customizable)
+major_section: "Journal articles"      # top-level grouping (user-customizable)
 section: "ai safety"                  # specific subsection within the major
 description: "Living knowledge base tracking treatment options."  # one line
 date_added: "2026-04-10"              # ISO 8601 date
@@ -117,7 +117,7 @@ The top-level grouping this item belongs to. Used on the By section wiki view to
 
 **Default set** (user-customizable):
 - `Books` — fiction, nonfiction, poetry, reference, technical, textbooks, essays, magazines
-- `Research papers` — peer-reviewed and preprint academic work, theses
+- `Journal articles` — peer-reviewed and preprint academic work, theses
 - `Visual` — photographs, images, art, illustrations, drawings, video, films, dvds, blu-ray
 - `Audio` — music, podcasts, recordings, cds, vinyl, tapes
 - `Personal` — journals, diaries, letters, correspondence, travel, notes
@@ -125,7 +125,7 @@ The top-level grouping this item belongs to. Used on the By section wiki view to
 
 The user can pick from this set or supply a custom name. Skills offer the default options at acquisition time but accept any string. The wiki generator renders known majors in the default order above, then any custom majors alphabetically.
 
-Note: `major_section` is stored on the item because the same topic name (e.g., "ai safety") can live under multiple majors (`Books / ai safety` vs. `Research papers / ai safety`). Storing the major explicitly removes the ambiguity.
+Note: `major_section` is stored on the item because the same topic name (e.g., "ai safety") can live under multiple majors (`Books / ai safety` vs. `Journal articles / ai safety`). Storing the major explicitly removes the ambiguity.
 
 #### `section` (required, string)
 
@@ -319,7 +319,7 @@ sections:
       - slug: "condition-x-treatments"
         title: "Condition X Treatments"
         book_type: "scout"
-        major_section: "Research papers"
+        major_section: "Journal articles"
         description: "Living knowledge base tracking treatment options."
         date_added: "2026-04-10"
         form: "digital"
@@ -332,7 +332,7 @@ sections:
       - slug: "causal-inference-methods"
         title: "Causal Inference Methods"
         book_type: "scout"
-        major_section: "Research papers"
+        major_section: "Journal articles"
         description: "Methods for policy evaluation, with applicability notes."
         date_added: "2026-04-08"
         form: "digital"

@@ -48,9 +48,9 @@ The collection index (`.collection-index.yaml` at the collection root) is built 
 
 ##### Major sections vs. sections
 
-Every item carries two grouping fields. `section` is your specific subsection (e.g., `ai safety`, `fiction`, `photographs`). `major_section` is the higher-level grouping the subsection belongs to — the defaults are `Books`, `Research papers`, `Visual`, `Audio`, `Personal`, and `Etc`, but you can use any Title-Case label you want.
+Every item carries two grouping fields. `section` is your specific subsection (e.g., `ai safety`, `fiction`, `photographs`). `major_section` is the higher-level grouping the subsection belongs to — the defaults are `Books`, `Journal articles`, `Visual`, `Audio`, `Personal`, and `Etc`, but you can use any Title-Case label you want.
 
-Two fields rather than one because the same topic can live under different majors — a book on AI safety lives under `Books / ai safety`, while a paper on AI safety lives under `Research papers / ai safety`. The By-section wiki view groups subsections under their majors; a major label you've coined yourself shows up right after the defaults.
+Two fields rather than one because the same topic can live under different majors — a book on AI safety lives under `Books / ai safety`, while a paper on AI safety lives under `Journal articles / ai safety`. The By-section wiki view groups subsections under their majors; a major label you've coined yourself shows up right after the defaults.
 
 #### README.md — the spine
 

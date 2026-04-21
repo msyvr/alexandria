@@ -47,15 +47,16 @@
   src: url("fonts/inter-600.woff2") format("woff2");
 }
 
+/* Semantic color roles:
+     --text   : body, content, values, view nav (sand in dark, near-black in light)
+     --accent : titles, labels, emphasis, links  (cognac in dark, teal in light)
+   Hover flips to the opposite: accent→text, text→accent. No underline. */
+
 :root {
   --bg: #fafaf7;
   --text: #1a1a1a;
-  --text-mid: #444;
-  --muted: #777;
+  --accent: #2c5f7c;
   --border: #e0ddd8;
-  --link: #2c5f7c;
-  --link-hover: #1a3d52;
-  --accent: #8b6914;
   --card-bg: #ffffff;
   --removed: #9c4040;
 }
@@ -63,13 +64,9 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #202020;
-    --text: #c9b394;
-    --text-mid: #c4a47e;
-    --muted: #9a8367;
+    --text: #bdb5a1;
+    --accent: #a5793b;
     --border: #2e2c28;
-    --link: #a5793b;
-    --link-hover: #c78a4c;
-    --accent: #c4a050;
     --card-bg: #211f1c;
     --removed: #c46060;
   }
@@ -141,18 +138,18 @@ header.page-header {
 
 header.page-header h1 {
   margin: 0;
-  font-size: 1.35em;
+  font-size: 1.5em;
   font-weight: normal;
   letter-spacing: 0.01em;
 }
 
 .header-home {
-  color: var(--link);
+  color: var(--accent);
   text-decoration: none;
 }
 
 .header-home:hover {
-  color: var(--text-mid);
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -167,7 +164,7 @@ header.page-header h1 {
 
 .header-search-icon {
   font-size: 0.9em;
-  color: var(--link);
+  color: var(--accent);
   cursor: text;
   user-select: none;
   line-height: 1;
@@ -178,7 +175,7 @@ header.page-header h1 {
   min-width: 0;
   padding: 0.2em 0.45em;
   font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: 0.85em;
+  font-size: 0.75em;
   border: 1px solid var(--border);
   border-radius: 0;
   background: var(--card-bg);
@@ -191,18 +188,19 @@ header.page-header h1 {
 }
 
 .header-search-form input::placeholder {
-  color: var(--link);
+  color: var(--accent);
   font-style: italic;
 }
 
-/* Links */
+/* Links — default is accent; hover flips to text. Sand-colored contexts
+   override both below (back-link, major-heading a, file-link a, etc). */
 
 a {
-  color: var(--link);
+  color: var(--accent);
   text-decoration: none;
 }
 a:hover {
-  color: var(--text-mid);
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -275,24 +273,25 @@ article.item-card h3 {
 }
 
 article.item-card h3 a {
-  color: var(--text);
+  color: var(--accent);
 }
 article.item-card h3 a:hover {
-  color: var(--link);
+  color: var(--text);
   text-decoration: none;
 }
 
 article.item-card .meta {
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   margin: 0 0 0 0;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-style: italic;
 }
 
 article.item-card .description {
   margin: 0.1em 0 0 0;
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -301,8 +300,8 @@ article.item-card .description {
 }
 
 article.item-card .detail {
-  font-size: 0.7em;
-  color: var(--link);
+  font-size: 0.55em;
+  color: var(--text);
   margin-top: 0.6em;
   letter-spacing: 0.03em;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -321,7 +320,7 @@ article.item-card .removed-tag {
   margin-left: 0.3em;
 }
 
-/* Axes navigation */
+/* Axes navigation — view options, sand */
 
 .axes-nav {
   margin: 0.3em 0 0.8em;
@@ -342,17 +341,16 @@ article.item-card .removed-tag {
     sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--link);
+  color: var(--text);
 }
 
 .axes-nav a:hover {
-  color: var(--text-mid);
-  border-bottom-color: var(--text-mid);
+  color: var(--accent);
   text-decoration: none;
 }
 
 .axes-nav a[aria-current="page"] {
-  color: var(--link);
+  color: var(--accent);
 }
 
 /* Section groups */
@@ -381,7 +379,15 @@ h2.major-heading {
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--link);
+  color: var(--text);
+}
+
+h2.major-heading a {
+  color: var(--text);
+}
+h2.major-heading a:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 /* Collapsible subsection group (By section, By medium & format) */
@@ -403,7 +409,7 @@ h2.major-heading {
   font-size: 0.6em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--link);
+  color: var(--text);
 }
 
 .subsections-toggle::before {
@@ -417,7 +423,7 @@ h2.major-heading {
 }
 
 .subsections-toggle:hover {
-  color: var(--text-mid);
+  color: var(--accent);
 }
 
 .subsections-panel[hidden] {
@@ -440,22 +446,30 @@ h2.major-heading {
   font-size: 0.7em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--link);
+  color: var(--text);
 }
 
 .expand-controls button:hover {
-  color: var(--text-mid);
+  color: var(--accent);
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row
    dividers so only the major-group h2 border separates groups, and tighten
-   row vertical padding. */
+   row vertical padding. Section/subsection links render in sand so the
+   entire list reads as content rather than a block of emphasis. */
 .section-group table {
   margin: 0.2em 0;
 }
 .section-group table td {
   border-bottom: none;
   padding: 0.1em 0.6em;
+}
+.section-group table td a {
+  color: var(--text);
+}
+.section-group table td a:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 /* Sort control (All view) */
@@ -474,7 +488,7 @@ h2.major-heading {
 }
 
 .sort-control label {
-  color: var(--link);
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.85em;
@@ -513,8 +527,7 @@ h2.major-heading {
     sans-serif;
 }
 
-/* Back link: same font/size treatment as the Sort-by label,
-   keeps the link color. */
+/* Back link — sand, flips to accent on hover. */
 
 .back-link {
   font-family:
@@ -525,6 +538,11 @@ h2.major-heading {
   font-size: 0.7em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: var(--text);
+}
+.back-link:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 /* Tables */
@@ -546,11 +564,11 @@ tr:last-child td {
 }
 th {
   font-weight: 600;
-  color: var(--link);
+  color: var(--accent);
   font-size: 0.82em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-bottom-color: var(--link);
+  border-bottom-color: var(--accent);
 }
 
 /* Item title (page-level, not cards) */
@@ -561,9 +579,10 @@ h1.item-title {
   font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   margin: 0.4em 0 0.2em 0;
   line-height: 1.2;
+  color: var(--accent);
 }
 
-/* Item metadata */
+/* Item metadata — fieldnames accent, values sand */
 
 .item-metadata {
   border-top: 1px solid var(--border);
@@ -580,7 +599,7 @@ h1.item-title {
   font-size: 0.78em;
 }
 .item-metadata dt {
-  color: var(--link);
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   align-self: baseline;
@@ -593,7 +612,7 @@ h1.item-title {
   color: var(--text);
 }
 .item-metadata dd a:hover {
-  color: var(--link);
+  color: var(--accent);
 }
 
 /* Header row: metadata grid left-half, optional thumbnail right-justified */
@@ -626,13 +645,20 @@ h1.item-title {
   object-fit: contain;
 }
 
-/* File link */
+/* File link — item-page detail, sand */
 
 .file-link {
   font-size: 0.7em;
-  color: var(--link);
   margin: 0.3em 0;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+}
+.file-link a {
+  color: var(--text);
+}
+.file-link a:hover {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 /* Item-page description (subtitle-like summary under the header row).
@@ -641,7 +667,9 @@ h1.item-title {
    switches to sans-serif for tonal contrast. Slightly larger than body
    so the description reads as the page's subtitle. */
 p.description {
-  font-size: 1em;
+  font-size: 0.92em;
+  color: var(--text);
+  margin-top: 1.4em;
 }
 
 /* Item content (rendered from README) */
@@ -649,7 +677,7 @@ p.description {
 .item-content {
   margin: 0.8em 0;
   padding-top: 0.8em;
-  font-size: 0.85em;
+  font-size: 0.78em;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   border-top: 1px solid var(--border);
 }
@@ -699,7 +727,7 @@ p.description {
   gap: 0.1em 0.6em;
 }
 .item-content dl.kv-grid dt {
-  color: var(--link);
+  color: var(--accent);
   font-size: 0.78em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -759,7 +787,7 @@ blockquote.user-notes {
   border-left: 2px solid var(--accent);
   margin: 0.4em 0;
   padding: 0.2em 0.8em;
-  color: var(--link);
+  color: var(--text);
   font-size: 0.92em;
 }
 
@@ -790,14 +818,14 @@ blockquote.user-notes {
 }
 
 .search-form input::placeholder {
-  color: var(--link);
+  color: var(--accent);
   font-style: italic;
 }
 
 .search-prompt {
   padding: 0.4em 0;
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   margin-bottom: 0.6em;
 }
 
@@ -838,32 +866,32 @@ blockquote.user-notes {
 }
 
 .search-title a {
-  color: var(--text);
+  color: var(--accent);
 }
 .search-title a:hover {
-  color: var(--link);
+  color: var(--text);
 }
 
 .search-meta {
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
 }
 
 .search-desc {
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   margin: 0.1em 0;
 }
 
 .search-detail {
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   letter-spacing: 0.03em;
 }
 
 .search-notes {
   font-size: 0.85em;
-  color: var(--link);
+  color: var(--text);
   font-style: italic;
   margin-top: 0.1em;
 }
@@ -878,7 +906,7 @@ blockquote.user-notes {
 /* Collection journal */
 
 .journal-intro {
-  color: var(--link);
+  color: var(--text);
   font-style: italic;
   font-size: 0.9em;
   margin-bottom: 1em;
@@ -892,7 +920,7 @@ article.journal-entry {
 
 .journal-date {
   font-size: 0.78em;
-  color: var(--link);
+  color: var(--accent);
   font-family:
     "Inter",
     system-ui,
@@ -917,7 +945,7 @@ h3.journal-headline {
   line-height: 1.45;
 }
 .journal-detail strong {
-  color: var(--link);
+  color: var(--accent);
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -926,16 +954,24 @@ h3.journal-headline {
   margin: 0.2em 0;
 }
 
-/* Footer */
+/* Footer — cognac, links flip to sand on hover */
 
 footer.page-footer {
   margin-top: 1.5em;
   padding-top: 0.5em;
   border-top: 1px solid var(--border);
   font-size: 0.78em;
-  color: var(--link);
+  color: var(--accent);
   text-align: center;
   line-height: 1.8;
+}
+
+footer.page-footer a {
+  color: var(--accent);
+}
+footer.page-footer a:hover {
+  color: var(--text);
+  text-decoration: none;
 }
 
 .footer-stats {

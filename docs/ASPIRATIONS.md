@@ -1,10 +1,20 @@
 ## Project Aspirations
 
+- [The thesis](#the-thesis) — what alexandria is for, and why
+- [What you are learning](#what-you-are-learning) — five skills, picked for leverage
+- [The collection itself](#the-collection-itself) — the library metaphor, and what it gives you
+- [Why not just a plain folder?](#why-not-just-a-plain-folder) — the structural case
+- [Who this is for](#who-this-is-for) — readers, technical or not
+- [Why these five, specifically](#why-these-five-specifically) — the literacy floor argument
+- [Collection invariants](#collection-invariants) — design acceptance criteria
+- [Item types](#item-types) — physical, digital, scout, future
+- [Where this is headed](#where-this-is-headed) — near-term, medium-term, long-term
+
 ### The thesis
 
-As AI takes on more of the work of making, editing, and organizing digital material, retaining control of one's own work has begun to depend on a small, practical fluency. Not programming — a narrower set: terminal use, structured text, directing an AI assistant, a sense of what a file is and whether you own it, and light version control as insurance. A person who is comfortable with those few things can remain in control of their own work as AI continues to advance. A person who is not is increasingly renting the capability from whoever made the nearest app.
+As AI takes on more of the work of making, editing, and organizing digital material, retaining control of one's own work has begun to depend on a small, practical fluency. Not programming — a narrower set: terminal use, structured text, directing an AI assistant, a sense of what a file is and whether you own it, and light version control as insurance. People who are comfortable with those few things can remain in control of their own work as AI advances. People who are not are increasingly renting the capability from whoever made the nearest app.
 
-Alexandria is for people who would like that fluency but have not yet built it. The collection — a private library of books, papers, notes, research, whatever else is worth holding onto — is the vehicle for developing it. Each skill comes up in the course of the work, when there is something concrete to apply it to. The finished collection is entirely the user's, and continues to work whether or not any AI is running.
+Alexandria is for people who would like that fluency but have not yet built it. The collection — a private library of books, papers, notes, research, whatever else is worth holding onto — is the vehicle for developing it. Each skill comes up in the course of the work, when there is something concrete to apply it to. The finished collection is entirely yours, and continues to work whether or not any AI is running.
 
 ### What you are learning
 

@@ -7,7 +7,7 @@ This guide covers working in a terminal — one of the small set of skills alexa
 A terminal is a text-based window where you type commands and see results. It's how you talk to your computer without clicking buttons. Every computer has one built in:
 
 - **macOS**: press `Cmd + Space`, type `Terminal`, press Enter
-- **Windows**: use WSL (Windows Subsystem for Linux) — see the [setup walkthrough](../../README.md#detailed-setup-walkthrough) for installation
+- **Windows**: use WSL (Windows Subsystem for Linux) — see the [setup walkthrough](setup-walkthrough.md) for installation
 - **Linux**: look for "Terminal" or "Konsole" in your applications
 
 When you open a terminal, you see a prompt — something like `~$` or `user@computer:~$`. This is where you type. After you type a command and press Enter, the computer runs it and shows you the result.

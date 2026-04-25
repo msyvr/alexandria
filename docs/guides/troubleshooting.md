@@ -1,6 +1,20 @@
 ## Troubleshooting
 
-Common issues and how to fix them.
+Common issues and how to fix them. Jump to the section that matches your symptom:
+
+- [Skills not found](#skills-not-found) — `/coll-*` commands aren't recognized
+- [Wiki not generating](#wiki-not-generating) — wiki generator errors
+- [Photo not reading](#photo-not-reading-physical-items) — vision extraction fails on a physical item
+- [metadata.yaml has an error](#metadatayaml-has-an-error) — YAML parse errors
+- ["command not found"](#command-not-found-errors) — `claude`, `uv`, `python3`, `git` missing
+- [Collection index seems stale](#collection-index-seems-stale) — wiki not reflecting recent changes
+- [Scout discovery script fails](#scout-discovery-script-fails) — `python scripts/discover.py` errors
+- [Update-script errors](#update-script-errors) — `/coll-update-from-latest-alexandria` failures
+- [Version-control errors](#version-control-errors) — git setup failures
+- [Backup errors](#backup-errors) — `/coll-backup` failures
+- [Something else went wrong](#something-else-went-wrong)
+
+If your symptom isn't here, [start Claude Code in your collection and describe the problem](#something-else-went-wrong).
 
 ### Skills not found
 
@@ -49,7 +63,7 @@ Common issues and how to fix them.
 
 **Symptom**: You type a command (`claude`, `uv`, `python3`, `git`) and the terminal says "command not found."
 
-**Fix**: The tool isn't installed. Follow the relevant step in the [setup walkthrough](../../README.md#detailed-setup-walkthrough):
+**Fix**: The tool isn't installed. Follow the relevant step in the [setup walkthrough](setup-walkthrough.md):
 - `claude` → install Claude Code from [claude.ai/claude-code](https://claude.ai/claude-code)
 - `uv` → `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - `python3` → install from [python.org/downloads](https://python.org/downloads)

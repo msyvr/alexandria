@@ -2,6 +2,17 @@
 
 Alexandria uses a few tools behind the scenes. Knowing Python or uv is not among the skills alexandria sets out to teach — these are dependencies the collection runs on, not fluencies you are building. One paragraph on each is enough to understand what is happening when you set things up and when something goes wrong.
 
+### At a glance
+
+| Tool | What it does | You need to |
+|---|---|---|
+| **Python** | Runs alexandria's scripts | Install it once ([python.org](https://www.python.org/downloads/)) |
+| **uv** | Installs Python dependencies | Install it once, then run `uv sync` in the alexandria directory |
+| **Git** | Downloads alexandria and tracks file changes | Install it once, then run `git clone` to download |
+| **Claude Code** | The AI assistant that reads the skills and does the work | Install it once ([claude.ai/claude-code](https://claude.ai/claude-code)) |
+
+None of these require ongoing maintenance. Install once, use as needed. The rest of this guide explains each one in more detail.
+
 ### What is a programming language?
 
 A programming language is a way of writing instructions that a computer can follow. Instead of clicking buttons in an app someone built, you write the instructions yourself (or, increasingly, have an AI write them for you). The instructions are stored as text files — readable, editable, and yours to keep.
@@ -57,13 +68,3 @@ You don't need to think about the virtual environment. It's created automaticall
 
 You need git installed to download alexandria (`git clone`). After that, you don't need to use git directly — though it's there if you want to track changes to your own collection. See the [terminal basics guide](terminal-basics.md) for more on git repos.
 
-### Summary
-
-| Tool | What it does | You need to |
-|---|---|---|
-| **Python** | Runs alexandria's scripts | Install it once ([python.org](https://www.python.org/downloads/)) |
-| **uv** | Installs Python dependencies | Install it once, then run `uv sync` in the alexandria directory |
-| **Git** | Downloads alexandria and tracks file changes | Install it once, then run `git clone` to download |
-| **Claude Code** | The AI assistant that reads the skills and does the work | Install it once ([claude.ai/claude-code](https://claude.ai/claude-code)) |
-
-None of these require ongoing maintenance. Install once, use as needed.

@@ -63,11 +63,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #202020;
-    --text: #bdb5a1;
-    --accent: #a5793b;
-    --border: #2e2c28;
-    --card-bg: #211f1c;
+    --bg: #1a120c;
+    --text: #e8d5b3;
+    --accent: #c89048;
+    --border: #2e2620;
+    --card-bg: #1f160f;
     --removed: #c46060;
   }
 }

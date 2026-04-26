@@ -143,10 +143,6 @@ header.page-header h1 {
   letter-spacing: 0.01em;
 }
 
-.header-home:hover {
-  font-weight: inherit;
-}
-
 .header-search-form {
   display: flex;
   align-items: baseline;
@@ -186,10 +182,9 @@ header.page-header h1 {
   font-style: italic;
 }
 
-/* Links — default is accent; hover flips to text and bolds.
-   Sand-colored contexts override the colors below (back-link,
-   major-heading a, file-link a, etc); they inherit the hover
-   font-weight from this rule via the cascade. */
+/* Links — default is accent; hover flips to text. Sand-colored
+   contexts override these colors below (back-link, major-heading a,
+   file-link a, etc). */
 
 a {
   color: var(--accent);
@@ -197,7 +192,6 @@ a {
 }
 a:hover {
   color: var(--text);
-  font-weight: 600;
   text-decoration: none;
 }
 
@@ -335,7 +329,6 @@ article.item-card .removed-tag {
 
 .axes-nav a:hover {
   color: var(--accent);
-  font-weight: inherit;
   text-decoration: none;
 }
 
@@ -414,7 +407,6 @@ h2.major-heading a:hover {
 
 .subsections-toggle:hover {
   color: var(--accent);
-  font-weight: 600;
 }
 
 .subsections-panel[hidden] {
@@ -442,7 +434,6 @@ h2.major-heading a:hover {
 
 .expand-controls button:hover {
   color: var(--accent);
-  font-weight: 600;
 }
 
 /* Section-group tables (By section, By medium & format): drop the per-row
@@ -970,10 +961,6 @@ footer.page-footer {
   color: var(--accent);
   text-align: center;
   line-height: 1.8;
-}
-
-footer.page-footer a:hover {
-  font-weight: inherit;
 }
 
 .footer-stats {

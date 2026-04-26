@@ -23,7 +23,7 @@ Then start Claude Code from the alexandria repo and run this skill.
    lookup in one shot:
 
    ```
-   bash scripts/get_default_collection.sh
+   bash tools/get_default_collection.sh
    ```
 
    - **Exit 0**: stdout is two lines — line 1 is the collection path,
